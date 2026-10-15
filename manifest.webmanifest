@@ -1,7 +1,7 @@
 {
  "id": "./",
- "name": "Ficha AD",
- "short_name": "Ficha AD",
+ "name": "Melhor em Casa",
+ "short_name": "Melhor em Casa",
  "description": "Ficha de Atendimento Domiciliar do e-SUS APS, preenchida no celular.",
  "lang": "pt-BR",
  "start_url": "./",
