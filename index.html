@@ -1322,7 +1322,9 @@ function opcPadrao(){ return {dataCab:'branco', datasColunas:true, separador:'di
 function load(){ try{ var r=JSON.parse(localStorage.getItem(KEY)); if(r && typeof r==='object') return r; }catch(e){} return {}; }
 var storageOk=true;
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); storageOk=true; }catch(e){ storageOk=false; toast('Não foi possível salvar neste navegador. Faça um backup em Ajustes.'); } }
-function proxFolha(){ var m=0; (S.fichas||[]).forEach(function(f){ m=Math.max(m, f.folha||0); }); return m+1; }
+function proxFolha(){ var m=0; (S.fichas||[]).forEach(function(f){ if(!f.hist) m=Math.max(m, f.folha||0); }); return m+1; }
+// fichas de histórico (visitas trazidas de fora, como do Notion) não aparecem como fichas: só as visitas contam
+function fichasReais(){ return (S.fichas||[]).filter(function(f){ return !f.hist; }); }
 function novaFichaObj(){ return {id:uid(), folha:proxFolha(), criada:hoje(), impressa:false, atend:[]}; }
 function migrar(){
   S.prof=S.prof||{}; S.pacientes=S.pacientes||[];
@@ -1339,8 +1341,8 @@ function migrar(){
     delete S.ficha; S.opc.tema='casa';
   }
   if(['casa','mangueira','guama','acai'].indexOf(S.opc.tema)<0) S.opc.tema='casa';
-  if(!S.fichas.length) S.fichas.push(novaFichaObj());
-  if(!S.fichas.some(function(f){return f.id===S.atual;})) S.atual=S.fichas[S.fichas.length-1].id;
+  if(!fichasReais().length) S.fichas.push(novaFichaObj());
+  if(!fichasReais().some(function(f){return f.id===S.atual;})){ var fr=fichasReais(); S.atual=fr[fr.length-1].id; }
   S.fichas.forEach(function(f){ f.atend=f.atend||[]; f.atend.forEach(function(a){ if(!a.id) a.id=uid(); if(!a.data) a.data=hoje(); if(a.eleg===undefined) a.eleg=null; }); });
   delete S.opc.logo; delete S.opc.nomes;
   if(!S.ultData) S.ultData=hoje();
@@ -1348,7 +1350,7 @@ function migrar(){
   var lim30=addDays(hoje(),-30); S.tarefas=S.tarefas.filter(function(t){ return !t.feita || t.feita.slice(0,10)>=lim30; });
   S.v=2;
 }
-function fichaAtual(){ for(var i=0;i<S.fichas.length;i++) if(S.fichas[i].id===S.atual) return S.fichas[i]; return S.fichas[S.fichas.length-1]; }
+function fichaAtual(){ for(var i=0;i<S.fichas.length;i++) if(S.fichas[i].id===S.atual && !S.fichas[i].hist) return S.fichas[i]; var fr=fichasReais(); return fr[fr.length-1]; }
 function pacById(id){ for(var i=0;i<S.pacientes.length;i++) if(S.pacientes[i].id===id) return S.pacientes[i]; return null; }
 function pacOf(a){ return pacById(a.pacId) || a.snap || {nome:'(paciente removido)'}; }
 function datas(f){ return f.atend.map(function(a){return a.data;}).filter(Boolean).sort(); }
@@ -1512,7 +1514,7 @@ document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeMenu
 function fichaResumo(f){ var n=f.atend.length; return n+' de 13 colunas'+(f.impressa?', impressa':''); }
 function menuFichas(anchor, where){
   var cur=fichaAtual();
-  var outras=S.fichas.filter(function(f){return f!==cur && f.atend.length;}).sort(function(a,b){ return ((faixa(b)||{}).fim||'').localeCompare((faixa(a)||{}).fim||''); }).slice(0,3);
+  var outras=fichasReais().filter(function(f){return f!==cur && f.atend.length;}).sort(function(a,b){ return ((faixa(b)||{}).fim||'').localeCompare((faixa(a)||{}).fim||''); }).slice(0,3);
   var h='<div class="mh">Trocar de ficha</div>'+[cur].concat(outras).map(function(f){ return '<button class="mo" data-f="'+f.id+'">'+I.ficha+'<span><b>'+esc(periodo(f))+'</b><small>'+fichaResumo(f)+'</small></span>'+(f===cur?'<span class="ck">'+sz(I.chk,18)+'</span>':'')+'</button>'; }).join('')+
     '<div class="sep"></div><button class="mo" data-act="nova">'+I.newf+'<span><b>Nova ficha</b><small>A atual fica guardada como está</small></span></button>'+
     '<button class="mo" data-act="cal">'+I.cal+'<span><b>Ver todas no calendário</b></span></button>';
@@ -2291,9 +2293,9 @@ function rCal(){
   var first=new Date(y,mo,1,12), start=addDays(isoOf(first), -first.getDay());
   // duas visões: as datas da ficha (Fichas) ou os dias em que as visitas aconteceram de verdade (Visitas)
   var modo=S.opc.calModo==='v'?'v':'f';
-  var dia={}; S.fichas.forEach(function(f){ f.atend.forEach(function(a){ var dt= modo==='v'? dataV(a) : a.data, d=dia[dt]=dia[dt]||{n:0,cur:0,c:[]}; d.n++; if(f===cur) d.cur++;
+  var dia={}; S.fichas.forEach(function(f){ if(modo!=='v' && f.hist) return; f.atend.forEach(function(a){ var dt= modo==='v'? dataV(a) : a.data, d=dia[dt]=dia[dt]||{n:0,cur:0,c:[]}; d.n++; if(f===cur) d.cur++;
     var pp=pacById(a.pacId); d.c.push(pp&&pp.perfil==='cur'?'var(--pf-cur)':pp&&pp.perfil==='cli'?'var(--pf-cli)':'var(--oth-dot)'); }); });
-  function fichaDoDia(iso){ var best=null; S.fichas.forEach(function(f){ var r=faixa(f); if(r && iso>=r.ini && iso<=r.fim){ if(!best || f===cur) best=f; } }); return best; }
+  function fichaDoDia(iso){ var best=null; fichasReais().forEach(function(f){ var r=faixa(f); if(r && iso>=r.ini && iso<=r.fim){ if(!best || f===cur) best=f; } }); return best; }
   var h='<div class="pagehd"><h1>Calendário</h1><div class="hbtns flutua"><button class="pill glass gacc" id="cNova">'+I.plus+'Nova ficha</button>'+(wideMQ.matches?'':'<button class="ib glass maisb" id="hMore" aria-label="Mais opções">'+I.more+'</button>')+'</div></div>';
   h+='<div class="card cal" id="calCard"><div class="calh"><button class="ib glass" id="cPrev" aria-label="Mês anterior">'+I.left+'</button><b id="cMes">'+mesAno(calMes)+'</b><button class="ib glass" id="cNext" aria-label="Próximo mês">'+I.right+'</button></div><div class="calg">'+DS.map(function(x){return '<div class="wd">'+x.charAt(0)+'</div>';}).join('')+'</div>';
   var hj=hoje();
@@ -2316,7 +2318,7 @@ function rCal(){
     : '<div class="legend"><span><i class="lp" style="background:var(--pf-cur)"></i>Curativo</span><span><i class="lp" style="background:var(--pf-cli)"></i>Clínico</span><span><i class="lp" style="background:var(--oth-dot)"></i>Sem tipo</span></div></div>';
   h+='<div class="gtabs glass iseg calseg noswipe" id="calModo" role="tablist"><span class="lens"></span><button type="button" role="tab" data-v="f"'+(modo==='f'?' class="on"':'')+'>'+sz(I.ficha,17)+'Fichas</button><button type="button" role="tab" data-v="v"'+(modo==='v'?' class="on"':'')+'>'+sz(I.visit||I.pac,17)+'Visitas</button></div>';
   h+='<div class="cdia" id="cDia">'+(modo==='v'? diaHtmlV(calSel) : diaHtml(calSel))+'</div>';
-  var outras=S.fichas.filter(function(f){return f!==cur;}).sort(function(a,b){ return ((faixa(b)||{}).fim||b.criada||'').localeCompare((faixa(a)||{}).fim||a.criada||''); });
+  var outras=fichasReais().filter(function(f){return f!==cur;}).sort(function(a,b){ return ((faixa(b)||{}).fim||b.criada||'').localeCompare((faixa(a)||{}).fim||a.criada||''); });
   function mini(f){ var s='<div class="mini">'; for(var k=0;k<13;k++){ var a=f.atend[k]; s+='<i class="'+(a?(f===cur&&a.data===S.ultData?'c':'f'):'')+'"></i>'; } return s+'</div>'; }
   function topo(f){ var b= f===cur? '<span class="badge at">Atual</span>' : f.impressa? '<span class="badge ok">Impressa</span>' : '<span class="badge pe">Não impressa</span>';
     return '<span class="tp"><span class="sp"><span class="ttl" style="display:block">'+esc(periodo(f))+'</span><span class="sub">'+f.atend.length+' de 13 colunas, folha nº '+(f.folha||1)+'</span></span>'+b+(f!==cur?'<span class="del" role="button" data-del="'+f.id+'" aria-label="Apagar ficha">'+I.del+'</span>':'')+'</span>'+mini(f); }
@@ -2440,7 +2442,7 @@ function resumoMes(mIso){
 }
 function diaHtml(iso){
   var cur=fichaAtual(), itens=[];
-  S.fichas.forEach(function(f){ f.atend.forEach(function(a,k){ if(a.data===iso) itens.push({f:f,a:a,k:k}); }); });
+  fichasReais().forEach(function(f){ f.atend.forEach(function(a,k){ if(a.data===iso) itens.push({f:f,a:a,k:k}); }); });
   itens.sort(function(x,y){ return (x.f===cur?0:1)-(y.f===cur?0:1) || x.k-y.k; });
   var h='<div class="dh"><b>'+esc(diaTxt(iso))+'</b><span>'+(itens.length? itens.length+' visita'+(itens.length>1?'s':'') : '')+'</span>'+(itens.some(function(x){return x.f===cur;})?'<button class="lnk" id="dVer">Ver na ficha</button>':'')+'</div>';
   if(!itens.length) return h+'<div class="vz">Nenhuma visita neste dia.<button class="btn" id="dAddV">'+I.plus+'Registrar</button></div>';
@@ -2957,7 +2959,7 @@ function rAjApar(){
   var r=$('#oVid'); r.oninput=function(){ o.vidro=+this.value; this.style.setProperty('--p', this.value+'%'); aplicarTema(); }; r.onchange=function(){ save(); };
 }
 
-var TAM_APP=1212697;
+var TAM_APP=1215577;
 function tamanhoApp(){ if(TAM_APP==null){ try{ TAM_APP=new Blob([document.documentElement.outerHTML]).size; }catch(e){ TAM_APP=0; } } return TAM_APP? (TAM_APP/1048576).toFixed(1).replace('.',',')+' MB' : '—'; }
 function rSobre(){
   var nAt=0; S.fichas.forEach(function(f){ nAt+=f.atend.length; });
@@ -2966,7 +2968,7 @@ function rSobre(){
   var h=navbar('Sobre');
   h+='<div class="abtop"><div class="abicon"><img src="'+LOGO+'" alt=""></div><b>Melhor em Casa</b><small>Ficha de Atendimento Domiciliar do <span style="white-space:nowrap">e-SUS APS</span></small></div>';
   h+=grupo('', L('Nome','Melhor em Casa')+L('Versão',VERSAO)+'<div class="ir"><span class="il">Desenvolvido por</span><span class="iv" style="white-space:normal;max-width:60%">Luiz Felipe Silva Marcião</span></div>'+L('Ficha oficial','e-SUS APS, AD v5.3'), '', 'ni');
-  h+=grupo('', L('Pacientes',S.pacientes.length)+L('Fichas',S.fichas.length)+L('Visitas',nAt)+L('Tamanho do app',tamanhoApp())+L('Dados salvos',kb+' KB'), '', 'ni');
+  h+=grupo('', L('Pacientes',S.pacientes.length)+L('Fichas',fichasReais().length)+L('Visitas',nAt)+L('Tamanho do app',tamanhoApp())+L('Dados salvos',kb+' KB'), '', 'ni');
   h+=grupo('', '<button type="button" class="ir red" id="bZero">Apagar todos os dados</button>', 'Antes de apagar, faça um backup em Ajustes.', 'ni');
   $('#main').innerHTML=h; ligarNav();
   $('#bZero').onclick=function(){ if(confirm('Apagar TODOS os dados (profissional, pacientes e fichas) deste aparelho?') && confirm('Isso não pode ser desfeito. Se precisar, faça um backup antes. Apagar mesmo?')){ S={}; migrar(); lastPdf=null; save(); aplicarTema(); pilha=[]; tab='ficha'; render(); toast('Dados apagados.'); } };
@@ -2984,21 +2986,49 @@ $('#fileIn').onchange=function(){
   r.onload=function(){
     var o; try{ o=JSON.parse(r.result); }catch(e){ alert('Este arquivo não pôde ser lido.'); return; }
     if(!o || o.app!=='fichaAD'){ alert('Este arquivo não é um backup do app Melhor em Casa.'); return; }
-    var novos=0, atual=0, msg;
-    (o.pacientes||[]).forEach(function(p){ var d=dig(p.doc), ex=S.pacientes.filter(function(x){ return x.id===p.id || (d && dig(x.doc)===d); })[0];
-      if(ex){ Object.assign(ex, p, {id:ex.id}); atual++; } else { S.pacientes.push(p); novos++; } });
-    msg=novos+' paciente(s) novo(s) e '+atual+' atualizado(s).';
-    if(o.tipo==='completo'){
-      var fs=o.fichas || ((o.ficha && o.ficha.atend && o.ficha.atend.length)? [{id:uid(), folha:o.ficha.folhaInicial||1, criada:hoje(), impressa:false, atend:o.ficha.atend}] : []);
-      var ids={}; S.fichas.forEach(function(f){ ids[f.id]=true; });
-      var add=fs.filter(function(f){ return !ids[f.id] && f.atend && f.atend.length; });
-      if(add.length && confirm('O backup tem '+add.length+' ficha(s) que não estão neste aparelho. Trazer para cá?')){ S.fichas=S.fichas.concat(add); msg+=' '+add.length+' ficha(s) importada(s).'; }
-      if(o.prof && (o.prof.nome||dig(o.prof.cns)) && confirm('O backup tem dados do profissional ('+(o.prof.nome||fmtDoc(o.prof.cns))+'). Usar neste aparelho?')){ S.prof=o.prof; msg+=' Dados do profissional importados.'; }
-    }
+    var msg=importar(o);
     migrar(); lastPdf=null; save(); aplicarTema(); render(); alert('Importação concluída. '+msg);
   };
   r.readAsText(file);
 };
+function nomeChave(n){ return String(n||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toUpperCase().replace(/[^A-Z ]/g,' ').replace(/\s+/g,' ').trim(); }
+function importar(o){
+  var novos=0, atual=0, msg, mapa={};
+  (o.pacientes||[]).forEach(function(p){ var d=dig(p.doc), nk=nomeChave(p.nome);
+    var ex=S.pacientes.filter(function(x){ return x.id===p.id; })[0] || (d && S.pacientes.filter(function(x){ return dig(x.doc)===d; })[0]) || S.pacientes.filter(function(x){ return nk && nomeChave(x.nome)===nk; })[0];
+    if(ex){
+      // completa o que falta sem apagar o que já foi editado no aparelho
+      Object.keys(p).forEach(function(k){ if(k==='id') return; var v=p[k]; if(v==null || v==='') return;
+        if(k==='perfil' || k==='obs' && (!ex.obs || /^Diagnóstico:/.test(ex.obs)) || ex[k]==null || ex[k]==='') ex[k]=v; });
+      mapa[p.id]=ex.id; atual++;
+    } else { var np={}; Object.keys(p).forEach(function(k){ if(p[k]!=null && p[k]!=='') np[k]=p[k]; }); np.id=np.id||uid(); S.pacientes.push(np); mapa[p.id]=np.id; novos++; } });
+  msg=novos+' paciente(s) novo(s) e '+atual+' atualizado(s).';
+  // visitas soltas (histórico de outro lugar, como o Notion): ficam guardadas sem virar ficha nova
+  if(o.visitas && o.visitas.length){
+    var tem={}, comp=0; S.fichas.forEach(function(f){ f.atend.forEach(function(a){ tem[a.pacId+'|'+dataV(a)]=a; }); });
+    var pd=S.opc.padrao, add=[];
+    o.visitas.forEach(function(v){ var pid=mapa[v.pacId]||v.pacId, p=pacById(pid), ja=tem[pid+'|'+v.data]; if(!p || !v.data) return;
+      if(ja){ if(ja!==1 && !ja.evol && v.evol){ ja.evol=v.evol; comp++; } return; } tem[pid+'|'+v.data]=1;
+      var u=p.ult||{}, sig=(u.sigtap||[]).filter(Boolean).length? u.sigtap.slice() : [pd.sigtap||'','','',''];
+      add.push({id:uid(), pacId:pid, data:v.data, turno:v.turno||'', local:u.local||pd.local||'04', modalidade:u.modalidade||pd.modalidade||'',
+        tipo:u.tipo!=null?u.tipo:pd.tipo, condicoes:(u.condicoes||[]).slice(), cid10:p.cid||'', ciap2:u.ciap2||'', procedimentos:(u.procedimentos||[]).slice(),
+        sigtap:sig, conduta:pd.conduta!=null?pd.conduta:0, eleg:v.eleg||null, evol:v.evol||'', st:{foto:!!(v.st&&v.st.foto), pass:!!(v.st&&v.st.pass)},
+        origem:v.origem||'', snap:{nome:p.nome,docTipo:p.docTipo,doc:p.doc,nasc:p.nasc,sexo:p.sexo}}); });
+    add.sort(function(x,y){ return x.data.localeCompare(y.data); });
+    for(var i=0;i<add.length;i+=13) S.fichas.push({id:uid(), folha:0, criada:hoje(), impressa:true, hist:true, atend:add.slice(i,i+13)});
+    var pul=o.visitas.length-add.length;
+    msg+=' '+add.length+' visita(s) do histórico'+(o.origem?' ('+o.origem+')':'')+' trazida(s)'+(pul? ', '+pul+' já estava(m) no app'+(comp? ' ('+comp+' ganharam a evolução)' : '') : '')+'.';
+  }
+  if(o.tipo==='completo'){
+    var fs=o.fichas || ((o.ficha && o.ficha.atend && o.ficha.atend.length)? [{id:uid(), folha:o.ficha.folhaInicial||1, criada:hoje(), impressa:false, atend:o.ficha.atend}] : []);
+    var ids={}; S.fichas.forEach(function(f){ ids[f.id]=true; });
+    var fadd=fs.filter(function(f){ return !ids[f.id] && f.atend && f.atend.length; });
+    fadd.forEach(function(f){ f.atend.forEach(function(a){ if(mapa[a.pacId]) a.pacId=mapa[a.pacId]; }); });
+    if(fadd.length && confirm('O backup tem '+fadd.length+' ficha(s) que não estão neste aparelho. Trazer para cá?')){ S.fichas=S.fichas.concat(fadd); msg+=' '+fadd.length+' ficha(s) importada(s).'; }
+    if(o.prof && (o.prof.nome||dig(o.prof.cns)) && confirm('O backup tem dados do profissional ('+(o.prof.nome||fmtDoc(o.prof.cns))+'). Usar neste aparelho?')){ S.prof=o.prof; msg+=' Dados do profissional importados.'; }
+  }
+  return msg;
+}
 
 // ---------- transições entre páginas (a página nova aparece junto com a antiga) ----------
 var EASE='cubic-bezier(.22,.8,.22,1)';
