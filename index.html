@@ -365,6 +365,8 @@ body:not(.wide) #mtit.on{opacity:1;transform:none;filter:none}
 
 /* pacientes */
 .av{flex:none;width:42px;height:42px;border-radius:50%;color:#fff;display:grid;place-items:center;font-weight:800;font-size:15px}
+.av.sxt{background:color-mix(in srgb,var(--avc) 18%,var(--s))!important;color:var(--avc);box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--avc) 35%,transparent)}
+[data-mode="dark"] .av.sxt{background:color-mix(in srgb,var(--avc) 30%,var(--s))!important;color:color-mix(in srgb,var(--avc) 55%,#fff)}
 .pr{display:flex;align-items:center;gap:12px;padding:10px 12px;border-bottom:1px solid var(--line)}
 /* aba Hoje */
 .hsub{font-size:14px;color:var(--mut);font-weight:600;margin:-4px 16px 14px}
@@ -374,6 +376,8 @@ body:not(.wide) #mtit.on{opacity:1;transform:none;filter:none}
 .iseg button{flex-direction:row;font-size:15px;font-weight:700;color:var(--mut);letter-spacing:0}
 .iseg .lente .lc .cb{flex-direction:row;font-size:15px;font-weight:700;letter-spacing:0;color:var(--acc-ink)}
 .irows{position:relative}#iLst{position:relative}
+#iLst .idh{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:13px 16px 3px;font-size:13px;color:var(--mut)}#iLst .idh b{font-size:15px;font-weight:800;color:var(--ink)}#iLst .idh:first-child{padding-top:9px}
+#iLst .irows+.idh{border-top:1px solid var(--line);margin-top:2px}
 .irows > .vr,.irows > .wr{background:var(--s)}
 /* foto e evolução: como o ícone do turno (quadradinho que ganha cor quando marcado) */
 .vic{width:38px;height:38px;margin-left:8px;border-radius:11px;border:0;background:var(--t0-bg);color:var(--t0);display:grid;place-items:center;padding:0;flex:none;transition:background-color .2s,color .2s,opacity .25s}
@@ -484,8 +488,8 @@ textarea.evt{display:block;width:100%;min-height:180px;resize:none;line-height:1
 .ptl b{font-size:21px;line-height:1.1;font-variant-numeric:tabular-nums}
 .ptl small{font-size:13px;color:var(--mut);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 /* dias desde: verde até 7, amarelo até 14, vermelho depois */
-.dd{font-weight:700}.dd.ok{color:var(--ok)}.dd.av{color:#b37a00}.dd.mau{color:var(--bad)}
-[data-mode="dark"] .dd.av{color:#f2c94c}
+.dd{font-weight:700}.dd.ok{color:var(--ok)}.dd.md{color:#b37a00}.dd.mau{color:var(--bad)}
+[data-mode="dark"] .dd.md{color:#f2c94c}
 /* prontuário */
 .phd{display:flex;align-items:center;gap:14px;margin:2px 16px 14px}
 .phd .sp{display:flex;flex-direction:column;gap:3px;min-width:0;align-items:flex-start}
@@ -549,8 +553,8 @@ textarea.evt{display:block;width:100%;min-height:180px;resize:none;line-height:1
 .lbl .lnk{margin-left:auto;display:inline-flex;align-items:center;gap:4px;font-size:13px}.lbl .lnk svg{width:15px;height:15px}
 .lbl .lnk + .lnk{margin-left:12px}
 .pr:last-child{border-bottom:0}
-.pr .t{font-weight:700}
-.pr .s{font-size:13px;color:var(--mut)}
+.pr .t{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pr .s{display:block;font-size:13px;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
 .pr button.go{border:0;border-radius:999px;padding:8px 14px;font-weight:800;font-size:14px;background:var(--acc-soft);color:var(--acc-ink)}
 .pr button.ed{border:0;background:transparent;text-align:left;padding:0;flex:1;min-width:0;display:flex;align-items:center;gap:12px}
 
@@ -933,6 +937,42 @@ body:not(.wide) .sh .top{padding-top:12px}
 #toast button:empty{display:none}
 #toast:not(:has(button:not(:empty))){padding-right:18px}
 .mono{font-variant-numeric:tabular-nums;letter-spacing:.2px}
+
+/* ações rápidas (segurar) */
+[data-sx],[data-tf],.evi,.tl{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+.evi textarea,.evi input{-webkit-user-select:text;user-select:text}
+.ctxprs{transform:scale(.965)!important;transition:transform .32s cubic-bezier(.2,.8,.2,1)!important}
+#ctx{position:fixed;inset:0;z-index:80;-webkit-tap-highlight-color:transparent;touch-action:none}
+#ctx .cbg{position:absolute;inset:0;background:rgba(20,22,26,.16);-webkit-backdrop-filter:blur(16px) saturate(1.15);backdrop-filter:blur(16px) saturate(1.15)}
+[data-mode="dark"] #ctx .cbg{background:rgba(0,0,0,.42)}
+#ctx .cpv{box-shadow:0 14px 44px rgba(0,0,0,.22),0 0 0 .5px rgba(0,0,0,.06)!important;pointer-events:auto;z-index:1}
+#ctx .cm{position:fixed;z-index:2;width:min(254px,calc(100vw - 32px));max-height:calc(100vh - 40px);overflow-y:auto;overscroll-behavior:contain;border-radius:28px;padding:7px 0;background:rgba(250,250,252,.84);-webkit-backdrop-filter:blur(28px) saturate(1.8);backdrop-filter:blur(28px) saturate(1.8);box-shadow:0 18px 50px rgba(0,0,0,.2),0 0 0 .5px rgba(0,0,0,.07);will-change:transform,opacity}
+[data-mode="dark"] #ctx .cm{background:rgba(40,40,43,.86);box-shadow:0 18px 50px rgba(0,0,0,.55),0 0 0 .5px rgba(255,255,255,.1)}
+#ctx .cmc{will-change:filter}
+#ctx .ch{font-size:13px;line-height:18px;color:var(--mut);padding:5px 20px 7px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#ctx .cgap{height:.5px;margin:6px 20px;background:rgba(120,120,128,.3)}
+#ctx .ci{position:relative;display:flex;align-items:center;gap:13px;width:100%;min-height:44px;padding:0 20px;border:0;background:transparent;font-size:17px;line-height:22px;font-weight:400;letter-spacing:-.2px;color:var(--ink);text-align:left;cursor:pointer;font-family:inherit}
+#ctx .ci::before{content:'';position:absolute;inset:0 7px;border-radius:17px;background:rgba(120,120,128,.2);opacity:0;transition:opacity .12s}
+#ctx .ci:active::before,#ctx .ci.hl::before{opacity:1}
+#ctx .ci .cmi{position:relative;width:22px;height:22px;flex:none;display:grid;place-items:center}
+#ctx .ci .cmi svg{width:20px;height:20px}
+#ctx .ci .cl{position:relative;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#ctx .ci.red{color:#ff3b30}[data-mode="dark"] #ctx .ci.red{color:#ff453a}
+#ctx .ci input[type=date]{position:absolute;inset:0;opacity:0;width:100%;height:100%;border:0;margin:0;padding:0;-webkit-appearance:none;appearance:none;z-index:1}
+/* paleta (turno / tipo): aberta quando nada foi escolhido; senão vira uma "aba" que abre no mesmo lugar */
+#ctx .cpw .cpal{display:flex;margin:2px 10px 0;overflow:hidden}
+#ctx .cpw.fech .cpal{height:0;opacity:0;margin-top:0}
+#ctx .cpal button{position:relative;flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:9px 4px 8px;border:0;background:transparent;color:var(--ink);font-size:12px;font-weight:600;border-radius:16px;font-family:inherit}
+#ctx .cpal button svg{width:20px;height:20px;color:var(--mut)}
+#ctx .cpal button.on{background:rgba(120,120,128,.14);color:var(--pc,var(--acc-ink))}#ctx .cpal button.on svg{color:var(--pc,var(--acc-ink))}
+#ctx .cpal button.on span{font-weight:800}
+#ctx .cpal button:active,#ctx .cpal button.hl{background:rgba(120,120,128,.24)}
+#ctx .cpr .cmi{color:var(--pc,var(--acc-ink))}
+#ctx .cpr .cpk{position:relative;font-size:13px;color:var(--mut)}
+#ctx .cpr .chev{position:relative;display:grid;color:var(--mut);transition:transform .3s cubic-bezier(.25,.9,.3,1)}
+#ctx .cpw:not(.fech) .chev{transform:rotate(180deg)}
+#ctx .pdot{display:block;width:14px;height:14px;margin:3px 0;border-radius:50%;background:var(--pc);opacity:.35}
+#ctx .cpal button.on .pdot,#ctx .cpr .pdot{opacity:1}
 </style>
 </head>
 <body>
@@ -1235,6 +1275,7 @@ var I={
  newf:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h8l4 4v14H6z"/><path d="M12 10v6M9 13h6"/></svg>',
  visit:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11 12 4l8 7v9H4z"/><path d="M12 11v6M9 14h6"/></svg>',
  chk:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>',
+ tarefa:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><path d="M8 12.3l2.8 2.8L16.2 9.6"/></svg>',
  x:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>',
  shield:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg>',
  del:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg>',
@@ -1304,7 +1345,7 @@ function mesAno(iso){ var d=parse(iso); return cap(MESES[d.getMonth()])+' de '+d
 function brDate(iso){ if(!iso) return ''; var p=iso.split('-'); return p[2]+'/'+p[1]+'/'+p[0]; }
 function ddmm(iso){ if(!iso) return ''; var p=iso.split('-'); return p[2]+'/'+p[1]; }
 function diaTxt(iso){ var d=parse(iso); return DSL[d.getDay()]+', '+ddmm(iso); }
-function idade(iso){ if(!iso) return ''; var b=parse(iso), n=new Date(); var a=n.getFullYear()-b.getFullYear(); if(n<new Date(n.getFullYear(),b.getMonth(),b.getDate())) a--; return a>=0? a+' anos':''; }
+function idade(iso){ if(!iso) return ''; var b=parse(iso), n=new Date(); var a=n.getFullYear()-b.getFullYear(); if(n<new Date(n.getFullYear(),b.getMonth(),b.getDate())) a--; if(a<0) return ''; if(a===0){ var m=(n.getFullYear()-b.getFullYear())*12+n.getMonth()-b.getMonth()-(n.getDate()<b.getDate()?1:0); return m<=0? 'recém-nascido' : m===1? '1 mês' : m+' meses'; } return a===1? '1 ano' : a+' anos'; }
 function iniciais(nome){ var w=String(nome||'').trim().split(/\s+/).filter(function(x){return x && !/^(da|de|do|das|dos|e)$/i.test(x);}); if(!w.length) return '?'; return (w[0][0]+(w.length>1?w[w.length-1][0]:'')).toUpperCase(); }
 var CORES=['#ef8f1c','#4aa9db','#d6452d','#4a9b37','#8a5a3a','#3c55b8','#b0479a','#16897c'];
 function corDe(s){ var h=0; s=String(s||''); for(var i=0;i<s.length;i++) h=(h*31+s.charCodeAt(i))|0; return CORES[Math.abs(h)%CORES.length]; }
@@ -1325,6 +1366,11 @@ function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); storageOk=tr
 function proxFolha(){ var m=0; (S.fichas||[]).forEach(function(f){ if(!f.hist) m=Math.max(m, f.folha||0); }); return m+1; }
 // fichas de histórico (visitas trazidas de fora, como do Notion) não aparecem como fichas: só as visitas contam
 function fichasReais(){ return (S.fichas||[]).filter(function(f){ return !f.hist; }); }
+// visitas trazidas de fora viram fichas de verdade (para a produção): uma por mês, 13 colunas cada, em ordem de data
+function fichasDeVisitas(vs){ vs=vs.slice().sort(function(x,y){ return (x.data||'').localeCompare(y.data||''); }); var out=[], mes={};
+  vs.forEach(function(a){ var m=(a.data||'').slice(0,7); (mes[m]=mes[m]||[]).push(a); });
+  Object.keys(mes).sort().forEach(function(m){ var l=mes[m]; for(var i=0;i<l.length;i+=13){ var f={id:uid(), folha:proxFolha(), criada:hoje(), impressa:false, atend:l.slice(i,i+13)}; S.fichas.push(f); out.push(f); } });
+  return out; }
 function novaFichaObj(){ return {id:uid(), folha:proxFolha(), criada:hoje(), impressa:false, atend:[]}; }
 function migrar(){
   S.prof=S.prof||{}; S.pacientes=S.pacientes||[];
@@ -1341,6 +1387,8 @@ function migrar(){
     delete S.ficha; S.opc.tema='casa';
   }
   if(['casa','mangueira','guama','acai'].indexOf(S.opc.tema)<0) S.opc.tema='casa';
+  // o histórico do Notion (versão anterior guardava à parte): passa a ser ficha normal
+  if(S.fichas.some(function(f){ return f.hist; })){ var hv=[]; S.fichas.forEach(function(f){ if(f.hist) hv=hv.concat(f.atend||[]); }); S.fichas=S.fichas.filter(function(f){ return !f.hist; }); fichasDeVisitas(hv); }
   if(!fichasReais().length) S.fichas.push(novaFichaObj());
   if(!fichasReais().some(function(f){return f.id===S.atual;})){ var fr=fichasReais(); S.atual=fr[fr.length-1].id; }
   S.fichas.forEach(function(f){ f.atend=f.atend||[]; f.atend.forEach(function(a){ if(!a.id) a.id=uid(); if(!a.data) a.data=hoje(); if(a.eleg===undefined) a.eleg=null; }); });
@@ -2010,7 +2058,7 @@ function ligarArraste(){
 // ---------- escolher paciente ----------
 function filtra(q){ q=(q||'').toLowerCase().trim(); var qd=dig(q);
   return S.pacientes.filter(function(p){ return !q || (p.nome||'').toLowerCase().indexOf(q)>=0 || (qd && dig(p.doc).indexOf(qd)>=0); }); }
-function avatar(p, n){ n=n||42; return '<span class="av" style="width:'+n+'px;height:'+n+'px;background:'+corDe(p.id||p.nome)+'">'+esc(iniciais(p.nome))+'</span>'; }
+function avatar(p, n){ n=n||42; return '<span class="av" style="width:'+n+'px;height:'+n+'px;--avc:'+corDe(p.id||p.nome)+';background:var(--avc)">'+esc(iniciais(p.nome))+'</span>'; }
 function escolherPaciente(){
   closeMenu();
   var body='<div class="search" style="margin:0 0 10px">'+I.srch+'<input type="search" id="pq" placeholder="Buscar por nome ou CPF" autocomplete="off"></div>'+
@@ -2201,7 +2249,7 @@ function abrirAtend(idx, novo, fx){
     var compact=a.sigtap.filter(Boolean); while(compact.length<4) compact.push(''); a.sigtap=compact;
     if(!a.dataReal || a.dataReal===a.data) delete a.dataReal;
     var pac=pacById(a.pacId);
-    if(pac){ if(a.eleg==='el' && !pac.adm) pac.adm=dataV(a);
+    if(pac){ if(a.eleg==='el' && !pac.adm) pac.adm=dataV(a); if(idx<0 && pac.alta && (!pac.alta.d || dataV(a)>=pac.alta.d)) delete pac.alta;
       pac.ult={turno:a.turno==='N'?'M':a.turno,local:a.local,modalidade:a.modalidade,tipo:a.tipo,condicoes:a.condicoes,cid10:a.cid10,ciap2:a.ciap2,procedimentos:a.procedimentos,sigtap:a.sigtap,conduta:a.conduta===4&&a.eleg==='nel'?0:a.conduta};
       if(!a.cid10 && pac.cid) a.cid10=pac.cid; if(a.cid10 && !pac.cid) pac.cid=a.cid10;
       a.snap={nome:pac.nome,docTipo:pac.docTipo,doc:pac.doc,nasc:pac.nasc,sexo:pac.sexo}; }
@@ -2428,7 +2476,7 @@ function diaHtmlV(iso){
   if(!itens.length) return h+'<div class="vz">Nenhuma visita neste dia.<button class="btn" id="dAddV">'+I.plus+'Registrar</button></div>';
   var TUR={M:'manhã',T:'tarde',N:'noite'};
   return h+'<div class="wg cdv"><div class="irows">'+itens.map(function(x){ var a=x.a, p=pacOf(a), st=a.st||{};
-    return '<div class="vr'+(emDiaV(a)?' ok':'')+'" data-vf="'+x.f.id+'" data-va="'+a.id+'"><button type="button" class="vn">'+avatar(p,36)+'<span class="sp"><b>'+esc(p.nome||'(sem nome)')+'</b><small>'+perfilTag(pacById(a.pacId))+(a.turno?TUR[a.turno]:'sem turno')+(a.data!==iso?' · na ficha '+ddmm(a.data):'')+'</small></span></button>'+vicHtml('foto', st.foto)+vicHtml('pass', st.pass)+'</div>'; }).join('')+'</div></div>';
+    return '<div class="vr'+(emDiaV(a)?' ok':'')+'" data-vf="'+x.f.id+'" data-va="'+a.id+'" data-sx="cv:'+x.f.id+':'+a.id+'"><button type="button" class="vn">'+avatar(p,36)+'<span class="sp"><b>'+esc(p.nome||'(sem nome)')+'</b><small>'+perfilTag(pacById(a.pacId))+(a.turno?TUR[a.turno]:'sem turno')+(a.data!==iso?' · na ficha '+ddmm(a.data):'')+'</small></span></button>'+vicHtml('foto', st.foto)+vicHtml('pass', st.pass)+'</div>'; }).join('')+'</div></div>';
 }
 // resumo do mês (visão Visitas): quantas visitas, curativo x clínico, e o que ainda falta de foto e evolução
 function resumoMes(mIso){
@@ -2473,8 +2521,8 @@ function rPac(){
       return (y.at?1:0)-(x.at?1:0) || (x.u?0:1)-(y.u?0:1) || (x.u||'').localeCompare(y.u||'') || (x.p.nome||'').localeCompare(y.p.nome||'','pt'); });
     ps=ps.map(function(x){ return x.p; }); var n=S.pacientes.length;
     $('#pl2').innerHTML= ps.length? '<div class="sech" style="margin-top:6px">'+n+' paciente'+(n>1?'s':'')+'</div><div class="rows">'+ps.map(function(p){ var u=ultimaVisita(p.id), info=docInfo(p.docTipo,p.doc);
-      var la=ultimoAtend(p.id), du=diasDesde(u), uTxt= la&&la.conduta&&DESF_CURTO[la.conduta]? esc(DESF_CURTO[la.conduta]+' em '+ddmm(dataV(la))) : (u?'última visita <span class="dd '+corDias(du)+'">'+haDias(du)+'</span>':'');
-      return '<div class="pr" data-sx="p:'+p.id+'"><button class="ed" data-ed="'+p.id+'">'+avatar(p)+'<span class="sp"><span class="t" style="display:block">'+esc(p.nome||'(sem nome)')+'</span><span class="s">'+perfilTag(p)+([esc(p.bairro || (p.doc?(p.docTipo||'CPF')+' '+fmtDoc(p.doc)+(info.ok?'':' (verificar)'):'')), esc(idade(p.nasc)), uTxt].filter(Boolean).join(', ')||'Sem dados')+'</span></span></button><button class="go" data-at="'+p.id+'">Atender</button></div>'; }).join('')+'</div>'
+      var dsf=desfecho(p), du=diasDesde(u), uTxt= dsf&&DESF_CURTO[dsf.c]? esc(desfTxt(dsf)) : (u?'<span class="dd '+corDias(du)+'">'+haDias(du)+'</span>':'sem visita');
+      return '<div class="pr" data-sx="p:'+p.id+'"><button class="ed" data-ed="'+p.id+'">'+avatar(p)+'<span class="sp"><span class="t" style="display:block">'+esc(p.nome||'(sem nome)')+'</span><span class="s">'+perfilTag(p)+([esc(idade(p.nasc)), uTxt].filter(Boolean).join(' · ')||'Sem dados')+'</span></span></button><button class="go" data-at="'+p.id+'">Atender</button></div>'; }).join('')+'</div>'
       : '<div class="empty">'+I.pac+'<b>'+(n?'Nenhum paciente encontrado':'Nenhum paciente cadastrado')+'</b>'+(n?'Tente outro nome ou CPF.':'Cadastre aqui ou direto ao registrar uma visita.')+'</div>';
     $$('#pl2 [data-ed]').forEach(function(b){ b.onclick=function(){ abrirPront(b.dataset.ed); }; });
     $$('#pl2 [data-at]').forEach(function(b){ b.onclick=function(){ novoAtend(b.dataset.at); }; });
@@ -2586,6 +2634,8 @@ function pagerIni(){
 }
 // na primeira aba, arrastar para a esquerda troca; na segunda, para a direita
 function ehTrocaIni(dx){ return estIni().aba==='s'? dx>0 : dx<0; }
+var INIMAIS=0;
+function diaRot(iso){ var hj=hoje(), d=parse(iso); if(iso===hj) return 'Hoje'; if(iso===addDays(hj,-1)) return 'Ontem'; return DSL[d.getDay()]+', '+d.getDate()+' de '+MESES[d.getMonth()]+(d.getFullYear()!==parse(hj).getFullYear()?' de '+d.getFullYear():''); }
 function lstInicio(anim){
   var IN=estIni(), el=$('#iLst'), hj=hoje(), h='';
   if(IN.aba==='s'){
@@ -2597,26 +2647,28 @@ function lstInicio(anim){
       return '<button type="button" class="wr" data-pr="'+x.p.id+'" data-sx="ip:'+x.p.id+'">'+avatar(x.p,36)+'<span class="sp"><b>'+esc(x.p.nome||'(sem nome)')+'</b><small>'+perfilTag(x.p)+esc(x.p.bairro||'')+'</small></span><span class="dd '+corDias(dv)+'">'+haDias(dv)+'</span></button>'; }).join('')+'</div>';
     h+='<button type="button" class="wgf" id="vTodos">Ver todos os pacientes'+(n>8?' ('+n+')':'')+'</button>';
   } else {
-    var vs=[], lim=addDays(hj,-VDIAS), mais=false;
-    S.fichas.forEach(function(f){ f.atend.forEach(function(a){ if((dataV(a)||'')>=lim) vs.push({f:f,a:a}); else mais=true; }); });
-    vs.sort(function(x,y){ return (dataV(y.a)||'').localeCompare(dataV(x.a)||'') || (x.a.turno||'').localeCompare(y.a.turno||''); });
-    var falt=vs.filter(function(x){ return !emDiaV(x.a); }), ok=vs.filter(function(x){ return emDiaV(x.a); });
-    if(!vs.length) h='<div class="wgv">Nenhuma visita nos últimos '+VDIAS+' dias.</div>';
-    else if(!falt.length) h='<div class="wgv tudo">'+I.chk+'Fotos e evoluções em dia.</div>';
-    if(falt.length) h+='<div class="irows">'+falt.map(vrowIni).join('')+'</div>';
-    if(ok.length) h+='<button type="button" class="emd'+(IN.emDia?' open':'')+'" id="iEm"><span class="rot">'+sz(I.down,14)+'</span>Já em dia ('+ok.length+')</button><div class="xp'+(IN.emDia?' open':'')+'" id="xpE"><div class="irows">'+ok.map(vrowIni).join('')+'</div></div>';
-    if(mais) h+='<button type="button" class="wgf" id="vMais">Mostrar visitas mais antigas</button>';
+    // visitas separadas por dia, do mais recente; só o que cabe em mais ou menos meia tela (o resto em "mais antigas")
+    var vs=[], ORD={M:0,T:1,N:2};
+    S.fichas.forEach(function(f){ f.atend.forEach(function(a){ if(dataV(a)) vs.push({f:f,a:a}); }); });
+    vs.sort(function(x,y){ return (dataV(y.a)||'').localeCompare(dataV(x.a)||'') || ((ORD[x.a.turno]!=null?ORD[x.a.turno]:3)-(ORD[y.a.turno]!=null?ORD[y.a.turno]:3)); });
+    var dias=[], porDia={};
+    vs.forEach(function(x){ var d=dataV(x.a); if(!porDia[d]){ porDia[d]=[]; dias.push(d); } porDia[d].push(x); });
+    var orc=Math.max(320, innerHeight*.5)*(1+INIMAIS), usado=0, mostra=[];
+    for(var i=0;i<dias.length;i++){ var hd=34+porDia[dias[i]].length*61; if(mostra.length && usado+hd>orc) break; mostra.push(dias[i]); usado+=hd; }
+    if(!vs.length) h='<div class="wgv">Nenhuma visita registrada ainda.</div>';
+    mostra.forEach(function(d){ var l=porDia[d];
+      h+='<div class="idh"><b>'+esc(diaRot(d))+'</b><span>'+l.length+' visita'+(l.length>1?'s':'')+'</span></div><div class="irows">'+l.map(vrowIni).join('')+'</div>'; });
+    if(mostra.length<dias.length) h+='<button type="button" class="wgf" id="vMais">Mostrar visitas mais antigas</button>';
   }
   el.innerHTML=h;
   if(anim && !reduce && el.animate){ var dl=(IN.aba==='s'?1:-1)*(anim==='lado'?40:14); $$(':scope > *',el).forEach(function(c){ c.animate([{opacity:0,transform:'translateX('+dl+'px)'},{opacity:1,transform:'none'}],{duration:anim==='lado'?340:280,easing:'cubic-bezier(.2,.9,.3,1)'}); }); }
   $$('[data-va]',el).forEach(function(row){ var f=S.fichas.filter(function(x){ return x.id===row.dataset.vf; })[0], a=f && f.atend.filter(function(x){ return x.id===row.dataset.va; })[0]; if(!a) return;
     $('.vn',row).onclick=function(){ abrirEvol(f.id, a.id); };
     $$('.vic',row).forEach(function(b){ b.onclick=function(){ var on=!(a.st&&a.st[b.dataset.k]); marcaVisita(a, b.dataset.k, on); b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); pop(b);
-      row.classList.toggle('ok', emDiaV(a)); if(!$('#fRec') && S.feito.length) lstFeitoLinha();
-      clearTimeout(moverT); moverT=setTimeout(function(){ if(!row.isConnected) return; if(emDiaV(a)!==!!row.closest('#xpE')) moverIni(a.id); }, 420); }; }); });
+      row.classList.toggle('ok', emDiaV(a)); if(!$('#fRec') && S.feito.length) lstFeitoLinha(); }; }); });
   $$('[data-pr]',el).forEach(function(b){ b.onclick=function(){ abrirPront(b.dataset.pr); }; });
   var vt=$('#vTodos'); if(vt) vt.onclick=function(){ S.opc.ordPac='t'; irTab('pac'); };
-  var vm=$('#vMais'); if(vm) vm.onclick=function(){ VDIAS+=14; lstInicio(); };
+  var vm=$('#vMais'); if(vm) vm.onclick=function(){ INIMAIS++; lstInicio(); };
   var em=$('#iEm'); if(em) em.onclick=function(){ IN.emDia=!IN.emDia; save(); em.classList.toggle('open', IN.emDia); expandir($('#xpE'), IN.emDia); };
 }
 function lstFeitoLinha(){ var m=$('#main'); if(!m || $('#fRec')) return; var b=document.createElement('button'); b.type='button'; b.className='frl'; b.id='fRec'; b.innerHTML=I.relog+'Feito recentemente'; b.onclick=feitoSheet; m.appendChild(b); }
@@ -2652,7 +2704,7 @@ function moverIni(aid){
 }
 function emDiaV(a){ return !!(a.st && a.st.foto && a.st.pass); }
 function vrowIni(x){ var a=x.a, p=pacOf(a), st=a.st||{};
-  return '<div class="vr'+(emDiaV(a)?' ok':'')+'" data-vf="'+x.f.id+'" data-va="'+a.id+'" data-sx="iv:'+x.f.id+':'+a.id+'"><button type="button" class="vn">'+avatar(p,36)+'<span class="sp"><b>'+esc(p.nome||'(sem nome)')+'</b><small>'+perfilTag(pacById(a.pacId))+diaCurto(dataV(a))+'</small></span></button>'+
+  return '<div class="vr'+(emDiaV(a)?' ok':'')+'" data-vf="'+x.f.id+'" data-va="'+a.id+'" data-sx="iv:'+x.f.id+':'+a.id+'"><button type="button" class="vn">'+avatar(p,36)+'<span class="sp"><b>'+esc(p.nome||'(sem nome)')+'</b><small>'+perfilTag(pacById(a.pacId))+({M:'Manhã',T:'Tarde',N:'Noite'}[a.turno]||'')+'</small></span></button>'+
     vicHtml('foto', st.foto)+vicHtml('pass', st.pass)+'</div>'; }
 function vicHtml(k, on){ return '<button type="button" class="vic vk-'+k+(on?' on':'')+'" data-k="'+k+'" aria-label="'+(k==='foto'?'Foto tirada':'Evolução no prontuário')+'" aria-pressed="'+!!on+'">'+(k==='foto'?I.foto:I.evol)+'</button>'; }
 var feitoAba='t';
@@ -2734,7 +2786,7 @@ function rPront(){
   if(!p){ $('#main').innerHTML=h+'<div class="empty">'+I.pac+'<b>Paciente não encontrado</b>Ele pode ter sido excluído do cadastro.</div>'; ligarNav(); return; }
   var vs=visitasDe(p.id), u=vs[0] && vs[0].a, du=u? diasDesde(dataV(u)) : null, at=ativo(p);
   h+='<div class="phd">'+avatar(p,64)+'<div class="sp"><b>'+esc(p.nome||'(sem nome)')+'</b><span>'+esc([idade(p.nasc), p.doc?(p.docTipo||'CPF')+' '+fmtDoc(p.doc):''].filter(Boolean).join(' · ')||'Sem documento')+'</span>'+(p.perfil?'<span>'+perfilTag(p)+'</span>':'')+
-    (!at && u? '<span class="tg cd" style="--c:'+COND_COR[u.conduta]+'">'+esc(DESF_CURTO[u.conduta]||'')+' em '+ddmm(dataV(u))+'</span>' : '')+'</div></div>';
+    (!at && desfecho(p)? '<span class="tg cd" style="--c:'+COND_COR[desfecho(p).c]+'">'+esc(desfTxt(desfecho(p)))+'</span>' : '')+'</div></div>';
   h+='<div class="pacts"><button class="btn pri" id="prAt">'+I.plus+'Atender</button><button class="btn" id="prEd">'+I.pen+'Cadastro</button></div>';
   var dAdm=diasDesde(p.adm);
   h+=grupo('Acompanhamento',
@@ -2959,7 +3011,7 @@ function rAjApar(){
   var r=$('#oVid'); r.oninput=function(){ o.vidro=+this.value; this.style.setProperty('--p', this.value+'%'); aplicarTema(); }; r.onchange=function(){ save(); };
 }
 
-var TAM_APP=1215577;
+var TAM_APP=1243158;
 function tamanhoApp(){ if(TAM_APP==null){ try{ TAM_APP=new Blob([document.documentElement.outerHTML]).size; }catch(e){ TAM_APP=0; } } return TAM_APP? (TAM_APP/1048576).toFixed(1).replace('.',',')+' MB' : '—'; }
 function rSobre(){
   var nAt=0; S.fichas.forEach(function(f){ nAt+=f.atend.length; });
@@ -3014,10 +3066,9 @@ function importar(o){
         tipo:u.tipo!=null?u.tipo:pd.tipo, condicoes:(u.condicoes||[]).slice(), cid10:p.cid||'', ciap2:u.ciap2||'', procedimentos:(u.procedimentos||[]).slice(),
         sigtap:sig, conduta:pd.conduta!=null?pd.conduta:0, eleg:v.eleg||null, evol:v.evol||'', st:{foto:!!(v.st&&v.st.foto), pass:!!(v.st&&v.st.pass)},
         origem:v.origem||'', snap:{nome:p.nome,docTipo:p.docTipo,doc:p.doc,nasc:p.nasc,sexo:p.sexo}}); });
-    add.sort(function(x,y){ return x.data.localeCompare(y.data); });
-    for(var i=0;i<add.length;i+=13) S.fichas.push({id:uid(), folha:0, criada:hoje(), impressa:true, hist:true, atend:add.slice(i,i+13)});
+    var nf=fichasDeVisitas(add);
     var pul=o.visitas.length-add.length;
-    msg+=' '+add.length+' visita(s) do histórico'+(o.origem?' ('+o.origem+')':'')+' trazida(s)'+(pul? ', '+pul+' já estava(m) no app'+(comp? ' ('+comp+' ganharam a evolução)' : '') : '')+'.';
+    msg+=' '+add.length+' visita(s)'+(o.origem?' do '+o.origem:'')+' trazida(s) em '+nf.length+' ficha(s)'+(pul? ', '+pul+' já estava(m) no app'+(comp? ' ('+comp+' ganharam a evolução)' : '') : '')+'.';
   }
   if(o.tipo==='completo'){
     var fs=o.fichas || ((o.ficha && o.ficha.atend && o.ficha.atend.length)? [{id:uid(), folha:o.ficha.folhaInicial||1, criada:hoje(), impressa:false, atend:o.ficha.atend}] : []);
@@ -3092,10 +3143,10 @@ var ORDEM_ABAS=['hoje','pac','cal','ficha'];
 (function(){
   var g=null;
   function bloqueado(e){
-    if(wideMQ.matches || reduce || dlg.open || $('#menu').style.display==='block' || $('.fantasma')) return true;
+    if(wideMQ.matches || reduce || dlg.open || $('#menu').style.display==='block' || $('.fantasma') || (CTX && CTX.aberto())) return true;
     var t=e.target; if(SX && SX.nela(t)) return true;
     if(t.closest && t.closest('.sxa')) return true;
-    var x=e.touches[0].clientX; if(t.closest && t.closest('.rows > [data-sx]') && x>=24 && x<=innerWidth-24) return true;
+    var x=e.touches[0].clientX; if(t.closest && t.closest('.rows > [data-sx], .irows > [data-sx]') && x>=24 && x<=innerWidth-24) return true;
     return !!(t.closest && t.closest('#week, #calCard, #tabbar, input, textarea, select, .noswipe'));
   }
   document.addEventListener('touchstart', function(e){
@@ -3171,9 +3222,12 @@ var COND_COR=['#30b14f','#a2845e','#0a84ff','#8e8e93','#30b0c7','#ff453a','#5e5c
 var DESF_CURTO={1:'alta administrativa',2:'alta clínica',3:'óbito',4:'encaminhado à AD1',5:'encaminhado à urgência',6:'encaminhado à internação'};
 function diasDesde(iso, ref){ if(!iso) return null; return Math.round((parse(ref||hoje())-parse(iso))/864e5); }
 function haDias(n){ return n==null? '' : n<=0? (n===0?'hoje':'em '+(-n)+' dia'+(n===-1?'':'s')) : n===1? 'ontem' : 'há '+n+' dias'; }
-function corDias(n){ return n==null? '' : n<=7? 'ok' : n<=14? 'av' : 'mau'; }
+function corDias(n){ return n==null? '' : n<=7? 'ok' : n<=14? 'md' : 'mau'; }
 // em acompanhamento: ainda não teve alta, óbito ou encaminhamento na última visita
-function ativo(p){ var u=ultimoAtend(p.id); return !u || !u.conduta; }
+function ativo(p){ if(p.alta) return false; var u=ultimoAtend(p.id); return !u || !u.conduta; }
+// desfecho atual: alta registrada sem visita (p.alta) ou a conduta da última visita
+function desfecho(p){ if(p.alta) return {c:p.alta.c, d:p.alta.d||'', sv:true}; var u=ultimoAtend(p.id); return u && u.conduta? {c:u.conduta, d:dataV(u)} : null; }
+function desfTxt(x){ return x? (DESF_CURTO[x.c]||'')+(x.d? ' em '+ddmm(x.d) : ' (sem visita)') : ''; }
 function visitasDe(pacId){ var l=[]; S.fichas.forEach(function(f){ f.atend.forEach(function(a,k){ if(a.pacId===pacId) l.push({f:f,a:a,k:k}); }); });
   return l.sort(function(x,y){ return dataV(y.a).localeCompare(dataV(x.a)) || (y.a.turno||'').localeCompare(x.a.turno||''); }); }
 function abrirVisita(f, k){ abrirAtend(k, null, f); }
@@ -3192,29 +3246,36 @@ function visitaDeAlta(p, tipo, data, turno){
 function abrirAlta(p, ctx){
   // ctx (opcional): a visita de onde veio o pedido; aí a alta muda a conduta dela
   var real=pacById(p.id)===p, va=ctx&&ctx.a;
-  var tipo= va && va.conduta>0 ? va.conduta : 2, data= va? va.data : hoje(), turno= va? (va.turno||'') : (((p.ult||{}).turno)||'');
+  var semV=!va && !!(p.alta), tipo= va && va.conduta>0 ? va.conduta : p.alta? p.alta.c : 2, data= va? va.data : (p.alta && p.alta.d) || hoje(), turno= va? (va.turno||'') : (p.alta && p.alta.turno) || (((p.ult||{}).turno)||'');
   function op(c, txt){ return '<button type="button" class="ir" data-al="'+c+'"><span class="ii" style="--c:'+COND_COR[c]+'">'+I[CONDUTA_IC[c]]+'</span><span class="il">'+txt+'</span><span class="ck">'+(c===tipo?sz(I.chk,20):'')+'</span></button>'; }
   function alvo(){
     if(va && data===va.data){ var k0=ctx.f.atend.indexOf(va); if(k0>=0) return {f:ctx.f, k:k0}; }
     var f=fichaAtual(); for(var i=0;i<f.atend.length;i++) if(f.atend[i].pacId===p.id && f.atend[i].data===data) return {f:f, k:i}; return null; }
-  function dica(){ var t=alvo();
+  function dica(){ if(semV) return 'Não entra na ficha: fica só registrado que '+esc((p.nome||'').split(' ')[0])+' saiu do programa nesta data.'; var t=alvo();
     if(t && va && t.f.atend[t.k]===va) return 'Muda a conduta desta visita (coluna '+(t.k+1)+').';
     return t? 'Já existe uma visita de '+esc((p.nome||'').split(' ')[0])+' neste dia (coluna '+(t.k+1)+'): a conduta dela vai mudar.' : 'Entra na ficha como uma visita com este desfecho, preenchida com os dados da última visita.'; }
   var nome=String(p.nome||'').trim().split(/\s+/), curto=nome.length>1? nome[0]+' '+nome[nome.length-1] : (nome[0]||'paciente');
   var b='<div class="alta">'+
     grupo('Desfecho', [[2,'Alta clínica'],[1,'Alta administrativa'],[3,'Óbito']].map(function(x){ return op(x[0],x[1]); }).join(''))+
     grupo('Encaminhamento', [[4,'Atenção Básica (AD1)'],[5,'Urgência e Emergência'],[6,'Internação hospitalar']].map(function(x){ return op(x[0],x[1]); }).join(''))+
-    grupo('Visita', '<label class="ir" for="alData"><span class="il">Data</span><input type="date" class="ri" id="alData" value="'+data+'"></label>'+
+    grupo('Visita', '<label class="ir" id="alSvL"><span class="il">Sem visita<small style="display:block;color:var(--mut);font-size:13px;font-weight:400">Saiu do programa sem ser avaliado</small></span><span class="tog'+(semV?' on':'')+'" id="alSv"></span></label>'+
+      '<label class="ir" for="alData"><span class="il" id="alDataL">'+(semV?'Data da alta':'Data')+'</span><input type="date" class="ri" id="alData" value="'+data+'"></label>'+
       '<div class="ir"><span class="il">Turno</span><div class="seg tuseg" id="alTu">'+[['M','Manhã'],['T','Tarde'],['N','Noite']].map(function(x){ return '<button type="button" data-v="'+x[0]+'"'+(turno===x[0]?' class="on"':'')+'>'+x[1]+'</button>'; }).join('')+'</div></div>',
       '<span id="alDica">'+dica()+'</span>', 'ni')+
     '</div>';
-  openSheet('Alta de '+curto, b, '<button class="btn" id="alMais">Mais detalhes</button><button class="btn pri" id="alOk">Registrar</button>');
+  openSheet('Alta de '+curto, b, (p.alta && !va? '<button class="btn" id="alVolta">Voltar a acompanhar</button>' : '<button class="btn" id="alMais"'+(semV?' style="display:none"':'')+'>Mais detalhes</button>')+'<button class="btn pri" id="alOk">Registrar</button>');
+  var sv=$('#alSvL',dlg); if(sv) sv.onclick=function(e){ e.preventDefault(); semV=!semV; $('#alSv',dlg).classList.toggle('on',semV); $('#alDataL',dlg).textContent=semV?'Data da alta':'Data'; $('#alDica',dlg).innerHTML=dica(); var mm=$('#alMais',dlg); if(mm) mm.style.display=semV?'none':''; };
+  var vo=$('#alVolta',dlg); if(vo) vo.onclick=function(){ var antes=p.alta; delete p.alta; save(); closeSheet(true); render();
+    toast((p.nome||'').split(' ')[0]+' voltou para acompanhamento.', {label:'Desfazer', fn:function(){ p.alta=antes; save(); render(); }}); };
   $$('[data-al]',dlg).forEach(function(bt){ bt.onclick=function(){ tipo=+bt.dataset.al; $$('[data-al]',dlg).forEach(function(x){ $('.ck',x).innerHTML= +x.dataset.al===tipo? sz(I.chk,20) : ''; }); pop($('.ii',bt)); }; });
   $('#alData',dlg).onchange=function(){ if(this.value){ data=this.value; $('#alDica',dlg).innerHTML=dica(); } };
   $$('#alTu button',dlg).forEach(function(bt){ bt.onclick=function(){ turno= turno===bt.dataset.v? '' : bt.dataset.v; $$('#alTu button',dlg).forEach(function(x){ x.classList.toggle('on', x.dataset.v===turno); }); }; });
   function guardaUlt(){ if(!real) return null; var antes=p.ult? JSON.parse(JSON.stringify(p.ult)) : null; p.ult=Object.assign({}, p.ult||{}, {conduta:tipo}); return antes; }
   function voltaUlt(antes){ if(real) p.ult=antes; }
   $('#alOk',dlg).onclick=function(){
+    if(semV){ var pr=pacById(p.id); if(!pr) return; var antes=pr.alta; pr.alta={c:tipo, d:data, turno:turno, em:new Date().toISOString()}; save(); closeSheet(true); render();
+      toast(String(pr.nome||'').split(' ')[0]+': '+DESF_CURTO[tipo]+' em '+ddmm(data)+', sem visita na ficha.', {label:'Desfazer', fn:function(){ if(antes) pr.alta=antes; else delete pr.alta; save(); render(); }}); return; }
+    if(real) delete p.alta;
     var t=alvo(), f, a, antesUlt, nova=null, atual0=S.atual;
     if(t){
       f=t.f; a=f.atend[t.k]; var velha={conduta:a.conduta, turno:a.turno}; a.conduta=tipo; if(turno) a.turno=turno; f.impressa=false; lastPdf=null; antesUlt=guardaUlt();
@@ -3262,6 +3323,36 @@ function abrirAlta(p, ctx){
   window.addEventListener('blur', solta);
 })();
 
+// ---------- ações sobre visitas e pacientes (usadas ao deslizar e nas ações rápidas) ----------
+function moverVisita(f, a, nova){
+  var velha=a.data, real0=a.dataReal, antes=f.atend.slice();
+  // elegibilidade (ou visita que já tinha a data mudada só na ficha): a data real da visita continua a mesma
+  var soFicha= !!(a.eleg || a.dataReal);
+  if(soFicha){ a.dataReal=a.dataReal||velha; if(a.dataReal===nova) delete a.dataReal; }
+  a.data=nova; ordenar(f); f.impressa=false; lastPdf=null; save();
+  if(f===fichaAtual() && tab==='ficha') S.ultData=nova;
+  flashId=a.id; render();
+  var d=parse(nova);
+  toast(soFicha && a.dataReal? 'Na ficha: '+DS[d.getDay()].toLowerCase()+', '+ddmm(nova)+'. A visita continua em '+ddmm(a.dataReal)+'.' : 'Visita movida para '+DS[d.getDay()].toLowerCase()+', '+ddmm(nova)+'.',
+    {label:'Desfazer', fn:function(){ a.data=velha; if(real0) a.dataReal=real0; else delete a.dataReal; f.atend=antes; f.impressa=false; lastPdf=null; save(); if(tab==='ficha') S.ultData=velha; flashId=a.id; render(); }});
+}
+function apagarVisita(f, a){
+  var k=f.atend.indexOf(a); if(k<0) return;
+  f.atend.splice(k,1); f.impressa=false; lastPdf=null;
+  // apagando a visita aberta na página de evolução: mostra outra do mesmo paciente (ou volta)
+  var ev= tab==='evol' && EVOL && EVOL.a===a.id;
+  if(ev){ var outra=null; S.fichas.forEach(function(g){ g.atend.forEach(function(b){ if(b.pacId===a.pacId && (!outra || dataV(b)>dataV(outra.a))) outra={f:g, a:b}; }); });
+    if(outra) EVOL={f:outra.f.id, a:outra.a.id}; }
+  save(); if(ev && !EVOL_ok()) voltarPag(true); else render();
+  toast('Visita de '+ddmm(dataV(a))+' apagada.', {label:'Desfazer', fn:function(){ f.atend.splice(Math.min(k,f.atend.length),0,a); ordenar(f); f.impressa=false; lastPdf=null; save(); flashId=a.id; render(); }});
+}
+function EVOL_ok(){ if(!EVOL) return false; var f=S.fichas.filter(function(x){ return x.id===EVOL.f; })[0]; return !!(f && f.atend.some(function(x){ return x.id===EVOL.a; })); }
+function excluirPaciente(p){
+  var j=S.pacientes.indexOf(p); if(j<0) return; S.pacientes.splice(j,1); save();
+  if(tab==='pront' && PRONT===p.id) voltarPag(true); else render();
+  toast((p.nome||'Paciente')+' excluído.', {label:'Desfazer', fn:function(){ S.pacientes.splice(Math.min(j,S.pacientes.length),0,p); save(); render(); }});
+}
+
 // ---------- deslizar uma linha (visita ou paciente) para mostrar as opções, como no iOS ----------
 var SX=null;
 (function(){
@@ -3270,7 +3361,7 @@ var SX=null;
   var g=null;    // gesto em andamento
   var cliqueBloq=0;
   function itemDe(row){ var pr=row.dataset.sx.split(':');
-    if(pr[0]==='iv'){ var fi=S.fichas.filter(function(x){return x.id===pr[1];})[0], ai=fi&&fi.atend.filter(function(x){return x.id===pr[2];})[0]; return ai? {tipo:'iv', f:fi, a:ai, p:pacById(ai.pacId)} : null; }
+    if(pr[0]==='iv' || pr[0]==='cv'){ var fi=S.fichas.filter(function(x){return x.id===pr[1];})[0], ai=fi&&fi.atend.filter(function(x){return x.id===pr[2];})[0]; return ai? {tipo:pr[0], f:fi, a:ai, p:pacById(ai.pacId)} : null; }
     if(pr[0]==='ip'){ var pp=pacById(pr[1]); return pp? {tipo:'ip', p:pp} : null; }
     if(pr[0]==='v'){ var f=S.fichas.filter(function(x){return x.id===pr[1];})[0], a=f&&f.atend.filter(function(x){return x.id===pr[2];})[0]; return a? {tipo:'v', f:f, a:a} : null; }
     var p=pacById(pr[1]); return p? {tipo:'p', p:p} : null; }
@@ -3278,13 +3369,16 @@ var SX=null;
   function lados(it){
     if(it.tipo==='v') return { esq:[{k:'data', ic:I.cal, nome:'Mudar data'}], dir:[{k:'alta', ic:I.alta, nome:'Registrar alta'},{k:'del', ic:I.del, nome:'Apagar visita'}] };
     // Início: ações rápidas do lado em que não há outra aba (Últimas visitas: puxando para a direita; Sem visita: para a esquerda)
-    if(it.tipo==='iv') return { esq:[{k:'evol', ic:I.evol, nome:'Evoluir'},{k:'pront', ic:I.pac, nome:'Prontuário'}].concat(it.p?[{k:'tar', ic:I.chk, nome:'Nova tarefa'}]:[]), dir:[] };
-    if(it.tipo==='ip') return { esq:[], dir:[{k:'tar', ic:I.chk, nome:'Nova tarefa'},{k:'pront', ic:I.pac, nome:'Prontuário'},{k:'at', ic:I.plus, nome:'Atender'}] };
+    // tocar no nome já abre a evolução (visitas) ou o prontuário (Sem visita): esses não viram botão.
+    // nas visitas, as iniciais do paciente crescem e viram o botão do prontuário (como o turno na ficha)
+    if(it.tipo==='iv') return { esq: it.p? [{k:'tar', ic:I.chk, nome:'Nova tarefa'}] : [], dir:[] };
+    if(it.tipo==='cv') return { esq: it.p? [{k:'tar', ic:I.chk, nome:'Nova tarefa'}] : [], dir:[{k:'alta', ic:I.alta, nome:'Registrar alta'},{k:'del', ic:I.del, nome:'Apagar visita'}] };
+    if(it.tipo==='ip') return { esq:[], dir:[{k:'tar', ic:I.chk, nome:'Nova tarefa'}] };
     return { esq:[], dir:[{k:'del', ic:I.del, nome:'Excluir paciente'},{k:'alta', ic:I.alta, nome:'Registrar alta'}] };
   }
   function largura(n){ return P+n*B+(n-1)*G+P; }
   // espaço do lado de dentro: no lado esquerdo das visitas, o botão fica a 8px do turno (por cima da margem da linha)
-  function dentro(o, lado){ return lado==='esq' && o.tur ? G-(o.padL-(B-o.turW)/2) : P; }
+  function dentro(o, lado){ return lado==='esq' && o.tur ? G-(o.turL-(B-o.turW)/2) : P; }
   function abertura(o, lado){ var n=o.bts[lado].length; return dentro(o,lado)+n*B+(n-1)*G+P; }
   function monta(row){
     var it=itemDe(row); if(!it) return null;
@@ -3294,9 +3388,10 @@ var SX=null;
       html+='<button type="button" class="sxb k-'+b.k+(b.k==='data' && it.a && it.a.dataReal && it.a.dataReal!==it.a.data?' fx':'')+'" data-lado="'+lado+'" data-i="'+i+'" aria-label="'+b.nome+'">'+sz(b.ic,22)+'<span class="sxl">'+b.nome+'</span>'+
         (b.k==='data'? '<input type="date" tabindex="-1" value="'+esc(it.a.data)+'" aria-label="Nova data da visita">' : '')+'</button>'; }); });
     lay.innerHTML=html; row.parentNode.insertBefore(lay, row);
-    var o={row:row, lay:lay, it:it, L:L, d:0, v:0, alvo:0, W:row.offsetWidth, raf:0, armado:false, tur:$('.tur',row), padL:parseFloat(getComputedStyle(row).paddingLeft)||12,
+    var tur=$('.tur',row) || ((it.tipo==='iv' || it.tipo==='cv') && it.p && L.esq.length ? $('.av',row) : null);
+    var o={row:row, lay:lay, it:it, L:L, d:0, v:0, alvo:0, W:row.offsetWidth, raf:0, armado:false, tur:tur, ehAv:!!(tur && tur.classList.contains('av')), padL:parseFloat(getComputedStyle(row).paddingLeft)||12,
       bts:{esq:$$('.sxb[data-lado=esq]',lay), dir:$$('.sxb[data-lado=dir]',lay)}};
-    o.turW= o.tur? o.tur.offsetWidth : 0;
+    o.turW= o.tur? o.tur.offsetWidth : 0; o.turL= o.tur? o.tur.getBoundingClientRect().left-row.getBoundingClientRect().left : o.padL;
     // o texto (nome) que fica visível quando a linha vai para a esquerda
     o.txt= it.tipo==='v'? row.children[1] : $('.sp',row);
     o.txtL= o.txt? o.txt.offsetLeft : 0; o.txtW= o.txt? o.txt.offsetWidth : 0;
@@ -3319,7 +3414,7 @@ var SX=null;
     var d=o.d, W=o.W, lado= d>0? 'esq':'dir', D=Math.abs(d);
     o.row.style.transform= d? 'translate3d('+d.toFixed(1)+'px,0,0)' : '';
     if(o.tur){ var pt= d>0 && o.bts.esq.length? Math.min(1, d/abertura(o,'esq')) : 0;
-      o.tur.style.borderRadius= pt? (11+8*pt).toFixed(1)+'px' : ''; o.tur.style.transform= pt? 'scale('+(1+(B/o.turW-1)*pt).toFixed(4)+')' : '';
+      if(!o.ehAv) o.tur.style.borderRadius= pt? (11+8*pt).toFixed(1)+'px' : ''; o.tur.style.transform= pt? 'scale('+(1+(B/o.turW-1)*pt).toFixed(4)+')' : '';
       if(o._sxt!==(pt>=.98)){ o._sxt=pt>=.98; o.tur.classList.toggle('sxt', o._sxt); } }
     // puxando para a esquerda, o nome fica parado na borda da lista e vai sendo coberto suavemente do lado direito
     if(o.txt){ var c= d<0? Math.max(0, D-(o.txtL-o.padL)) : 0;
@@ -3397,18 +3492,7 @@ var SX=null;
   }
   function altaDe(it){ if(it.tipo==='p'){ abrirAlta(it.p); return; } var a=it.a; abrirAlta(pacById(a.pacId)||Object.assign({id:a.pacId}, a.snap||{}), {f:it.f, a:a}); }
   function mudou(f){ ordenar(f); f.impressa=false; lastPdf=null; save(); }
-  function mudarData(o, nova){
-    var f=o.it.f, a=o.it.a, velha=a.data, real0=a.dataReal, antes=f.atend.slice();
-    // elegibilidade (ou visita que já tinha a data mudada só na ficha): a data real da visita continua a mesma
-    var soFicha= !!(a.eleg || a.dataReal);
-    if(soFicha){ a.dataReal=a.dataReal||velha; if(a.dataReal===nova) delete a.dataReal; }
-    a.data=nova; mudou(f); fecha(o, true);
-    if(f===fichaAtual() && tab==='ficha') S.ultData=nova;
-    flashId=a.id; render();
-    var d=parse(nova);
-    toast(soFicha && a.dataReal? 'Na ficha: '+DS[d.getDay()].toLowerCase()+', '+ddmm(nova)+'. A visita continua em '+ddmm(a.dataReal)+'.' : 'Visita movida para '+DS[d.getDay()].toLowerCase()+', '+ddmm(nova)+'.',
-      {label:'Desfazer', fn:function(){ a.data=velha; if(real0) a.dataReal=real0; else delete a.dataReal; f.atend=antes; f.impressa=false; lastPdf=null; save(); if(tab==='ficha') S.ultData=velha; flashId=a.id; render(); }});
-  }
+  function mudarData(o, nova){ fecha(o, true); moverVisita(o.it.f, o.it.a, nova); }
   function menuTurno(o, anchor){
     var a=o.it.a, op=[['M','Manhã'],['T','Tarde'],['N','Noite']];
     var html='<div class="mh">Turno da visita</div>'+op.map(function(x){ return '<button class="mo" data-tu="'+x[0]+'">'+I[x[0]]+'<span><b>'+x[1]+'</b></span>'+(a.turno===x[0]?'<span class="ck">'+sz(I.chk,18)+'</span>':'')+'</button>'; }).join('');
@@ -3424,10 +3508,7 @@ var SX=null;
       var hh=row.offsetHeight, el=[row, lay];
       function feito(){
         desmonta(o);
-        if(it.tipo==='v'){ var f=it.f, k=f.atend.indexOf(it.a); if(k<0) return; f.atend.splice(k,1); lastPdf=null; save(); render();
-          toast('Visita apagada.', {label:'Desfazer', fn:function(){ f.atend.splice(Math.min(k,f.atend.length),0,it.a); ordenar(f); lastPdf=null; save(); flashId=it.a.id; render(); }}); }
-        else { var j=S.pacientes.indexOf(it.p); if(j<0) return; S.pacientes.splice(j,1); save(); render();
-          toast((it.p.nome||'Paciente')+' excluído.', {label:'Desfazer', fn:function(){ S.pacientes.splice(Math.min(j,S.pacientes.length),0,it.p); save(); render(); }}); }
+        if(it.a) apagarVisita(it.f, it.a); else excluirPaciente(it.p);
       }
       if(reduce || !row.animate){ feito(); return; }
       row.style.overflow='hidden';
@@ -3440,10 +3521,10 @@ var SX=null;
   function linhaDe(t){ var r=t && t.closest && t.closest('[data-sx]'); return r && r.parentNode && (r.parentNode.classList.contains('rows') || r.parentNode.classList.contains('irows'))? r : null; }
   document.addEventListener('touchstart', function(e){
     g=null;
-    if(e.touches.length!==1 || dlg.open || $('#menu').style.display==='block') return;
+    if(e.touches.length!==1 || dlg.open || $('#menu').style.display==='block' || (CTX && CTX.aberto())) return;
     var t=e.target, x=e.touches[0].clientX, y=e.touches[0].clientY;
     if(ab && !(t.closest && (t.closest('.sxa')===ab.lay || t===ab.row || ab.row.contains(t)))){ fecha(ab); cliqueBloq=Date.now(); return; }
-    if(ab && ab.tur && ab.d>0 && t.closest && t.closest('.tur')===ab.tur) return;
+    if(ab && ab.tur && ab.d>0 && ab.tur.contains(t)) return;
     var row=linhaDe(t); if(!row || x<BORDA || x>innerWidth-BORDA) return;
     g={row:row, x0:x, y0:y, t0:Date.now(), trava:null, d0: ab && ab.row===row ? ab.d : 0};
     row.addEventListener('touchmove', mover, {passive:false}); row.addEventListener('touchend', solta); row.addEventListener('touchcancel', cancela);
@@ -3482,13 +3563,226 @@ var SX=null;
   document.addEventListener('click', function(e){
     var t=e.target;
     if(t.closest && t.closest('.sxa')) return;
-    if(ab && ab.row.contains(t) && ab.d>0 && ab.tur && t.closest && t.closest('.tur')===ab.tur && Date.now()-cliqueBloq>=450){ e.stopPropagation(); e.preventDefault(); menuTurno(ab, ab.tur); return; }
+    if(ab && ab.row.contains(t) && ab.d>0 && ab.tur && ab.tur.contains(t) && Date.now()-cliqueBloq>=450){ e.stopPropagation(); e.preventDefault();
+      if(ab.ehAv){ var pid=ab.it.p.id; fecha(ab, true); abrirPront(pid); } else menuTurno(ab, ab.tur); return; }
     if(Date.now()-cliqueBloq<450 || (ab && ab.row.contains(t))){ e.stopPropagation(); e.preventDefault(); if(ab && ab.row.contains(t)) fecha(ab); }
   }, true);
   window.addEventListener('scroll', function(){ if(ab && !g && ab.lay.classList.contains('on')) fecha(ab); }, {passive:true});
   SX={ aberta:function(){ return !!ab; }, fecha:function(){ if(ab) fecha(ab, true); },
     // o toque foi na linha aberta (ou nos botões dela)?
     nela:function(t){ return !!(ab && t && (ab.row===t || ab.row.contains(t) || ab.lay.contains(t))); } };
+})();
+
+// ---------- ações rápidas: segurar uma visita, paciente ou tarefa (menu de contexto, como no iOS) ----------
+var CTX=null;
+(function(){
+  var soltouEm=0, ov=null, aberto=false, alvoEl=null, pv=null, menu=null, tmr=0, prs=0, ini=null, abriuEm=0, arrasto=false, hl=null, fechando=false;
+  var SEL='[data-sx],[data-ctx],[data-tf],.evi,.tl';
+  function achaVisita(fid, aid, k){ var f=S.fichas.filter(function(x){ return x.id===fid; })[0]; if(!f) return null; var a= aid!=null? f.atend.filter(function(x){ return x.id===aid; })[0] : f.atend[k]; return a? {tipo:'v', f:f, a:a, p:pacById(a.pacId)} : null; }
+  function itemDe(el){
+    var k=el.dataset.ctx||el.dataset.sx;
+    if(k){ var pr=k.split(':');
+      if(pr[0]==='v' || pr[0]==='iv' || pr[0]==='cv') return achaVisita(pr[1], pr[2]);
+      if(pr[0]==='p' || pr[0]==='ip'){ var p=pacById(pr[1]); return p? {tipo:'p', p:p} : null; }
+      if(pr[0]==='t'){ var t=S.tarefas.filter(function(x){ return x.id===pr[1]; })[0]; return t? {tipo:'t', t:t} : null; } }
+    if(el.dataset.tf){ var t2=S.tarefas.filter(function(x){ return x.id===el.dataset.tf; })[0]; return t2? {tipo:'t', t:t2} : null; }
+    if(el.dataset.vf && el.dataset.va) return achaVisita(el.dataset.vf, el.dataset.va);
+    if(el.dataset.vf && el.dataset.vk!=null) return achaVisita(el.dataset.vf, null, +el.dataset.vk);
+    return null;
+  }
+  function alvoDe(t){
+    if(!t || !t.closest || t.closest('input,textarea,select,.sxa,#ctx,#tabbar,.gtabs')) return null;
+    var el=t.closest(SEL); if(!el || el.classList.contains('vgh')) return null;
+    if(el.matches('.evi') && el.classList.contains('on') && t.closest('.evc textarea, .evc input')) return null;
+    return itemDe(el)? el : null;
+  }
+  // ---------- itens de cada tipo ----------
+  function nomeC(p){ return nomeCurto(p)||'paciente'; }
+  function itensVisita(it){
+    var f=it.f, a=it.a, p=it.p, st=a.st||{}, d=parse(dataV(a)), pid=a.pacId;
+    var naEvol= tab==='evol' && EVOL && EVOL.a===a.id, noPront= tab==='pront' && PRONT===pid;
+    return { titulo:(p?nomeC(p)+' · ':'')+DSL[d.getDay()].slice(0,3)+', '+ddmm(dataV(a)),
+      rotulo:'Turno', paleta:[['M','Manhã'],['T','Tarde'],['N','Noite']].map(function(x){ return {nome:x[1], ic:I[x[0]], cor:'var(--t'+x[0]+')', on:a.turno===x[0], fn:function(){ var velho=a.turno; a.turno= a.turno===x[0]? '' : x[0]; f.impressa=false; lastPdf=null; save(); flashId=a.id; render();
+        toast(a.turno? 'Turno: '+x[1].toLowerCase()+'.' : 'Turno apagado.', {label:'Desfazer', fn:function(){ a.turno=velho; f.impressa=false; lastPdf=null; save(); flashId=a.id; render(); }}); }}; }),
+      grupos:[
+        [ naEvol? null : {nome:'Evoluir', ic:I.evol, fn:function(){ abrirEvol(f.id, a.id); }},
+          noPront || !p? null : {nome:'Prontuário', ic:I.pac, fn:function(){ abrirPront(pid); }},
+          p? {nome:'Nova visita', ic:I.plus, fn:function(){ novoAtend(pid); }} : null,
+          p? {nome:'Nova tarefa', ic:I.tarefa, fn:function(){ editarTarefa(null, pid); }} : null ],
+        [ {nome:'Foto tirada', ic:I.foto, marca:true, on:!!st.foto, fn:function(){ marcaVisita(a,'foto',!st.foto); flashId=a.id; render(); }},
+          {nome:'Evolução passada', ic:I.pen, marca:true, on:!!st.pass, fn:function(){ marcaVisita(a,'pass',!st.pass); flashId=a.id; render(); }},
+          a.evol? {nome:'Copiar evolução', ic:I.copy, fn:function(){ copiar(a.evol); }} : null ],
+        [ {nome:'Mudar data', ic:I.cal, data:a.data, fn:function(v){ if(v && v!==a.data) moverVisita(f, a, v); }},
+          {nome:'Registrar alta', ic:I.alta, fn:function(){ abrirAlta(p||Object.assign({id:pid}, a.snap||{}), {f:f, a:a}); }},
+          {nome:'Apagar visita', ic:I.del, red:true, fn:function(){ apagarVisita(f, a); }} ] ] };
+  }
+  function itensPaciente(it){
+    var p=it.p, noPront= tab==='pront' && PRONT===p.id;
+    return { titulo:p.nome||'(sem nome)',
+      rotulo:'Tipo', paleta:PERFIS.map(function(x){ return {nome:x[1], dot:true, on:p.perfil===x[0], cor:'var(--pf-'+x[0]+')', fn:function(){ var velho=p.perfil; p.perfil= p.perfil===x[0]? '' : x[0]; save(); render();
+        toast(p.perfil? nomeC(p)+': '+x[1].toLowerCase()+'.' : nomeC(p)+': sem tipo.', {label:'Desfazer', fn:function(){ p.perfil=velho; save(); render(); }}); }}; }),
+      grupos:[
+        [ {nome:'Atender', ic:I.plus, fn:function(){ novoAtend(p.id); }},
+          noPront? null : {nome:'Prontuário', ic:I.pac, fn:function(){ abrirPront(p.id); }},
+          {nome:'Nova tarefa', ic:I.tarefa, fn:function(){ editarTarefa(null, p.id); }},
+          {nome:'Editar cadastro', ic:I.pen, fn:function(){ editarPaciente(p); }} ],
+        [ {nome: p.alta? 'Alta registrada…' : 'Registrar alta', ic:I.alta, fn:function(){ abrirAlta(p); }},
+          {nome:'Excluir paciente', ic:I.del, red:true, fn:function(){ excluirPaciente(p); }} ] ] };
+  }
+  function itensTarefa(it){
+    var t=it.t, p=t.pac && pacById(t.pac);
+    return { titulo:'Tarefa'+(p?' · '+nomeC(p):''), grupos:[
+      [ {nome: t.feita? 'Marcar como não feita' : 'Marcar como feita', ic:I.tarefa, fn:function(){ var on=!t.feita; t.feita= on? new Date().toISOString() : null;
+          if(on) registrar('tarefa', t.txt+(p?' ('+nomeCurto(p)+')':''), 't:'+t.id); else desregistrar('tarefa','t:'+t.id); save(); render();
+          if(on) toast('Tarefa feita.', {label:'Desfazer', fn:function(){ t.feita=null; desregistrar('tarefa','t:'+t.id); save(); render(); }}); }},
+        {nome:'Editar', ic:I.pen, fn:function(){ editarTarefa(t); }},
+        p? {nome:'Prontuário de '+nomeC(p), ic:I.pac, fn:function(){ abrirPront(p.id); }} : null ],
+      [ {nome:'Apagar tarefa', ic:I.del, red:true, fn:function(){ var j=S.tarefas.indexOf(t); if(j<0) return; S.tarefas.splice(j,1); save(); render();
+          toast('Tarefa apagada.', {label:'Desfazer', fn:function(){ S.tarefas.splice(Math.min(j,S.tarefas.length),0,t); save(); render(); }}); }} ] ] };
+  }
+  function copiar(txt){ function ok(){ toast('Evolução copiada.'); }
+    if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(ok, function(){ velho(); }); else velho();
+    function velho(){ var ta=document.createElement('textarea'); ta.value=txt; ta.style.cssText='position:fixed;opacity:0;top:0'; document.body.appendChild(ta); ta.select(); try{ document.execCommand('copy'); ok(); }catch(e){} ta.remove(); } }
+  // ---------- montagem ----------
+  function copiaEstilo(de, para){
+    var cs=getComputedStyle(de), st=para.style;
+    for(var i=0;i<cs.length;i++){ var n=cs[i]; if(/^(transition|animation|will-change|visibility|transform|translate|scale|rotate|cursor|pointer-events)/.test(n)) continue; st.setProperty(n, cs.getPropertyValue(n)); }
+    for(var j=0;j<de.children.length && j<para.children.length;j++) copiaEstilo(de.children[j], para.children[j]);
+  }
+  function fazPreview(el, r){
+    var c=el.cloneNode(true); c.removeAttribute('id'); $$('[id]',c).forEach(function(x){ x.removeAttribute('id'); });
+    copiaEstilo(el, c);
+    var bg=getComputedStyle(el).backgroundColor;
+    c.style.position='fixed'; c.style.margin='0'; c.style.left=r.left+'px'; c.style.top=r.top+'px'; c.style.width=r.width+'px'; c.style.height=r.height+'px'; c.style.boxSizing='border-box';
+    if(!bg || bg==='transparent' || /rgba\(.*,\s*0\)$/.test(bg)) c.style.background='var(--s)';
+    c.style.borderRadius='16px'; c.style.overflow='hidden'; c.className+=' cpv'; c.removeAttribute('data-sx'); c.setAttribute('aria-hidden','true');
+    return c;
+  }
+  function linha(x, gi, ii){
+    var ic='<span class="cmi">'+sz(x.marca && x.on? I.chk : x.ic, 20)+'</span>';
+    if(x.data!=null) return '<label class="ci" data-g="'+gi+'" data-i="'+ii+'">'+ic+'<span class="cl">'+x.nome+'</span><input type="date" tabindex="-1" value="'+esc(x.data)+'" aria-label="'+x.nome+'"></label>';
+    return '<button type="button" class="ci'+(x.red?' red':'')+(x.marca&&x.on?' mk':'')+'" data-g="'+gi+'" data-i="'+ii+'">'+ic+'<span class="cl">'+x.nome+'</span></button>';
+  }
+  function icPal(x){ return x.dot? '<i class="pdot"></i>' : sz(x.ic,20); }
+  function paletaHtml(M){
+    var sel=M.paleta.filter(function(x){ return x.on; })[0];
+    var bts='<div class="cpal">'+M.paleta.map(function(x,i){ return '<button type="button" class="'+(x.on?'on':'')+'" data-pal="'+i+'"'+(x.cor?' style="--pc:'+x.cor+'"':'')+'>'+icPal(x)+'<span>'+x.nome+'</span></button>'; }).join('')+'</div>';
+    if(!sel) return '<div class="cpw">'+bts+'</div>';
+    // já escolhido: fica guardado numa "aba" discreta, que abre no mesmo lugar
+    return '<div class="cpw fech"><button type="button" class="ci cpr"'+(sel.cor?' style="--pc:'+sel.cor+'"':'')+'><span class="cmi">'+icPal(sel)+'</span><span class="cl">'+sel.nome+'</span><span class="cpk">'+esc(M.rotulo||'')+'</span><span class="chev">'+sz(I.down,14)+'</span></button>'+bts+'</div>';
+  }
+  function abre(el){
+    var it=itemDe(el); if(!it) return;
+    var M= it.tipo==='v'? itensVisita(it) : it.tipo==='p'? itensPaciente(it) : itensTarefa(it);
+    M.grupos=M.grupos.map(function(g){ return g.filter(Boolean); }).filter(function(g){ return g.length; });
+    if(SX) SX.fecha();
+    aberto=true; fechando=false; alvoEl=el; abriuEm=Date.now(); el.classList.remove('ctxprs');
+    if(navigator.vibrate) try{ navigator.vibrate(10); }catch(_){}
+    var r=el.getBoundingClientRect();
+    ov=document.createElement('div'); ov.id='ctx'; ov.innerHTML='<div class="cbg"></div>'; document.body.appendChild(ov);
+    pv=fazPreview(el, r); ov.appendChild(pv);
+    var h='<div class="cm" role="menu"><div class="cmc">'+(M.titulo?'<div class="ch">'+esc(M.titulo)+'</div>':'');
+    if(M.paleta) h+=paletaHtml(M);
+    h+=M.grupos.map(function(g, gi){ return (gi||M.paleta?'<div class="cgap"></div>':'')+'<div class="cg">'+g.map(function(x, ii){ return linha(x, gi, ii); }).join('')+'</div>'; }).join('')+'</div></div>';
+    ov.insertAdjacentHTML('beforeend', h); menu=$('.cm',ov);
+    el.style.visibility='hidden';
+    // posição: o item fica onde estava; se o menu não couber embaixo, vai para cima; se nem assim, o item sobe
+    var sa=document.createElement('div'); sa.style.cssText='position:fixed;top:0;left:0;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom);visibility:hidden'; document.body.appendChild(sa);
+    var sat=parseFloat(getComputedStyle(sa).paddingTop)||0, sab=parseFloat(getComputedStyle(sa).paddingBottom)||0; sa.remove();
+    var H=innerHeight, W=innerWidth, topo=Math.max(14, sat+8), base=Math.max(24, sab+12), gap=10;
+    var cpw=$('.cpw.fech',menu); if(cpw) cpw.classList.remove('fech');
+    var mh=menu.offsetHeight, mw=menu.offsetWidth, ph=Math.min(r.height, H*.42);
+    if(cpw) cpw.classList.add('fech');
+    if(ph<r.height){ pv.style.height=ph+'px'; pv.style.webkitMaskImage=pv.style.maskImage='linear-gradient(#000 80%,transparent)'; }
+    var py=Math.max(topo, Math.min(r.top, H-base-ph)), my, cima=false;
+    if(py+ph+gap+mh<=H-base) my=py+ph+gap;
+    else if(py-gap-mh>=topo){ my=py-gap-mh; cima=true; }
+    else { py=Math.max(topo, H-base-mh-gap-ph); my=py+ph+gap; }
+    var esq= ini? ini.x<W/2 : true, mx= esq? Math.max(12, r.left+8) : Math.min(W-12-mw, r.right-8-mw);
+    mx=Math.max(12, Math.min(W-12-mw, mx));
+    var dy=py-r.top;
+    // o menu nasce do ponto onde o dedo está (como no iOS 26): pequeno e desfocado, cresce, passa um pouco e assenta
+    var fx=(ini? ini.x : r.left+r.width/2), fy=(ini? ini.y : r.top+r.height/2)+(dy||0);
+    menu.style.left=mx+'px'; menu.style.top=my+'px'; menu.style.transformOrigin=(fx-mx).toFixed(0)+'px '+(fy-my).toFixed(0)+'px';
+    menu._lim={topo:topo, base:base, H:H};
+    ov.classList.add('on');
+    if(!reduce && pv.animate){
+      pv.animate([{transform:'translateY(0) scale(.97)'},{transform:'translateY('+dy+'px) scale(1.035)',offset:.55},{transform:'translateY('+dy+'px) scale(1)'}],{duration:440,easing:'cubic-bezier(.2,.8,.2,1)',fill:'forwards'});
+      menu.animate([{transform:'scale(.14)',opacity:0},{transform:'scale(.9)',opacity:1,offset:.36},{transform:'scale(1.022)',offset:.66},{transform:'scale(1)',opacity:1}],{duration:470,easing:'cubic-bezier(.3,.75,.35,1)',fill:'forwards'});
+      $('.cmc',menu).animate([{filter:'blur(7px)',opacity:.2},{filter:'blur(0px)',opacity:1}],{duration:240,easing:'ease-out'});
+      $('.cbg',ov).animate([{opacity:0},{opacity:1}],{duration:240,fill:'forwards'});
+    } else pv.style.transform='translateY('+dy+'px)';
+    pv._dy=dy;
+    // toques no menu
+    $$('[data-pal]',menu).forEach(function(b){ b.onclick=function(e){ e.stopPropagation(); if(e.isTrusted && Date.now()-soltouEm<250 && !(ini&&ini.mexeu)) return; var x=M.paleta[+b.dataset.pal]; escolhe(function(){ x.fn(); }); }; });
+    $$('.ci[data-g]',menu).forEach(function(b){ var x=M.grupos[+b.dataset.g][+b.dataset.i];
+      if(x.data!=null){ var inp=$('input',b); inp.onchange=function(){ var v=this.value; escolhe(function(){ x.fn(v); }); }; 
+        b.onclick=function(e){ e.stopPropagation(); if(e.target!==inp) e.preventDefault(); try{ inp.showPicker(); }catch(_){ inp.focus(); } }; return; }
+      b.onclick=function(e){ e.stopPropagation(); if(e.isTrusted && Date.now()-soltouEm<250 && !(ini&&ini.mexeu)) return; escolhe(function(){ x.fn(); }); }; });
+    var cpr=$('.cpr',menu); if(cpr) cpr.onclick=function(e){ e.stopPropagation(); abrePaleta(cpr.parentNode); };
+    function fora(){ if(Date.now()-soltouEm<400) return; fecha(); }
+    $('.cbg',ov).onclick=fora; pv.onclick=fora;
+  }
+  function abrePaleta(w){
+    var pal=$('.cpal',w), m=menu, abrir=w.classList.contains('fech');
+    var h0=pal.offsetHeight; w.classList.toggle('fech', !abrir); var h1=pal.scrollHeight; if(!abrir) h1=0;
+    if(!reduce && pal.animate){ pal.animate([{height:h0+'px',opacity:abrir?0:1},{height:h1+'px',opacity:abrir?1:0}],{duration:300,easing:'cubic-bezier(.25,.9,.3,1)'}); }
+    // se o menu passou da borda de baixo, sobe junto
+    var L=m._lim, top=parseFloat(m.style.top), alt=m.offsetHeight-h0+h1;
+    if(L && top+alt>L.H-L.base){ var nt=Math.max(L.topo, L.H-L.base-alt); m.style.transition='top .3s cubic-bezier(.25,.9,.3,1)'; m.style.top=nt+'px'; }
+  }
+  // ação escolhida: fecha rápido e executa
+  function escolhe(fn){ fecha(true); setTimeout(fn, reduce?0:140); }
+  function fecha(rapido){
+    if(!aberto || fechando) return; fechando=true;
+    var o=ov, p=pv, m=menu, el=alvoEl;
+    function fim(){ if(el) el.style.visibility=''; if(o && o.parentNode) o.parentNode.removeChild(o); if(ov===o){ ov=null; pv=null; menu=null; alvoEl=null; aberto=false; fechando=false; } }
+    if(reduce || !o.animate){ fim(); return; }
+    // fecha voltando para o ponto de onde nasceu, rápido
+    m.animate([{transform:'scale(1)',opacity:1},{transform:'scale(.22)',opacity:0}],{duration:rapido?150:200,easing:'cubic-bezier(.5,0,.75,.45)',fill:'forwards'});
+    var mc=$('.cmc',m); if(mc) mc.animate([{filter:'blur(0px)'},{filter:'blur(6px)'}],{duration:rapido?150:200,fill:'forwards'});
+    $('.cbg',o).animate([{opacity:1},{opacity:0}],{duration:rapido?160:240,fill:'forwards'});
+    if(rapido){ if(el) el.style.visibility=''; p.animate([{opacity:1},{opacity:0}],{duration:140,fill:'forwards'}).onfinish=fim; }
+    else p.animate([{transform:'translateY('+p._dy+'px) scale(1)'},{transform:'translateY(0) scale(1)'}],{duration:280,easing:'cubic-bezier(.3,.7,.2,1)',fill:'forwards'}).onfinish=fim;
+  }
+  // ---------- gesto: segurar ----------
+  function cancela(){ clearTimeout(tmr); clearTimeout(prs); tmr=0; if(ini && ini.el) ini.el.classList.remove('ctxprs'); if(!aberto) ini=null; }
+  document.addEventListener('touchstart', function(e){
+    if(aberto){ return; }
+    cancela();
+    if(e.touches.length!==1 || dlg.open || $('#menu').style.display==='block' || (SX && SX.aberta())) return;
+    var el=alvoDe(e.target); if(!el) return;
+    ini={el:el, x:e.touches[0].clientX, y:e.touches[0].clientY};
+    prs=setTimeout(function(){ if(ini) el.classList.add('ctxprs'); }, 140);
+    tmr=setTimeout(function(){ tmr=0; if(!ini || (SX && SX.aberta())) return; arrasto=true; hl=null; abre(el); }, 480);
+  }, {passive:true, capture:true});
+  document.addEventListener('touchmove', function(e){
+    if(aberto && arrasto){
+      // como no iOS: sem soltar o dedo, dá para deslizar até uma opção e soltar em cima dela
+      var t=e.touches[0], alvo=document.elementFromPoint(t.clientX, t.clientY), b=alvo && alvo.closest && alvo.closest('#ctx .ci, #ctx [data-pal]');
+      if(Math.hypot(t.clientX-ini.x, t.clientY-ini.y)>10) ini.mexeu=true;
+      if(b!==hl){ if(hl) hl.classList.remove('hl'); hl=b; if(hl){ hl.classList.add('hl'); if(navigator.vibrate) try{ navigator.vibrate(4); }catch(_){} } }
+      if(e.cancelable) e.preventDefault(); return; }
+    if(!ini || !tmr) return; var t2=e.touches[0];
+    if(Math.abs(t2.clientX-ini.x)>8 || Math.abs(t2.clientY-ini.y)>8) cancela();
+  }, {passive:false, capture:true});
+  function solta(){
+    if(aberto && arrasto){ arrasto=false; soltouEm=Date.now(); var b=hl; if(hl){ hl.classList.remove('hl'); hl=null; }
+      if(b && ini && ini.mexeu){ if(b.tagName==='LABEL'){ var inp=$('input',b); try{ inp.showPicker(); }catch(_){ inp.focus(); } } else b.click(); }
+      return; }
+    cancela();
+  }
+  document.addEventListener('touchend', solta, true); document.addEventListener('touchcancel', function(){ arrasto=false; cancela(); }, true);
+  window.addEventListener('scroll', function(){ if(tmr) cancela(); }, {passive:true});
+  // computador (botão direito) e Android (segurar gera "contextmenu")
+  document.addEventListener('contextmenu', function(e){
+    if(aberto){ e.preventDefault(); return; }
+    var el=alvoDe(e.target); if(!el) return; e.preventDefault(); cancela(); ini={el:el, x:e.clientX, y:e.clientY}; arrasto=false; abre(el);
+  });
+  // o toque que abriu o menu não pode virar clique na linha
+  document.addEventListener('click', function(e){ if(aberto && !(e.target.closest && e.target.closest('#ctx'))){ e.stopPropagation(); e.preventDefault(); } }, true);
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape' && aberto) fecha(); });
+  CTX={ aberto:function(){ return aberto || !!tmr; }, fecha:function(){ fecha(true); } };
 })();
 
 // ---------- barra inferior: lente de vidro (como no iOS 26), movida por física de mola ----------
