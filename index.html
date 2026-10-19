@@ -3381,7 +3381,7 @@ function rAjApar(){
   var r=$('#oVid'); r.oninput=function(){ o.vidro=+this.value; this.style.setProperty('--p', this.value+'%'); aplicarTema(); }; r.onchange=function(){ save(); };
 }
 
-var TAM_APP=1293098;
+var TAM_APP=1293494;
 function tamanhoApp(){ if(TAM_APP==null){ try{ TAM_APP=new Blob([document.documentElement.outerHTML]).size; }catch(e){ TAM_APP=0; } } return TAM_APP? (TAM_APP/1048576).toFixed(1).replace('.',',')+' MB' : '—'; }
 function rSobre(){
   var nAt=0; S.fichas.forEach(function(f){ nAt+=f.atend.length; });
@@ -3516,7 +3516,11 @@ var ORDEM_ABAS=['hoje','pac','cal','ficha'];
     if(wideMQ.matches || reduce || dlg.open || $('#menu').style.display==='block' || $('.fantasma') || (CTX && CTX.aberto())) return true;
     var t=e.target; if(SX && SX.nela(t)) return true;
     if(t.closest && t.closest('.sxa')) return true;
-    var x=e.touches[0].clientX; if(t.closest && t.closest('.rows > [data-sx], .irows > [data-sx], .sxl > [data-sx]') && x>=24 && x<=innerWidth-24) return true;
+    var x=e.touches[0].clientX, borda= x<BORDA_PG || x>innerWidth-BORDA_PG;
+    // bordas da tela (e a busca flutuante) trocam de página do app, mesmo em cima das listas com abas
+    if(borda && t.closest && t.closest('.pgvp') && !t.closest('input:focus,textarea:focus')) return false;
+    if(t.closest && t.closest('#pBusca') && !(t===document.activeElement)) return false;
+    if(t.closest && t.closest('.rows > [data-sx], .irows > [data-sx], .sxl > [data-sx]') && x>=24 && x<=innerWidth-24) return true;
     return !!(t.closest && t.closest('#week, #calCard, #tabbar, input, textarea, select, .noswipe'));
   }
   document.addEventListener('touchstart', function(e){
@@ -3755,7 +3759,7 @@ function excluirPaciente(p){
 // ---------- deslizar uma linha (visita ou paciente) para mostrar as opções, como no iOS ----------
 var SX=null;
 (function(){
-  var B=44, G=8, P=10, BORDA=24;
+  var B=44, G=8, P=10, BORDA=32;
   var ab=null;   // linha aberta ou sendo arrastada: {row, lay, d, v, alvo, lados, W, raf}
   var g=null;    // gesto em andamento
   var cliqueBloq=0;
@@ -4218,6 +4222,7 @@ var tabPtrT=0, LENTE=null;
 // arrastar a página leva a lente junto e já mostra a página vizinha; tocar na barra desliza as páginas;
 // nada é redesenhado no fim (só as páginas de fora ficam "dobradas"), então não pisca.
 // cede: as linhas deslizáveis cedem o gesto quando há página daquele lado (as ações rápidas ficam do outro lado)
+var BORDA_PG=32;
 function criaPager(op){
   var vp=op.vp; if(!vp) return null; vp.classList.add('pgvp','noswipe');
   var P={cede:!!op.cede, abas:op.abas}, anim=null, g=null;
@@ -4248,7 +4253,7 @@ function criaPager(op){
     anim=[a1,a2]; a1.onfinish=fim; };
   vp.addEventListener('touchstart', function(e){ g=null; if(e.touches.length!==1 || reduce || dlg.open) return;
     var t=e.target, x=e.touches[0].clientX;
-    if(x<24 || (SX && SX.aberta()) || (t.closest && t.closest('.mseg,.gtabs,.sxa,[data-nopg]')) || (t===document.activeElement && /INPUT|TEXTAREA/.test(t.tagName))) return;
+    if(x<BORDA_PG || x>innerWidth-BORDA_PG || (SX && SX.aberta()) || (t.closest && t.closest('.mseg,.gtabs,.sxa,[data-nopg]')) || (t===document.activeElement && /INPUT|TEXTAREA/.test(t.tagName))) return;
     g={x0:x, y0:e.touches[0].clientY, t0:Date.now(), trava:null, dx:0, alvo:t}; }, {passive:true});
   vp.addEventListener('touchmove', function(e){
     if(!g) return; var dx=e.touches[0].clientX-g.x0, dy=e.touches[0].clientY-g.y0;
