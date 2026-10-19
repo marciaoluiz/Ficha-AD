@@ -1161,6 +1161,7 @@ body.tab-pac #toast{bottom:calc(var(--tbb) + 136px)}
 .pmapa{position:absolute;inset:0;border-radius:24px;overflow:hidden;background:#e9e7e1;touch-action:none}
 [data-mode="dark"] .pmapa{background:#22262b}
 .pmapa .lf{position:absolute;inset:0;z-index:0;isolation:isolate;border-radius:inherit;background:inherit;font:inherit}
+[data-mode="dark"] .pmapa .leaflet-tile-pane{filter:invert(1) hue-rotate(180deg) brightness(.92) contrast(.88) saturate(.55)}
 .pmapa .leaflet-control-attribution{font-size:9.5px;background:color-mix(in srgb,var(--s) 70%,transparent);color:var(--mut);border-radius:0 0 0 10px;padding:1px 7px}
 .pmapa .leaflet-control-attribution a{color:inherit}
 .pmapa.cheio .leaflet-control-attribution{margin-top:env(safe-area-inset-top)}
@@ -3496,7 +3497,7 @@ function rAjApar(){
   var r=$('#oVid'); r.oninput=function(){ o.vidro=+this.value; this.style.setProperty('--p', this.value+'%'); aplicarTema(); }; r.onchange=function(){ save(); };
 }
 
-var TAM_APP=1326122;
+var TAM_APP=1326137;
 function tamanhoApp(){ if(TAM_APP==null){ try{ TAM_APP=new Blob([document.documentElement.outerHTML]).size; }catch(e){ TAM_APP=0; } } return TAM_APP? (TAM_APP/1048576).toFixed(1).replace('.',',')+' MB' : '—'; }
 function rSobre(){
   var nAt=0; S.fichas.forEach(function(f){ nAt+=f.atend.length; });
@@ -4380,8 +4381,9 @@ function carregaLeaflet(){
 }
 function mapaTiles(){ if(!MAPA.map) return; var esc=document.documentElement.getAttribute('data-mode')==='dark', modo=esc?'d':'c';
   if(MAPA.tiles && MAPA.tiles._modo===modo) return; if(MAPA.tiles) MAPA.map.removeLayer(MAPA.tiles);
-  MAPA.tiles=L.tileLayer(esc? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png' : 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
-    {subdomains:'abcd', maxZoom:19, attribution:'© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> © <a href="https://carto.com/attributions" target="_blank" rel="noopener">CARTO</a>'});
+  // mapa do OpenStreetMap (sem chave); no modo escuro, as cores são invertidas pelo CSS
+  MAPA.tiles=L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+    {maxZoom:19, attribution:'© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>'});
   MAPA.tiles._modo=modo; MAPA.tiles.addTo(MAPA.map); }
 
 // o mapa é um elemento só, que muda de lugar (página, tela cheia) sem ser recriado
