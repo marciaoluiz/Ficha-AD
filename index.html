@@ -526,7 +526,7 @@ textarea.evt{display:block;width:100%;min-height:180px;resize:none;line-height:1
 .tlb{flex:1;min-width:0;background:var(--s);border-radius:18px;padding:10px 12px;cursor:pointer}
 .tlh2{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:14px;font-weight:700;color:var(--ink)}
 .tlh2 .tur{width:26px;height:26px;border-radius:8px}
-.tg.cd{background:color-mix(in srgb,var(--c) 16%,transparent);color:var(--c)}
+.tg.dsf{border-radius:999px;padding:2px 9px;font-size:12px;line-height:1.35;background:color-mix(in srgb,var(--c) 17%,transparent);color:color-mix(in srgb,var(--c) 82%,var(--ink));white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis;vertical-align:middle}
 .tle{margin:6px 0 0;font-size:14px;line-height:1.45;white-space:pre-wrap;word-break:break-word;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
 .tle.vz{color:var(--mut)}
 .tl.aberto .tle{display:block;-webkit-line-clamp:unset}
@@ -1156,6 +1156,32 @@ body.tab-pac #toast{bottom:calc(var(--tbb) + 136px)}
 .calft .legend{margin:0;justify-content:flex-start;flex:1;padding-left:8px;flex-wrap:wrap}
 #cHoje{padding:5px 13px;font-size:13.5px;margin-right:4px;transition:opacity .25s,transform .3s cubic-bezier(.3,1.4,.5,1)}
 #cHoje.off{opacity:0;transform:scale(.8);pointer-events:none}
+.prend{gap:10px}
+.prend .ri{flex:1;min-width:0;text-align:right}
+.baip{flex:none;display:inline-flex;align-items:center;gap:4px;border:0;border-radius:999px;padding:6px 10px 6px 12px;font:inherit;font-size:14.5px;font-weight:700;background:var(--acc-soft);color:var(--acc-ink);max-width:48%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.baip svg{flex:none;opacity:.8}
+.baip.vz{background:var(--field,rgba(120,120,128,.14));color:var(--mut)}
+#menu .mo0{display:inline-block;width:20px;height:20px;flex:none}
+.evi{flex-wrap:wrap}
+.evant.fora{flex:none;margin:10px 0 0;position:relative;touch-action:pan-y;transition:background-color .2s}
+.evant .evax{margin-left:auto;flex:none;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;color:var(--bad);opacity:0;transition:opacity .2s}
+.evant.sai{background:color-mix(in srgb,var(--bad) 14%,transparent);border-color:color-mix(in srgb,var(--bad) 45%,transparent)}
+.evant.sai .evax{opacity:1}
+.sh .ft.pkft{border-top:0;padding-top:6px}
+.pkbar{display:flex;gap:10px;align-items:center;width:100%}
+.pkn.glass{flex:1 1 auto;min-width:0;height:50px;border-radius:999px;display:flex;align-items:center;justify-content:center;gap:8px;font:inherit;font-size:15.5px;font-weight:800;color:var(--acc-ink);padding:0 16px;white-space:nowrap;overflow:hidden;transition:flex .4s cubic-bezier(.3,1.1,.4,1),opacity .25s,padding .4s,margin .4s}
+.pkn span{overflow:hidden;text-overflow:ellipsis}
+.pkn svg{flex:none;width:18px;height:18px}
+.pks.glass{flex:0 0 50px;height:50px;border-radius:999px;display:flex;align-items:center;overflow:hidden;transition:flex .4s cubic-bezier(.3,1.1,.4,1)}
+.pks .pkl{flex:none;width:48px;height:48px;border:0;background:none;padding:0;display:grid;place-items:center;color:var(--ink)}
+.pks .pkl svg{width:20px;height:20px}
+.pks input,.pks input:focus{flex:1;min-width:0;height:100%;border:0;background:transparent;box-shadow:none;outline:none;padding:0;font-size:16px;color:var(--ink);opacity:0;transition:opacity .25s;-webkit-appearance:none;appearance:none;border-radius:0;min-height:0}
+.pks input::-webkit-search-cancel-button{display:none}
+.pks .pkx{display:none;flex:none;width:30px;height:30px;margin-right:9px;border:0;border-radius:50%;padding:0;place-items:center;background:color-mix(in srgb,var(--mut) 22%,transparent);color:var(--ink)}
+.pkbar.bs .pkn{flex:0 0 0;opacity:0;padding:0;margin-right:-10px;border-width:0}
+.pkbar.bs .pks{flex:1 1 100%}
+.pkbar.bs .pks input{opacity:1}
+.pkbar.bs .pkx{display:grid}
 /* ---------- mapa (Pacientes) ---------- */
 .mslot{position:relative;height:340px;margin:2px 12px 0;border-radius:24px}
 .pmapa{position:absolute;inset:0;border-radius:24px;overflow:hidden;background:#e9e7e1;touch-action:none}
@@ -1622,8 +1648,19 @@ function fichasDeVisitas(vs){ vs=vs.slice().sort(function(x,y){ return (x.data||
   Object.keys(mes).sort().forEach(function(m){ var l=mes[m]; for(var i=0;i<l.length;i+=13){ var f={id:uid(), folha:proxFolha(), criada:hoje(), impressa:false, atend:l.slice(i,i+13)}; S.fichas.push(f); out.push(f); } });
   return out; }
 function novaFichaObj(){ return {id:uid(), folha:proxFolha(), criada:hoje(), impressa:false, atend:[]}; }
+var DISTRITOS=[
+ ['DASAC','Sacramenta',['Barreiro','Fátima','Maracangalha','Miramar','Pedreira','Sacramenta','Telégrafo','Val-de-Cães']],
+ ['DABEL','Belém',['Batista Campos','Campina','Cidade Velha','Marco','Nazaré','Reduto','São Brás','Umarizal']],
+ ['DABEN','Benguí',['Benguí','Cabanagem','Coqueiro','Parque Verde','Pratinha','São Clemente','Tapanã','Una']],
+ ['DAENT','Entroncamento',['Águas Lindas','Aurá','Castanheira','Curió-Utinga','Guanabara','Mangueirão','Marambaia','Souza','Universitário']],
+ ['DAGUA','Guamá',['Canudos','Condor','Cremação','Guamá','Jurunas','Terra Firme']],
+ ['DAICO','Icoaraci',['Águas Negras','Agulha','Campina de Icoaraci','Cruzeiro','Maracacuera','Paracuri','Parque Guajará','Ponta Grossa','Tenoné']],
+ ['DAOUT','Outeiro',['Água Boa','Brasília','Itaiteua','São João do Outeiro']],
+ ['DAMOS','Mosqueiro',['Aeroporto','Ariramba','Baía do Sol','Bonfim','Carananduba','Caruara','Chapéu Virado','Farol','Mangueiras','Maracajá','Marahú','Murubira','Natal do Murubira','Paraíso','Porto Arthur','Praia Grande','São Francisco','Sucurijuquara','Vila']]];
 function migrar(){
   S.prof=S.prof||{}; S.pacientes=S.pacientes||[];
+  // bairros escritos sem acento ("Telegrafo") passam a ter o nome certo ("Telégrafo")
+  { var bk={}; DISTRITOS.forEach(function(d){ d[2].forEach(function(b){ bk[nomeChave(b)]=b; }); }); S.pacientes.forEach(function(p){ var c=p.bairro && bk[nomeChave(p.bairro)]; if(c && c!==p.bairro) p.bairro=c; }); }
   // o CID passou a ficar no cadastro: quem ainda não tem pega o da visita mais recente
   if(S.fichas){ var ucid={}; S.fichas.forEach(function(f){ (f.atend||[]).forEach(function(a){ if(a.cid10 && (!ucid[a.pacId] || (a.dataReal||a.data||'')>=ucid[a.pacId].d)) ucid[a.pacId]={c:a.cid10, d:a.dataReal||a.data||''}; }); });
     S.pacientes.forEach(function(p){ if(!p.cid && ucid[p.id]) p.cid=ucid[p.id].c; }); }
@@ -2321,9 +2358,10 @@ function filtra(q){ q=(q||'').toLowerCase().trim(); var qd=dig(q);
 function avatar(p, n){ n=n||42; return '<span class="av" style="width:'+n+'px;height:'+n+'px;--avc:'+corDe(p.id||p.nome)+';background:var(--avc)">'+esc(iniciais(p.nome))+'</span>'; }
 function escolherPaciente(){
   closeMenu();
-  var body='<div class="search" style="margin:0 0 10px">'+I.srch+'<input type="search" id="pq" placeholder="Buscar por nome ou CPF" autocomplete="off"></div>'+
-    '<button class="btn block" id="pNovo" style="margin-bottom:6px">'+I.plus+'Cadastrar paciente novo</button><div id="pl"></div>';
-  openSheet('Quem foi atendido?', body);
+  var body='<div id="pl"></div>',
+    foot='<div class="pkbar" id="pkBar"><button type="button" class="pkn glass" id="pNovo">'+I.plus+'<span>Cadastrar paciente novo</span></button>'+
+      '<div class="pks glass" id="pkS"><button type="button" class="pkl" id="pkL" aria-label="Buscar paciente">'+I.srch+'</button><input type="search" id="pq" placeholder="Buscar por nome ou CPF" autocomplete="off" enterkeyhint="search"><button type="button" class="pkx" id="pkX" aria-label="Fechar a busca">'+sz(I.x,14)+'</button></div></div>';
+  openSheet('Quem foi atendido?', body, foot); dlg.querySelector('.ft').classList.add('pkft');
   var na=fichaAtual().atend.filter(function(a){return a.data===S.ultData;}).map(function(a){return a.pacId;});
   function lista(){
     var q=$('#pq').value, ps=filtra(q).map(function(p){ return [p, ultimaVisita(p.id)]; });
@@ -2335,6 +2373,13 @@ function escolherPaciente(){
   }
   $('#pq').oninput=lista; lista();
   $('#pNovo').onclick=function(){ editarPaciente(null, function(p){ novoAtend(p.id); }); };
+  // a lupa abre a busca: o campo cresce para o lado e o botão de cadastrar dá lugar a ele
+  var bar=$('#pkBar'), q=$('#pq');
+  function abreB(){ bar.classList.add('bs'); q.focus(); }
+  function fechaB(){ q.value=''; bar.classList.remove('bs'); q.blur(); lista(); }
+  $('#pkL').onclick=function(){ if(bar.classList.contains('bs')) q.focus(); else abreB(); };
+  $('#pkX').onclick=fechaB;
+  q.addEventListener('blur', function(){ setTimeout(function(){ if(!q.value && document.activeElement!==q) bar.classList.remove('bs'); }, 120); });
 }
 
 // ---------- atendimento ----------
@@ -2558,9 +2603,9 @@ function editarPaciente(p, cb, op){
     '<div><div class="flabel" style="margin-bottom:5px">CID e CIAP</div><div class="ir prch prcod sheetcod" id="pCodW"><span class="il">'+miniSeg('pCodT',[['cid','CID'],['ciap','CIAP']],codTipo())+'</span><span class="prcs cods"></span></div><div class="hint">O destacado é o que vai nas fichas. Toque em outro para trocar; o + adiciona.</div></div>'+
     '<div><div class="flabel" style="margin-bottom:5px">Acompanhamento</div><div class="seg" id="pPerf">'+PERFIS.map(function(o){return '<button type="button" data-v="'+o[0]+'"'+(e.perfil===o[0]?' class="on"':'')+'>'+o[1]+'</button>';}).join('')+'</div></div>'+
     (semVisitas? '<div><div class="flabel" style="margin-bottom:5px">Situação no SAD</div><div class="seg" id="pEnt"><button type="button" data-v="eleg"'+(e.entrada==='eleg'?' class="on"':'')+'>Novo, fazer elegibilidade</button><button type="button" data-v="ativo"'+(e.entrada!=='eleg'?' class="on"':'')+'>Já acompanhado</button></div><div class="hint">Se for novo, a primeira visita já vem marcada como elegibilidade.</div></div>' : '')+
-    '<label class="f">Bairro<input id="pBai" list="dlBai" value="'+esc(e.bairro||'')+'" autocomplete="off" autocapitalize="words" placeholder="Ex.: Pedreira"></label><datalist id="dlBai">'+bairros().map(function(x){ return '<option value="'+esc(x)+'">'; }).join('')+'</datalist>'+
+    '<label class="f">Bairro<input id="pBai" list="dlBai" value="'+esc(e.bairro||'')+'" autocomplete="off" autocapitalize="words" placeholder="Ex.: Pedreira"></label><datalist id="dlBai">'+bairrosLista().map(function(x){ return '<option value="'+esc(x)+'">'; }).join('')+'</datalist>'+
     '<label class="f">Endereço<input id="pEnd" value="'+esc(e.end||'')+'" autocomplete="off" autocapitalize="words" placeholder="Rua e número (aparece no mapa)"></label>'+
-    '<label class="f">Admissão no SAD<input type="date" id="pAdm" value="'+esc(e.adm||'')+'"><div class="hint">Se ficar em branco, entra a data da visita de elegibilidade.</div></label>'+
+    '<label class="f">Admissão<input type="date" id="pAdm" value="'+esc(e.adm||'')+'"><div class="hint">Se ficar em branco, entra a data da visita de elegibilidade.</div></label>'+
     '<label class="f">Observações<textarea id="pObs" rows="2" placeholder="Cuidador, telefone, referência…">'+esc(e.obs)+'</textarea></label>'+
     '<div class="hint">Na visita pós-óbito, a ficha pede o CNS do cuidador (ou em branco).</div></div>';
   var foot=(p?'<button class="btn danger" id="pDel">Excluir</button>':'')+'<button class="btn pri" id="pSave">Salvar paciente</button>';
@@ -2807,7 +2852,7 @@ function rPac(){
   var pb=$('#pBusca'); if(!pb){ pb=document.createElement('div'); pb.id='pBusca'; pb.className='search glass'; pb.innerHTML=I.srch+'<input type="search" id="pq2" placeholder="Buscar por nome ou CPF" autocomplete="off" enterkeyhint="search"><button type="button" class="pbx" aria-label="Limpar">'+sz(I.x,14)+'</button>'; document.body.appendChild(pb);
     var qx=$('#pq2',pb); qx.addEventListener('focus', function(){ document.body.classList.add('buscando'); }); qx.addEventListener('blur', function(){ document.body.classList.remove('buscando'); }); }
   function linhaP(p){ var u=ultimaVisita(p.id);
-      var dsf=desfecho(p), du=diasDesde(u), uTxt= dsf&&DESF_CURTO[dsf.c]? esc(desfTxt(dsf)) : (u?'<span class="dd '+corDias(du)+'">'+haDias(du)+'</span>':'sem visita');
+      var dsf=desfecho(p), du=diasDesde(u), uTxt= dsf&&DESF_CURTO[dsf.c]? desfTag(dsf) : (u?'<span class="dd '+corDias(du)+'">'+haDias(du)+'</span>':'<span class="dd t6">sem visita</span>');
       return '<div class="pr" data-sx="p:'+p.id+'"><button class="ed" data-ed="'+p.id+'">'+avatar(p)+'<span class="sp"><span class="t" style="display:block">'+esc(p.nome||'(sem nome)')+'</span><span class="s">'+perfilTag(p)+([esc(idade(p.nasc)), uTxt].filter(Boolean).join(' · ')||'Sem dados')+'</span></span></button><button class="go" data-at="'+p.id+'">Atender</button></div>'; }
   function vazio(){ var n=S.pacientes.length; return '<div class="empty">'+I.pac+'<b>'+(n?'Nenhum paciente encontrado':'Nenhum paciente cadastrado')+'</b>'+(n?'Tente outro nome ou CPF.':'Cadastre aqui ou direto ao registrar uma visita.')+'</div>'; }
   function pagina(ordem, ps){ var n=S.pacientes.length;
@@ -2820,7 +2865,7 @@ function rPac(){
         (l.length>N+1? '<button type="button" class="wgf" data-tpm="'+o[0]+'">'+(ab? 'Mostrar menos' : 'Ver os outros '+(l.length-N))+'</button>' : '')+'</div>'; }); return h; }
   function lista(){
     var el=$('#pl2'); if(!el) return; var q=$('#pq2'), base=filtra(q? q.value : '').map(function(p){ return {p:p, u:ultimaVisita(p.id), at:ativo(p)}; });
-    var porTempo=base.slice().sort(function(x,y){ return (y.at?1:0)-(x.at?1:0) || (x.u?0:1)-(y.u?0:1) || (x.u||'').localeCompare(y.u||'') || (x.p.nome||'').localeCompare(y.p.nome||'','pt'); }).map(function(x){ return x.p; });
+    var porTempo=base.slice().sort(function(x,y){ return (y.at?1:0)-(x.at?1:0) || (x.u?1:0)-(y.u?1:0) || (x.u||'').localeCompare(y.u||'') || (x.p.nome||'').localeCompare(y.p.nome||'','pt'); }).map(function(x){ return x.p; });
     var porNome=base.slice().sort(function(x,y){ return (x.p.nome||'').localeCompare(y.p.nome||'','pt'); }).map(function(x){ return x.p; });
     el.innerHTML='<div class="pgt"><div class="pgp" data-pg="a">'+pagina('a', porNome)+'</div><div class="pgp" data-pg="t">'+pagina('t', porTempo)+'</div><div class="pgp" data-pg="tp">'+paginaTipo(porTempo)+'</div>'+
       '<div class="pgp" data-pg="m"><div class="mslot" data-nopg></div><div class="mchslot"></div><div id="mLista"></div></div></div>';
@@ -3000,12 +3045,13 @@ function ligarVisitasIni(el){
 }
 function diaRot(iso){ var hj=hoje(), d=parse(iso); if(iso===hj) return 'Hoje'; if(iso===addDays(hj,-1)) return 'Ontem'; return DSL[d.getDay()]+', '+d.getDate()+' de '+MESES[d.getMonth()]+(d.getFullYear()!==parse(hj).getFullYear()?' de '+d.getFullYear():''); }
 function iniSemVisita(){ var h='';
-    var pr=S.pacientes.filter(ativo).map(function(p){ return {p:p, u:ultimaVisita(p.id)}; }).filter(function(x){ return x.u; })
-      .sort(function(x,y){ return x.u.localeCompare(y.u); });
+    // primeiro quem ainda não recebeu nenhuma visita; depois, quem está há mais tempo sem visita
+    var pr=S.pacientes.filter(ativo).map(function(p){ return {p:p, u:ultimaVisita(p.id)}; })
+      .sort(function(x,y){ return (x.u?1:0)-(y.u?1:0) || (x.u||'').localeCompare(y.u||'') || (x.p.nome||'').localeCompare(y.p.nome||'','pt'); });
     var n=pr.length; pr=pr.slice(0,8);
     if(!pr.length) h='<div class="wgv">Nenhum paciente em acompanhamento.</div>';
     h+='<div class="irows">'+pr.map(function(x){ var dv=diasDesde(x.u);
-      return '<button type="button" class="wr" data-pr="'+x.p.id+'" data-sx="ip:'+x.p.id+'">'+avatar(x.p,44)+'<span class="sp"><b>'+esc(x.p.nome||'(sem nome)')+'</b><small>'+perfilTag(x.p)+esc(x.p.bairro||'')+'</small></span><span class="dd '+corDias(dv)+'">'+haDias(dv)+'</span></button>'; }).join('')+'</div>';
+      return '<button type="button" class="wr" data-pr="'+x.p.id+'" data-sx="ip:'+x.p.id+'">'+avatar(x.p,44)+'<span class="sp"><b>'+esc(x.p.nome||'(sem nome)')+'</b><small>'+perfilTag(x.p)+esc(x.p.bairro||'')+'</small></span>'+(x.u? '<span class="dd '+corDias(dv)+'">'+haDias(dv)+'</span>' : '<span class="dd t6">sem visita</span>')+'</button>'; }).join('')+'</div>';
     h+='<button type="button" class="wgf" id="vTodos">Ver todos os pacientes'+(n>8?' ('+n+')':'')+'</button>';
     return h; }
 function iniVisitas(){ var h='';
@@ -3106,6 +3152,11 @@ var PRONT_EV=null;
 function rEvol(){ var f=EVOL && S.fichas.filter(function(x){ return x.id===EVOL.f; })[0], a=f && f.atend.filter(function(x){ return x.id===EVOL.a; })[0];
   if(a && pacById(a.pacId)){ PRONT=a.pacId; PRONT_EV=a.id; tab='pront'; rPront(); return; }
   $('#main').innerHTML=navbar('Evolução')+'<div class="empty">'+I.visit+'<b>Visita não encontrada</b>Ela pode ter sido removida.</div>'; ligarNav(); }
+var EVL_FORA=null;
+(function(){ var t0=null;
+  document.addEventListener('pointerdown', function(e){ t0= e.isPrimary? {x:e.clientX, y:e.clientY, t:Date.now(), el:e.target} : null; }, true);
+  document.addEventListener('pointerup', function(e){ var a=t0; t0=null; if(!a || !EVL_FORA || tab!=='pront') return;
+    if(Math.hypot(e.clientX-a.x, e.clientY-a.y)>10 || Date.now()-a.t>600) return; EVL_FORA(a.el); }, true); })();
 function evolLista(box, pacId, aid){
   var VS=visitasDe(pacId), TUR={M:'manhã',T:'tarde',N:'noite'}, a=null; VS.forEach(function(x){ if(x.a.id===aid) a=x.a; });
   box.innerHTML='<div class="evl sxl">'+VS.map(function(x){ return '<div class="evi'+(x.a===a?' on':'')+'" data-vf="'+x.f.id+'" data-va="'+x.a.id+'" data-sx="pv:'+x.f.id+':'+x.a.id+'">'+dataBloco(x.a)+'<div class="evc">'+cartao(x, x.a===a)+'</div></div>'; }).join('')+'</div>';
@@ -3116,13 +3167,12 @@ function evolLista(box, pacId, aid){
   // a evolução para copiar: a da última visita antes desta, com evolução escrita
   function anterior(b){ return VS.filter(function(x){ return x.a!==b && x.a.evol && dataV(x.a)<=dataV(b); })[0]; }
   function cartao(x, ativo){ var b=x.a, dd=parse(dataV(b)), st=b.st||{}, c=b.conduta||0;
-    var tags=(c?'<span class="tg cd" style="--c:'+COND_COR[c]+'">'+esc(DESF_CURTO[c]||'')+'</span>':'')+(b.dataReal?'<span class="tg dfxt">'+I.cal+'na ficha '+ddmm(b.data)+'</span>':'');
+    var tags=(c? desfTag({c:c}, true) : '')+(b.dataReal?'<span class="tg dfxt">'+I.cal+'na ficha '+ddmm(b.data)+'</span>':'');
     var h='<div class="evh">'+(ativo? '<label class="tdate evdt'+(b.dataReal?' fx':'')+'">'+sz(I.cal,15)+DS[dd.getDay()].toLowerCase()+' '+ddmm(dataV(b))+sz(I.down,13)+'<input type="date" tabindex="-1" value="'+esc(dataV(b))+'" aria-label="Data da visita"></label>'
         : '<span class="evdia">'+DSL[dd.getDay()]+(dd.getFullYear()!==new Date().getFullYear()?' de '+dd.getFullYear():'')+'</span>')+
-      (b.turno?'<span class="evtu">'+TUR[b.turno]+'</span>':'')+'<span class="sp"></span>'+vicHtml('foto', st.foto)+vicHtml('pass', st.pass)+'</div>'+(tags?'<div class="evtg">'+tags+'</div>':'');
+      (b.turno && S.opc.evTurno!==false?'<span class="evtu">'+TUR[b.turno]+'</span>':'')+'<span class="sp"></span>'+vicHtml('foto', st.foto)+vicHtml('pass', st.pass)+'</div>'+(tags?'<div class="evtg">'+tags+'</div>':'');
     if(!ativo) return h+'<div class="evb">'+(b.evol? '<p class="tle">'+esc(b.evol)+'</p>' : '<p class="tle vz">Sem evolução escrita. Toque para escrever.</p>')+'</div>';
-    var u=!b.evol && anterior(b);
-    return h+'<div class="evb">'+(u? '<button type="button" class="evant">'+I.copy+'<span class="sp">Copiar a evolução da última visita<small>'+DSL[parse(dataV(u.a)).getDay()]+', '+ddmm(dataV(u.a))+': '+esc(u.a.evol.slice(0,70))+(u.a.evol.length>70?'…':'')+'</small></span></button>' : '')+
+    return h+'<div class="evb">'+
       '<textarea class="evt" placeholder="Escreva a evolução desta visita">'+esc(b.evol||'')+'</textarea>'+
       '<div class="evf"><span class="evs">Salva sozinha.</span><button type="button" class="lnk evcp"'+(b.evol?'':' hidden')+'>'+I.copy+'Copiar</button><button type="button" class="lnk evfi">'+I.ficha+'Na ficha</button></div></div>';
   }
@@ -3140,7 +3190,8 @@ function evolLista(box, pacId, aid){
     tx.onblur=grava;
     cp.onclick=function(){ copiar(tx.value, 'Evolução copiada.'); };
     $('.evfi',el).onclick=function(){ grava(); var k=x.f.atend.indexOf(b); if(k>=0) abrirAtend(k, null, x.f); };
-    var ea=$('.evant',el); if(ea) ea.onclick=function(){ var u=anterior(b); if(!u) return; tx.value=u.a.evol; tx.oninput(); if(ea.animate && !reduce){ var an=ea.animate([{opacity:1},{opacity:0,transform:'scale(.96)'}],{duration:180}); an.onfinish=function(){ ea.remove(); cresce(); }; } else ea.remove(); tx.focus(); toast('Evolução de '+ddmm(dataV(u.a))+' copiada. Ajuste o que mudou.'); };
+    copiaFora(el, b, tx, cresce);
+    var ea=null; if(ea) ea.onclick=function(){ var u=anterior(b); if(!u) return; tx.value=u.a.evol; tx.oninput(); if(ea.animate && !reduce){ var an=ea.animate([{opacity:1},{opacity:0,transform:'scale(.96)'}],{duration:180}); an.onfinish=function(){ ea.remove(); cresce(); }; } else ea.remove(); tx.focus(); toast('Evolução de '+ddmm(dataV(u.a))+' copiada. Ajuste o que mudou.'); };
     // mudar a data da visita aqui (se a data da ficha já foi mudada só na ficha, muda a data real)
     var di=$('.evdt input',el); $('.evdt',el).addEventListener('click', function(e){ if(e.target!==di){ try{ di.showPicker(); }catch(_){ di.focus(); } } });
     di.onchange=function(){ var nova=this.value; if(!nova || nova===dataV(b)) return; grava(); var d0=b.data, r0=b.dataReal, f0=x.f;
@@ -3148,17 +3199,52 @@ function evolLista(box, pacId, aid){
       f0.impressa=false; lastPdf=null; save(); render(); var dn=parse(nova);
       toast('Visita em '+DS[dn.getDay()].toLowerCase()+', '+ddmm(nova)+'.', {label:'Desfazer', fn:function(){ b.data=d0; if(r0) b.dataReal=r0; else delete b.dataReal; ordenar(f0); f0.impressa=false; lastPdf=null; save(); render(); }}); };
   }
+  EVL_FORA=function(t){ if(!document.body.contains(box)) return; var on=$('.evi.on',box); if(!on || on.contains(t)) return;
+    if(t.closest && t.closest('.evi,dialog,#menu,#ctx,#toast,.sxa,#tabbar,#topbar')) return; ativar(null); };
+  // "Copiar a evolução da última visita" fica embaixo do cartão aberto; puxando para a esquerda, some (e não volta nesta visita)
+  function copiaFora(el, b, tx, cresce){
+    var v=$(':scope > .evant',el); if(v) v.remove();
+    var u=!b.evol && !b.semCopia && anterior(b); if(!u) return;
+    var c=$('.evc',el), bt=document.createElement('button'); bt.type='button'; bt.className='evant fora'; bt.setAttribute('data-nopg','');
+    bt.innerHTML=I.copy+'<span class="sp">Copiar a evolução da última visita<small>'+DSL[parse(dataV(u.a)).getDay()]+', '+ddmm(dataV(u.a))+': '+esc(u.a.evol.slice(0,70))+(u.a.evol.length>70?'…':'')+'</small></span><span class="evax">'+sz(I.del,18)+'</span>';
+    el.appendChild(bt); bt.style.marginLeft=c.offsetLeft+'px'; bt.style.width=c.offsetWidth+'px';
+    if(bt.animate && !reduce) bt.animate([{opacity:0,transform:'translateY(-6px)'},{opacity:1,transform:'none'}],{duration:300,delay:120,easing:'ease-out',fill:'backwards'});
+    function some(dir){ var hh=bt.offsetHeight; if(!bt.animate || reduce){ bt.remove(); return; }
+      var a=bt.animate([{transform:bt.style.transform||'none', opacity:1},{transform:'translateX('+(dir<0?'-110%':'0')+')', opacity:0}],{duration:220,easing:'ease-in',fill:'forwards'});
+      a.onfinish=function(){ var a2=bt.animate([{height:hh+'px',marginBottom:getComputedStyle(bt).marginBottom},{height:'0px',marginBottom:'0px',paddingTop:'0px',paddingBottom:'0px',borderWidth:'0px'}],{duration:220,easing:'ease-out',fill:'forwards'}); a2.onfinish=function(){ bt.remove(); }; }; }
+    var g=null, moveu=false;
+    bt.addEventListener('touchstart', function(e){ if(e.touches.length!==1) return; g={x:e.touches[0].clientX, y:e.touches[0].clientY, d:0, h:null}; moveu=false; bt.style.transition='none'; }, {passive:true});
+    bt.addEventListener('touchmove', function(e){ if(!g) return; var dx=e.touches[0].clientX-g.x, dy=e.touches[0].clientY-g.y;
+      if(g.h===null){ if(Math.abs(dx)<7 && Math.abs(dy)<7) return; g.h=Math.abs(dx)>Math.abs(dy); }
+      if(!g.h) return; e.preventDefault(); moveu=true; g.d=Math.min(0,dx)+Math.max(0,dx)*.15; bt.style.transform='translateX('+g.d.toFixed(1)+'px)';
+      bt.classList.toggle('sai', g.d<-bt.offsetWidth*.35); }, {passive:false});
+    bt.addEventListener('touchend', function(){ if(!g) return; var G=g; g=null; if(!G.h) return;
+      if(G.d<-bt.offsetWidth*.35){ b.semCopia=true; save(); some(-1); toast('Sugestão de cópia removida.', {label:'Desfazer', fn:function(){ delete b.semCopia; save(); copiaFora(el, b, tx, cresce); }}); }
+      else { bt.style.transition='transform .3s cubic-bezier(.3,1.4,.5,1)'; bt.style.transform=''; bt.classList.remove('sai'); } });
+    bt.onclick=function(){ if(moveu){ moveu=false; return; } var u2=anterior(b); if(!u2) return; tx.value=u2.a.evol; tx.oninput(); some(0); tx.focus(); cresce(); toast('Evolução da última visita copiada. Ajuste o que mudou.'); };
+  }
   // abre outra evolução: a aberta encolhe e vira um cartão, a tocada cresce no lugar (e a página desliza até ela)
   function ativar(el){
     if(salvaPend) salvaPend(); salvaPend=null; var old=$('.evi.on',box), x=el? xDe(el) : null; if((el && !x) || el===old) return;
     var E='cubic-bezier(.22,.9,.25,1)', els=[old,el].filter(Boolean), h0=els.map(function(e){ return $('.evc',e).offsetHeight; });
     PRONT_EV= x? x.a.id : null;
-    if(old){ var xo=xDe(old); old.classList.remove('on'); $('.evc',old).innerHTML=cartao(xo,false); ligar(old); }
+    if(old){ var xo=xDe(old); old.classList.remove('on'); $('.evc',old).innerHTML=cartao(xo,false); ligar(old); var fo=$(':scope > .evant',old); if(fo) fo.remove(); }
     if(el){ el.classList.add('on'); $('.evc',el).innerHTML=cartao(x,true); ligar(el); }
     var h1=els.map(function(e){ return $('.evc',e).offsetHeight; }), alvo= el? el.getBoundingClientRect().top+scrollY-110 : null;
     if(!reduce && (el||old) && (el||old).animate){ els.forEach(function(e,i){ var c=$('.evc',e); c.animate([{height:h0[i]+'px'},{height:h1[i]+'px'}],{duration:440,easing:E}); $('.evb',e).animate([{opacity:0,transform:'translateY(-4px)'},{opacity:1,transform:'none'}],{duration:320,delay:90,easing:'ease-out',fill:'backwards'}); }); }
     if(el && alvo<scrollY+40) window.scrollTo({top:Math.max(0,alvo), behavior: reduce?'auto':'smooth'});
   }
+}
+function menuBairro(p, bt){
+  var l=bairrosLista(), d=distrito();
+  var html='<div class="mh">'+(d? 'Bairros do '+esc(d[0]) : 'Bairro')+'</div><div class="mscroll">'+l.map(function(x){ return '<button class="mo" data-bo="'+esc(x)+'">'+(x===p.bairro? I.chk : '<i class="mo0"></i>')+'<span><b>'+esc(x)+'</b></span></button>'; }).join('')+'</div>'+
+    '<div class="sep"></div><button class="mo" data-bo="__outro">'+I.plus+'<span><b>Outro bairro</b>'+(d?'':'<small>Escolha o distrito em Ajustes, Padrões das visitas</small>')+'</span></button>'+
+    (p.bairro? '<button class="mo" data-bo="__sem">'+I.x+'<span><b>Tirar o bairro</b></span></button>' : '');
+  openMenu(bt, html);
+  $$('#menu [data-bo]').forEach(function(o){ o.onclick=function(){ var v=o.dataset.bo; closeMenu();
+    if(v==='__outro'){ v=prompt('Nome do bairro:', ''); if(v==null) return; v=v.trim(); if(!v) return; }
+    if(v==='__sem') v='';
+    p.bairro=v; save(); bt.innerHTML=esc(v||'Bairro')+sz(I.down,13); bt.classList.toggle('vz', !v); }; });
 }
 // ---------- prontuário do paciente ----------
 var PRONT=null, EVOL=null;
@@ -3166,8 +3252,8 @@ function abrirPront(id){ if(PRONT!==id && !(EVOL && PRONT_EV)) PRONT_EV=null; PR
 var MES3=['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
 function cidsDe(p){ p.cids=(p.cids||[]).filter(Boolean); if(p.cid && p.cids.indexOf(p.cid)<0) p.cids.unshift(p.cid); return p.cids; }
 function prHead(p){ var at=ativo(p);
-  return avatar(p,64)+'<div class="sp"><b>'+esc(p.nome||'(sem nome)')+'</b><span>'+esc([idade(p.nasc), p.adm? 'no SAD desde '+brDate(p.adm) : ''].filter(Boolean).join(' · ')||'Sem dados')+'</span>'+
-    '<span class="phtg">'+pfSeg(p)+(!at && desfecho(p)? '<span class="tg cd" style="--c:'+COND_COR[desfecho(p).c]+'">'+esc(desfTxt(desfecho(p)))+'</span>' : '')+'</span></div>'; }
+  return avatar(p,64)+'<div class="sp"><b>'+esc(p.nome||'(sem nome)')+'</b><span>'+esc([idade(p.nasc), p.adm? 'admissão '+brDate(p.adm) : ''].filter(Boolean).join(' · ')||'Sem dados')+'</span>'+
+    '<span class="phtg">'+pfSeg(p)+(!at && desfecho(p)? desfTag(desfecho(p)) : '')+'</span></div>'; }
 function pfSeg(p){ return '<span class="gtabs glass mseg pfseg noswipe" id="prPerf" data-v="'+(p.perfil||'')+'" role="tablist"><span class="lens"></span>'+PERFIS.map(function(o){ return '<button type="button" role="tab" data-v="'+o[0]+'"'+(p.perfil===o[0]?' class="on"':'')+'>'+o[1]+'</button>'; }).join('')+'</span>'; }
 function ligaHead(p){ var sg=$('#prPerf'); if(!sg) return; moveLens(sg, false);
   $$('button',sg).forEach(function(bt){ bt.onclick=function(){ p.perfil= p.perfil===bt.dataset.v? '' : bt.dataset.v; save(); sg.dataset.v=p.perfil||'';
@@ -3245,13 +3331,12 @@ function condRow(p){ var cond=((p.ult||{}).condicoes)||[];
 function prAcomp(p){
   var vs=visitasDe(p.id), u=vs[0] && vs[0].a, du=u? diasDesde(dataV(u)) : null;
   return '<div class="ig prcard"><div class="igb ni">'+
-    '<label class="ir dt"><span class="il">Admissão no SAD'+(p.adm?'<small>há '+diasDesde(p.adm)+' dias</small>':'')+'</span><span class="iv'+(p.adm?'':' vazio')+'">'+(p.adm? brDate(p.adm) : 'Informar')+'</span><input type="date" id="prAdm" value="'+esc(p.adm||'')+'" aria-label="Data de admissão"></label>'+
-    '<label class="ir" for="prBai"><span class="il">Bairro</span><input class="ri" id="prBai" list="dlBai2" placeholder="Informar" value="'+esc(p.bairro||'')+'" autocomplete="off" autocapitalize="words"></label>'+
-    '<label class="ir" for="prEnd"><span class="il">Endereço</span><input class="ri" id="prEnd" placeholder="Rua e número" value="'+esc(p.end||'')+'" autocomplete="off" autocapitalize="words"></label>'+
+    '<label class="ir dt"><span class="il">Admissão'+(p.adm?'<small>há '+diasDesde(p.adm)+' dias</small>':'')+'</span><span class="iv'+(p.adm?'':' vazio')+'">'+(p.adm? brDate(p.adm) : 'Informar')+'</span><input type="date" id="prAdm" value="'+esc(p.adm||'')+'" aria-label="Data de admissão"></label>'+
+    '<div class="ir prend"><button type="button" class="baip'+(p.bairro?'':' vz')+'" id="prBaiB" aria-label="Bairro">'+esc(p.bairro||'Bairro')+sz(I.down,13)+'</button><input class="ri" id="prEnd" placeholder="Endereço: rua e número" value="'+esc(p.end||'')+'" autocomplete="off" autocapitalize="words" aria-label="Endereço"></div>'+
     '<div class="ir"><span class="il">Última visita'+(u?'<small>'+esc(diaTxt(dataV(u)))+'</small>':'')+'</span><span class="iv">'+(u? '<span class="dd '+corDias(du)+'">'+haDias(du)+'</span>' : 'Nenhuma ainda')+'</span></div>'+
     '<div class="ir prch prcod" id="prCodW"><span class="il">'+miniSeg('prCodT',[['cid','CID'],['ciap','CIAP']],codTipo())+'</span><span class="prcs cods"></span></div>'+
     condRow(p)+
-    '</div></div><datalist id="dlBai2">'+bairros().map(function(x){ return '<option value="'+esc(x)+'">'; }).join('')+'</datalist>';
+    '</div></div>';
 }
 function prCad(p){
   var info=docInfo(p.docTipo, p.doc);
@@ -3292,7 +3377,7 @@ function ligaCond(p){
 function ligaCard(p){
   var b, hd=function(){ var x=$('#prHd'); if(x){ x.innerHTML=prHead(p); ligaHead(p); } };
   // Acompanhamento
-  if((b=$('#prBai'))) b.onchange=function(){ p.bairro=this.value.trim(); save(); };
+  if((b=$('#prBaiB'))) b.onclick=function(){ menuBairro(p, b); };
   if((b=$('#prEnd'))) b.onchange=function(){ p.end=this.value.trim(); save(); };
   codEditor($('#prCodW'), p, true); ligaCond(p);
   // Cadastro: tudo editável aqui mesmo
@@ -3303,7 +3388,9 @@ function ligaCard(p){
   $$('#pcSexo button').forEach(function(bt){ bt.onclick=function(){ p.sexo= p.sexo===bt.dataset.v? '' : bt.dataset.v; snapPac(p); save(); $$('#pcSexo button').forEach(function(x){ x.classList.toggle('on', x.dataset.v===p.sexo); }); pop(bt); }; });
   [['pcNasc','nasc'],['prAdm','adm']].forEach(function(x){ var el=$('#'+x[0]); if(!el) return; var lb=el.parentNode;
     lb.addEventListener('click', function(e){ if(e.target!==el){ try{ el.showPicker(); }catch(err){ el.focus(); } } });
-    el.onchange=function(){ p[x[1]]=this.value||''; if(x[1]==='nasc') snapPac(p); save(); hd(); refazCard(p); }; });
+    var mudou=false;
+    el.onchange=function(){ p[x[1]]=this.value||''; if(x[1]==='nasc') snapPac(p); save(); mudou=true; var iv=$('.iv',lb); if(iv){ iv.textContent=this.value? brDate(this.value) : 'Informar'; iv.classList.toggle('vazio', !this.value); } };
+    el.onblur=function(){ if(!mudou) return; mudou=false; hd(); refazCard(p); }; });
   var ob=$('#pcObs'); if(ob){ var cresce=function(){ ob.style.height='auto'; ob.style.height=ob.scrollHeight+'px'; }; cresce(); ob.oninput=cresce; ob.onchange=function(){ p.obs=this.value.trim(); save(); }; }
 }
 function ligaResto(p){
@@ -3414,7 +3501,12 @@ function rAjVis(){
       (pd.sigtap && !lst.some(function(s){return s.cod===pd.sigtap;})? '<option value="'+esc(pd.sigtap)+'" selected>'+esc(pd.sigtap)+'</option>' : '')+'</select><span class="ic">'+sz(I.down,14)+'</span></label>'+
     '<label class="ir" for="dLoc"><span class="il">Local</span><select class="ri" id="dLoc">'+F.LOCAIS.map(function(l){ return '<option value="'+l[0]+'"'+(pd.local===l[0]?' selected':'')+'>'+l[0]+' – '+esc(l[1])+'</option>'; }).join('')+'</select><span class="ic">'+sz(I.down,14)+'</span></label>',
     'Usados na primeira visita de cada paciente. Nas seguintes, o app repete a última. Os códigos vêm da lista em Códigos SIGTAP.', 'ni');
+  h+=grupo('Área', '<label class="ir" for="dDist"><span class="il">Distrito</span><select class="ri" id="dDist"><option value="">Nenhum</option>'+DISTRITOS.map(function(d){ return '<option value="'+d[0]+'"'+(distritoCod()===d[0]?' selected':'')+'>'+d[0]+' · '+esc(d[1])+'</option>'; }).join('')+'</select><span class="ic">'+sz(I.down,14)+'</span></label>',
+    'No prontuário, o bairro mostra só os bairros deste distrito (e os que já estão nos seus pacientes).', 'ni');
+  h+=grupo('Turno nas evoluções', '<div class="ipad">'+segHtml('dTur',[['1','Mostrar'],['0','Esconder']], S.opc.evTurno===false?'0':'1')+'</div>', 'O turno continua na ficha; isto só tira ele do topo das evoluções no prontuário.', 'ni');
   $('#main').innerHTML=h; ligarNav();
+  $('#dDist').onchange=function(){ S.opc.distrito=this.value; save(); };
+  $$('#dTur button').forEach(function(b){ b.onclick=function(){ $$('#dTur button').forEach(function(x){x.classList.toggle('on',x===b);}); pop(b); S.opc.evTurno= b.dataset.v==='1'; save(); }; });
   $$('#dMod button').forEach(function(b){ b.onclick=function(){ $$('#dMod button').forEach(function(x){x.classList.toggle('on',x===b);}); pop(b); pd.modalidade=b.dataset.v; save(); }; });
   $('#dSig').onchange=function(){ pd.sigtap=this.value; save(); };
   $('#dLoc').onchange=function(){ pd.local=this.value; save(); };
@@ -3501,7 +3593,7 @@ function rAjApar(){
   var r=$('#oVid'); r.oninput=function(){ o.vidro=+this.value; this.style.setProperty('--p', this.value+'%'); aplicarTema(); }; r.onchange=function(){ save(); };
 }
 
-var TAM_APP=1327728;
+var TAM_APP=1338954;
 function tamanhoApp(){ if(TAM_APP==null){ try{ TAM_APP=new Blob([document.documentElement.outerHTML]).size; }catch(e){ TAM_APP=0; } } return TAM_APP? (TAM_APP/1048576).toFixed(1).replace('.',',')+' MB' : '—'; }
 function rSobre(){
   var nAt=0; S.fichas.forEach(function(f){ nAt+=f.atend.length; });
@@ -3732,6 +3824,7 @@ function corDias(n){ return n==null? '' : 't'+faixaDias(n); }
 function ativo(p){ if(p.alta) return false; var u=ultimoAtend(p.id); return !u || !u.conduta; }
 // desfecho atual: alta registrada sem visita (p.alta) ou a conduta da última visita
 function desfecho(p){ if(p.alta) return {c:p.alta.c, d:p.alta.d||'', sv:true}; var u=ultimoAtend(p.id); return u && u.conduta? {c:u.conduta, d:dataV(u)} : null; }
+function desfTag(x, curto){ return x && DESF_CURTO[x.c]? '<span class="tg dsf" style="--c:'+COND_COR[x.c]+'">'+esc(curto? DESF_CURTO[x.c] : desfTxt(x))+'</span>' : ''; }
 function desfTxt(x){ return x? (DESF_CURTO[x.c]||'')+(x.d? ' em '+ddmm(x.d) : ' (sem visita)') : ''; }
 function visitasDe(pacId){ var l=[]; S.fichas.forEach(function(f){ f.atend.forEach(function(a,k){ if(a.pacId===pacId) l.push({f:f,a:a,k:k}); }); });
   return l.sort(function(x,y){ return dataV(y.a).localeCompare(dataV(x.a)) || (y.a.turno||'').localeCompare(x.a.turno||''); }); }
@@ -3740,6 +3833,11 @@ function copiar(txt, msg){
   function ok(){ toast(msg||'Copiado.'); }
   function velho(){ var t=document.createElement('textarea'); t.value=txt; t.style.cssText='position:fixed;opacity:0;top:0'; document.body.appendChild(t); t.select(); try{ document.execCommand('copy'); ok(); }catch(e){ prompt('Copie o texto:', txt); } t.remove(); }
   if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(ok, velho); else velho(); }
+function distritoCod(){ return S.opc.distrito==null? 'DASAC' : S.opc.distrito; }
+function distrito(){ var c=distritoCod(); return DISTRITOS.filter(function(d){ return d[0]===c; })[0]||null; }
+// bairros para escolher: os do distrito (em Ajustes) e os que já estão nos pacientes
+function bairrosLista(){ var d=distrito(), b={}; (d?d[2]:[]).forEach(function(x){ b[nomeChave(x)]=x; }); bairros().forEach(function(x){ var k=nomeChave(x); if(!b[k]) b[k]=x; });
+  return Object.keys(b).map(function(k){ return b[k]; }).sort(function(x,y){ return x.localeCompare(y,'pt'); }); }
 function bairros(){ var b={}; S.pacientes.forEach(function(p){ var x=(p.bairro||'').trim(); if(x) b[x]=1; }); return Object.keys(b).sort(function(x,y){ return x.localeCompare(y,'pt'); }); }
 function ultimoAtend(pacId){ var u=null; S.fichas.forEach(function(f){ f.atend.forEach(function(a){ if(a.pacId===pacId && (!u || dataV(a)>=dataV(u))) u=a; }); }); return u; }
 function visitaDeAlta(p, tipo, data, turno){
@@ -4085,7 +4183,7 @@ var SX=null;
     var t=e.target, x=e.touches[0].clientX, y=e.touches[0].clientY;
     if(ab && !(t.closest && (t.closest('.sxa')===ab.lay || t===ab.row || ab.row.contains(t)))){ fecha(ab); cliqueBloq=Date.now(); return; }
     if(ab && ab.tur && ab.d>0 && ab.tur.contains(t)) return;
-    var row=linhaDe(t); if(!row || x<BORDA || x>innerWidth-BORDA || (t.closest && t.closest('textarea,input:not([type=date])'))) return;
+    var row=linhaDe(t); if(!row || x<BORDA || x>innerWidth-BORDA || (t.closest && t.closest('textarea,input:not([type=date]),.evant'))) return;
     g={row:row, x0:x, y0:y, t0:Date.now(), trava:null, d0: ab && ab.row===row ? ab.d : 0};
     row.addEventListener('touchmove', mover, {passive:false}); row.addEventListener('touchend', solta); row.addEventListener('touchcancel', cancela);
   }, {passive:true, capture:true});
@@ -4507,7 +4605,7 @@ function mapaListaDepois(){ if(MTOQUE || MAPA.anim){ MAPA.pend=true; return; } v
 function mapaListaRender(box){
   var ps=MAPA.lista.filter(mapaVisivel), dias=mapaCor()==='dias', sem=[], por={};
   ps.forEach(function(p){ if(!p.end || (p.geo && p.geo.q===geoQ(p) && p.geo.m==='x')) sem.push(p); else { var b=(p.bairro||'').trim()||'Sem bairro'; (por[b]=por[b]||[]).push(p); } });
-  function dd(p){ var d=diasPac(p); return d==null? -1 : d; }
+  function dd(p){ var d=diasPac(p); return d==null? 1e6 : d; }
   function linha(p){ var d=diasPac(p), u=d!=null;
     return '<button type="button" class="mrow'+(MAPA.sel===p.id?' sel':'')+'" data-mp="'+p.id+'">'+avatar(p,40)+'<span class="sp"><span class="t">'+esc(p.nome||'(sem nome)')+'</span><span class="s">'+
       (!p.end? perfilTag(p)+'<span class="semend">Sem endereço</span>' : sem.indexOf(p)>=0? '<span class="semend">Não achado no mapa</span> · '+esc(p.end) : esc(p.end))+'</span></span>'+
@@ -4518,7 +4616,7 @@ function mapaListaRender(box){
   var maxd=function(b){ return Math.max.apply(null, por[b].map(dd)); };
   Object.keys(por).forEach(function(b){ por[b].sort(function(x,y){ return dias? dd(y)-dd(x) : (x.nome||'').localeCompare(y.nome||'','pt'); }); });
   Object.keys(por).sort(function(a,b){ return dias? maxd(b)-maxd(a) : por[b].length-por[a].length || a.localeCompare(b,'pt'); }).forEach(function(b){
-    var m=maxd(b); h+='<div class="sech msec">'+esc(b)+' · '+por[b].length+(dias && m>=0? '<span>mais antigo: '+m+' d</span>' : '')+'</div><div class="rows">'+por[b].map(linha).join('')+'</div>'; });
+    var m=maxd(b); h+='<div class="sech msec">'+esc(b)+' · '+por[b].length+(dias && m>=0? '<span>'+(m>=1e6? 'tem paciente sem visita' : 'mais antigo: '+m+' d')+'</span>' : '')+'</div><div class="rows">'+por[b].map(linha).join('')+'</div>'; });
   if(!ps.length) h='<div class="empty">'+I.pac+'<b>Nenhum paciente aqui</b>'+(MAPA.lista.length? 'Os filtros estão escondendo todos.' : 'Só aparecem os pacientes em acompanhamento.')+'</div>';
   box.innerHTML=h;
   $$('.mrow',box).forEach(function(r){ r.onclick=function(){ var id=r.dataset.mp, p=pacById(id); mapaSel(id, true);
