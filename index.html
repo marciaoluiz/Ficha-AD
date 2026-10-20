@@ -1182,6 +1182,45 @@ body.tab-pac #toast{bottom:calc(var(--tbb) + 136px)}
 .pkbar.bs .pks{flex:1 1 100%}
 .pkbar.bs .pks input{opacity:1}
 .pkbar.bs .pkx{display:grid}
+#pickBg{position:fixed;inset:0;z-index:7;background:rgba(0,0,0,.38);animation:pkFade .3s ease}
+@keyframes pkFade{from{opacity:0}}
+#pick{position:fixed;left:8px;right:8px;top:calc(env(safe-area-inset-top) + 14px);bottom:0;z-index:7;background:var(--s);color:var(--ink);border-radius:var(--shr) var(--shr) 0 0;box-shadow:0 -10px 40px rgba(0,0,0,.25),0 0 0 .5px rgba(0,0,0,.05);overflow:hidden;max-height:none;animation:pkUp .48s cubic-bezier(.2,.9,.25,1);will-change:transform}
+[data-mode="dark"] #pick{box-shadow:0 -10px 40px rgba(0,0,0,.5),inset 0 0 0 .5px rgba(255,255,255,.1),inset 0 1px 0 rgba(255,255,255,.06)}
+@keyframes pkUp{from{transform:translateY(100%)}}
+#pick .grab{margin-top:7px}
+#pick .top{padding-left:20px;padding-right:20px}
+#pick .bd{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:0 0 calc(var(--tbb) + 110px)}
+#pick .sech{margin-left:22px}
+#pick .rows{margin:0 10px;background:transparent;border:0}
+#pick .rows .pick{padding:10px 10px;background:transparent}
+#pick .rows .pick:last-child{border-bottom:0}
+body.picking{overflow:hidden}
+body.picking #tabbar{z-index:9}
+body.picking #toast{z-index:12}
+body.picking #pBusca{display:none}
+.pkvfx{position:fixed!important;left:0;top:0;width:100vw;height:100vh;z-index:10!important}
+.pkgota{position:fixed;z-index:10;pointer-events:none;background:radial-gradient(60% 50% at 35% 28%,rgba(255,255,255,.75),rgba(255,255,255,0) 60%),linear-gradient(180deg,color-mix(in srgb,var(--acc) 82%,#fff),var(--acc));box-shadow:inset 0 -2px 4px color-mix(in srgb,var(--acc) 60%,#000 20%),inset 0 1px 1px rgba(255,255,255,.7),0 3px 8px color-mix(in srgb,var(--acc) 40%,transparent)}
+body.picking #tabbar .gtabs > :not(#pkCad){opacity:0!important;visibility:hidden!important;pointer-events:none!important}
+#pkCad{position:absolute;inset:0;z-index:4;border-radius:inherit;opacity:0;pointer-events:none;transition:opacity .2s}
+body.picking #pkCad{transition:opacity .3s .38s}
+body.picking #pkCad{opacity:1;pointer-events:auto}
+#tabbar #pNovo{position:absolute;inset:0;width:100%;height:100%;border:0;background:none;border-radius:inherit;font:inherit;font-size:16px;font-weight:800;letter-spacing:0;color:var(--acc-ink);display:flex;flex-direction:row;align-items:center;justify-content:center;gap:8px;padding:0 14px;transition:opacity .2s}
+#tabbar #pNovo svg{width:18px;height:18px;flex:none}
+#tabbar #pkX{flex:none}
+#pkCad .pkq{position:absolute;inset:0;display:flex;align-items:center;gap:10px;padding:0 10px 0 20px;color:var(--mut);opacity:0;pointer-events:none;transition:opacity .2s}
+body.pkbusca #pNovo{opacity:0;pointer-events:none}
+body.pkbusca #pkCad .pkq{opacity:1;pointer-events:auto}
+#pkCad .pkq input,#pkCad .pkq input:focus{flex:1;min-width:0;height:100%;min-height:0;border:0;background:transparent;box-shadow:none;outline:none;padding:0;font-size:17px;color:var(--ink);-webkit-appearance:none;appearance:none;border-radius:0}
+#pkCad .pkq input::-webkit-search-cancel-button{display:none}
+#tabbar #pkX{display:none;width:24px;height:24px;border:0;border-radius:50%;padding:0;place-items:center;background:color-mix(in srgb,var(--mut) 24%,transparent);color:var(--ink)}
+#tabbar #pkCad.tem #pkX{display:grid}
+#plus.glass{transition:background .35s,border-color .35s,box-shadow .35s,color .35s,transform .32s cubic-bezier(.3,1.4,.5,1)}
+body.picking #plus.glass{background:var(--gl-bg);border-color:var(--gl-bd);box-shadow:var(--gl-sh);color:var(--ink)}
+#plus .pi{position:absolute;inset:0;display:grid;place-items:center;transition:opacity .25s,transform .4s cubic-bezier(.3,1.4,.5,1)}
+#plus .pi2,#plus .pi3{opacity:0;transform:scale(.4) rotate(-40deg)}
+body.picking #plus .pi1{opacity:0;transform:scale(.4) rotate(90deg)}
+body.picking:not(.pkbusca) #plus .pi2{opacity:1;transform:none}
+body.pkbusca #plus .pi3{opacity:1;transform:none}
 /* ---------- mapa (Pacientes) ---------- */
 .mslot{position:relative;height:340px;margin:2px 12px 0;border-radius:24px}
 .pmapa{position:absolute;inset:0;border-radius:24px;overflow:hidden;background:#e9e7e1;touch-action:none}
@@ -1727,7 +1766,7 @@ var TABS=[['hoje','Início',I.tHoje],['ficha','Ficha',I.tFicha],['cal','Calendá
 function montarNav(){
   $$('#tabbar .gtabs button[data-tab], #topbar .gseg button[data-tab]').forEach(function(b){ var t=TABS.filter(function(x){return x[0]===b.dataset.tab;})[0]; b.innerHTML=t[2]+t[1]; b.onclick=function(){ if(Date.now()-tabPtrT<600) return; irTab(t[0]); }; });
   $('#tbLogo').src=LOGO;
-  $('#plus').innerHTML=I.tPlus;
+  $('#plus').innerHTML='<span class="pi pi1">'+I.tPlus+'</span><span class="pi pi2">'+sz(I.srch,24)+'</span><span class="pi pi3">'+sz(I.x,22)+'</span>';
   $('#dDl').innerHTML=I.dl+'Baixar PDF'; $('#dDl').onclick=function(){ baixarDireto(); };
   $('#dAdd').innerHTML=I.plus+'Nova visita';
   segurar($('#plus'), function(){ escolherPaciente(); }, function(){ menuMais($('#plus')); });
@@ -1753,7 +1792,7 @@ function moveLens(cont, anim){
   lens._x=x; lens._w=w;
 }
 function pop(el){ if(!el || reduce || !el.animate) return; el.animate([{transform:'scale(1)'},{transform:'scale(1.08)'},{transform:'scale(1)'}],{duration:300,easing:'cubic-bezier(.3,1.5,.5,1)'}); }
-function render(){ if(SX) SX.fecha(); if(typeof DATA_NOVA!=='undefined') DATA_NOVA=null;
+function render(){ if(SX) SX.fecha(); if(PICK) fecharPick(true); if(typeof DATA_NOVA!=='undefined') DATA_NOVA=null;
   var wide=wideMQ.matches;
   document.body.classList.toggle('wide', wide);
   document.body.className=document.body.className.replace(/\btab-\w+/g,'').trim()+' tab-'+tab;
@@ -2356,8 +2395,111 @@ function ligarArraste(){
 function filtra(q){ q=(q||'').toLowerCase().trim(); var qd=dig(q);
   return S.pacientes.filter(function(p){ return !q || (p.nome||'').toLowerCase().indexOf(q)>=0 || (qd && dig(p.doc).indexOf(qd)>=0); }); }
 function avatar(p, n){ n=n||42; return '<span class="av" style="width:'+n+'px;height:'+n+'px;--avc:'+corDe(p.id||p.nome)+';background:var(--avc)">'+esc(iniciais(p.nome))+'</span>'; }
+// ---------- quem foi atendido (celular): a lista ocupa a tela; a barra de baixo vira "Cadastrar paciente novo" e o + vira a lupa ----------
+var PICK=null;
+function pickLinhas(q){ var ps=filtra(q).map(function(p){ return [p, ultimaVisita(p.id)]; }), na=PICK? PICK.na : [];
+  ps.sort(function(a,b){ return q? (a[0].nome||'').localeCompare(b[0].nome||'','pt') : (b[1]||'').localeCompare(a[1]||'') || (a[0].nome||'').localeCompare(b[0].nome||'','pt'); });
+  return ps.length? '<div class="sech" style="margin-top:4px">'+(q? ps.length+' encontrado'+(ps.length>1?'s':'') : 'Atendidos recentemente')+'</div><div class="rows">'+ps.map(function(x){ var p=x[0];
+    return '<button type="button" class="pick" data-p="'+p.id+'">'+avatar(p)+'<span class="sp"><span class="t">'+esc(p.nome||'(sem nome)')+'</span><span class="s">'+(x[1]?'Última visita: '+ddmm(x[1]):'Ainda sem visitas')+(na.indexOf(p.id)>=0?'. Já atendido neste dia':'')+'</span></span></button>'; }).join('')+'</div>'
+    : '<div class="empty">'+I.pac+'<b>'+(S.pacientes.length?'Nenhum paciente encontrado':'Nenhum paciente cadastrado')+'</b>'+(S.pacientes.length?'Tente outro nome ou CPF.':'Toque em "Cadastrar paciente novo".')+'</div>'; }
+// a gota de vidro (o mesmo vidro líquido do calendário): escorre do + para a esquerda, cobre a barra e só então se solta do +
+function pickCamadas(){
+  var NS='http://www.w3.org/2000/svg', id='vgp'+(++VGN), esc=document.documentElement.getAttribute('data-mode')==='dark';
+  var so=document.createElementNS(NS,'svg'); so.setAttribute('class','vfx pkvfx'); so.setAttribute('aria-hidden','true'); so.innerHTML='<path class="lo"/>';
+  var sg=document.createElementNS(NS,'svg'); sg.setAttribute('class','vfx pkvfx g'); sg.setAttribute('aria-hidden','true');
+  sg.innerHTML='<defs><filter id="'+id+'h" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB"><feGaussianBlur in="SourceAlpha" stdDeviation="3.4" result="b"/><feSpecularLighting in="b" surfaceScale="7" specularConstant="1.35" specularExponent="26" lighting-color="#fff" result="s"><feDistantLight azimuth="235" elevation="40"/></feSpecularLighting><feComposite in="s" in2="SourceAlpha" operator="in" result="si"/><feDiffuseLighting in="b" surfaceScale="7" diffuseConstant="1" lighting-color="#fff" result="d"><feDistantLight azimuth="235" elevation="40"/></feDiffuseLighting><feColorMatrix in="d" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -.75 0 0 0 .485" result="dk"/><feComposite in="dk" in2="SourceAlpha" operator="in" result="dki"/><feMerge><feMergeNode in="dki"/><feMergeNode in="si"/></feMerge></filter>'+
+    '<filter id="'+id+'s" x="-30%" y="-30%" width="160%" height="180%"><feGaussianBlur in="SourceAlpha" stdDeviation="6"/><feOffset dy="5" result="o"/><feComposite in="o" in2="SourceAlpha" operator="out" result="x"/><feComponentTransfer in="x"><feFuncA type="linear" slope="'+(esc?.32:.12)+'"/></feComponentTransfer></filter></defs>'+
+    '<g class="gg"><path class="gs" filter="url(#'+id+'s)"/><path class="gt"/><path class="gh" filter="url(#'+id+'h)"/><path class="gp"/><path class="gb"/><path class="gr"/></g>';
+  document.body.appendChild(so); document.body.appendChild(sg);
+  return {so:so, sg:sg, lo:so.querySelector('.lo'), gg:sg.querySelector('.gg'), gps:$$('path',sg.querySelector('.gg')), some:function(){ so.remove(); sg.remove(); }};
+}
+var PKG=null;
+function pickGota(abrindo, fim){
+  if(PKG){ PKG(); PKG=null; }
+  var pl=$('#plus'), gt=$('#tabbar .gtabs'), cad=$('#pkCad');
+  if(!pl || !gt || reduce || !window.SVGElement){ if(cad){ cad.style.clipPath=''; cad.style.opacity=''; cad.style.transition=''; } if(fim) fim(); return; }
+  var a=pl.getBoundingClientRect(), b=gt.getBoundingClientRect();
+  var fa={x:a.left+a.width/2, y:a.top+a.height/2, w:a.width, h:a.height}, ba={x:b.left+b.width/2, y:b.top+b.height/2, w:b.width, h:b.height};
+  var M=vgMola(.85,20), M2=vgMola(.9,25), at=.14, T=Math.max(M.fim, M2.fim+at)+.02, l0=fa.x-fa.w/2, l1=ba.x-ba.w/2, r0=fa.x+fa.w/2, r1=ba.x+ba.w/2;
+  var L=pickCamadas(), s=0, last=performance.now(), raf=0, acabou=false;
+  if(cad){ cad.style.transition= abrindo? 'none' : 'opacity .14s'; cad.style.opacity= abrindo? '1' : '0'; }
+  var corF=1;
+  function quadro(tt){ var p=vgCl(tt/T), F=M.p(tt), Rr=vgLerp(r0,r1,M2.p(tt-at)), Lx=vgLerp(l0,l1,F), h=fa.h, G=[];
+    var w=Math.max(h, Rr-Lx); G.push({x:Lx+w/2, y:fa.y, w:w, h:vgLerp(h, ba.h, vgCl(F)), r:h/2});
+    var solta=vgCl(M2.p(tt-at)); if(solta<.98) G.push({c:1, x:fa.x, y:fa.y, r:fa.h/2*(1-solta*.9)});
+    var oa=(1-vgIO(vgCl(p/.4)))*corF, gv=vgOutC(vgCl(p/.06))*(1-vgInC(vgCl((p-.8)/.2))), k=16;
+    function campo(x,y){ var d=1e9; for(var i=0;i<G.length;i++) d=vgSmin(d, vgSd(x,y,G[i]), k); return d; }
+    var d=vgCaminho(vgContorno(campo, vgCaixa(G, k+6), 3));
+    L.gps.forEach(function(e){ e.setAttribute('d', d); }); L.lo.setAttribute('d', d);
+    L.so.style.opacity=oa.toFixed(3); L.gg.style.opacity=gv.toFixed(3);
+    // por onde a frente do vidro já passou, a barra mostra "Cadastrar paciente novo"
+    if(cad && abrindo){ var xr=vgCl((Lx-l1)/ba.w)*100; cad.style.clipPath='inset(0 0 0 '+xr.toFixed(1)+'%)'; } }
+  function acaba(){ if(acabou) return; acabou=true; if(raf) cancelAnimationFrame(raf); L.some(); if(cad){ cad.style.clipPath=''; cad.style.transition=''; cad.style.opacity=''; } PKG=null; if(fim) fim(); }
+  function passo(now){ raf=0; s+=Math.min(.05, Math.max(0,(now-last)/1000))*(window.SLOW||1); last=now; var p=vgCl(s/T);
+    if(!abrindo) corF=1-vgIO(vgCl((p-.72)/.28));
+    quadro(abrindo? p*T : (1-vgIO(p))*T); if(p>=1){ acaba(); return; } raf=requestAnimationFrame(passo); }
+  quadro(abrindo? 0 : T); raf=requestAnimationFrame(passo); PKG=acaba;
+}
+function abrirPick(){
+  if(PICK){ pickBusca(!document.body.classList.contains('pkbusca')); return; }
+  var na=fichaAtual().atend.filter(function(a){return a.data===S.ultData;}).map(function(a){return a.pacId;});
+  // folha que sobe por baixo (como as outras), e fecha puxando para baixo
+  var bg=document.createElement('div'); bg.id='pickBg'; document.body.appendChild(bg);
+  var ov=document.createElement('div'); ov.id='pick'; ov.className='sh'; ov.setAttribute('role','dialog'); ov.setAttribute('aria-label','Quem foi atendido?');
+  ov.innerHTML='<div class="grab"></div><div class="top"><h2>Quem foi atendido?</h2><button type="button" class="x" id="pkFecha" aria-label="Fechar">'+I.x+'</button></div><div class="bd" id="pkL"></div>';
+  document.body.appendChild(ov);
+  var gt=$('#tabbar .gtabs'), cad=document.createElement('div'); cad.id='pkCad';
+  cad.innerHTML='<button type="button" id="pNovo">'+sz(I.plus,18)+'<span>Cadastrar paciente novo</span></button>'+
+    '<span class="pkq">'+sz(I.srch,19)+'<input type="search" id="pq" placeholder="Buscar por nome ou CPF" autocomplete="off" autocorrect="off" enterkeyhint="search"></span>';
+  gt.appendChild(cad);
+  PICK={ov:ov, cad:cad, na:na, bg:bg};
+  var q=$('#pq',cad), box=$('#pkL',ov);
+  function lista(){ box.innerHTML=pickLinhas(q.value);
+    $$('[data-p]',box).forEach(function(b){ b.onclick=function(){ var id=b.dataset.p; fecharPick(true); novoAtend(id); }; }); }
+  PICK.lista=lista; lista();
+  q.oninput=function(){ lista(); box.scrollTop=0; cad.classList.toggle('tem', !!q.value); pickTeclado(); };
+  q.addEventListener('focus', function(){ [60,200,400,700].forEach(function(t){ setTimeout(pickTeclado, t); }); });
+  q.addEventListener('blur', function(){ setTimeout(function(){ if(PICK && !q.value && document.activeElement!==q) pickBusca(false); }, 150); });
+  $('#pNovo',cad).onclick=function(){ editarPaciente(null, function(p){ fecharPick(true); novoAtend(p.id); }); };
+  $('#pkFecha',ov).onclick=function(){ fecharPick(); };
+  bg.onclick=function(){ fecharPick(); };
+  // puxar para baixo fecha (no topo da lista, ou pela alça/título)
+  var g=null;
+  ov.addEventListener('touchstart', function(e){ if(e.touches.length!==1) return; var t=e.target; if(t.closest('#pkFecha')) return;
+    if(box.contains(t) && box.scrollTop>0){ g=null; return; } g={y0:e.touches[0].clientY, t0:Date.now(), dy:0, ok:null}; }, {passive:true});
+  ov.addEventListener('touchmove', function(e){ if(!g) return; var dy=e.touches[0].clientY-g.y0;
+    if(g.ok===null){ if(Math.abs(dy)<6) return; g.ok= dy>0 && box.scrollTop<=0; if(!g.ok){ g=null; return; } ov.style.animation='none'; ov.style.transition='none'; bg.style.transition='none'; }
+    e.preventDefault(); g.dy=Math.max(0,dy); ov.style.transform='translateY('+g.dy+'px)'; bg.style.opacity=String(Math.max(0, 1-g.dy/(ov.offsetHeight*.8))); }, {passive:false});
+  function solta(){ if(!g) return; var G=g; g=null; if(!G.ok) return; var v=G.dy/Math.max(1,Date.now()-G.t0);
+    if(G.dy>110 || (G.dy>30 && v>.5)) fecharPick(false, G.dy);
+    else { ov.style.transition='transform .35s cubic-bezier(.3,1.25,.5,1)'; bg.style.transition='opacity .3s'; ov.style.transform=''; bg.style.opacity=''; } }
+  ov.addEventListener('touchend', solta); ov.addEventListener('touchcancel', solta);
+  document.body.classList.add('picking');
+  pickGota(true);
+}
+function pickBusca(on){ if(!PICK) return; var q=$('#pq',PICK.cad);
+  document.body.classList.toggle('pkbusca', on);
+  if(on){ q.focus(); $('#pkL',PICK.ov).scrollTop=0; [60,180,350,600,900].forEach(function(t){ setTimeout(pickTeclado, t); }); } else { q.value=''; PICK.cad.classList.remove('tem'); q.blur(); PICK.lista(); $('#tabbar').style.transform=''; $('#tabbar').style.transition=''; } }
+function fecharPick(ja, dy){ if(!PICK) return; var P=PICK; PICK=null;
+  var q=$('#pq',P.cad); if(q) q.blur();
+  document.body.classList.remove('picking','pkbusca'); $('#tabbar').style.transform=''; $('#tabbar').style.transition='';
+  if(ja || reduce){ if(PKG) PKG(); P.ov.remove(); P.bg.remove(); P.cad.remove(); return; }
+  pickGota(false, function(){ P.cad.remove(); });
+  var h=P.ov.offsetHeight, y0=dy||0;
+  P.ov.style.animation='none'; P.ov.style.transition='none';
+  P.ov.animate([{transform:'translateY('+y0+'px)'},{transform:'translateY('+(h+20)+'px)'}],{duration:Math.max(180, 320*(1-y0/h)), easing:'cubic-bezier(.4,0,.8,.6)', fill:'forwards'});
+  P.bg.animate([{opacity:getComputedStyle(P.bg).opacity},{opacity:0}],{duration:300, fill:'forwards'});
+  setTimeout(function(){ P.ov.remove(); P.bg.remove(); }, 340); }
+// teclado aberto na busca: a barra sobe junto com ele
+function pickTeclado(){ var tb=$('#tabbar'), vv=window.visualViewport; if(!tb || !vv || !document.body.classList.contains('pkbusca')) return;
+  // o iPhone pode rolar a página ao abrir o teclado: desfaz e mede só o teclado
+  if(window.scrollY) window.scrollTo(0,0);
+  var kb=Math.max(0, innerHeight-vv.height-vv.offsetTop);
+  if(kb<60){ tb.style.transform=''; return; } var b0=parseFloat(getComputedStyle(tb).bottom)||0; tb.style.transition='transform .25s ease-out'; tb.style.transform='translateY('+(-Math.max(0, kb+10-b0))+'px)'; }
+if(window.visualViewport){ visualViewport.addEventListener('resize', pickTeclado); visualViewport.addEventListener('scroll', pickTeclado); }
 function escolherPaciente(){
   closeMenu();
+  var tb=$('#tabbar'); if(!wideMQ.matches && tb && getComputedStyle(tb).display!=='none'){ abrirPick(); return; }
   var body='<div id="pl"></div>',
     foot='<div class="pkbar" id="pkBar"><button type="button" class="pkn glass" id="pNovo">'+I.plus+'<span>Cadastrar paciente novo</span></button>'+
       '<div class="pks glass" id="pkS"><button type="button" class="pkl" id="pkL" aria-label="Buscar paciente">'+I.srch+'</button><input type="search" id="pq" placeholder="Buscar por nome ou CPF" autocomplete="off" enterkeyhint="search"><button type="button" class="pkx" id="pkX" aria-label="Fechar a busca">'+sz(I.x,14)+'</button></div></div>';
@@ -3593,7 +3735,7 @@ function rAjApar(){
   var r=$('#oVid'); r.oninput=function(){ o.vidro=+this.value; this.style.setProperty('--p', this.value+'%'); aplicarTema(); }; r.onchange=function(){ save(); };
 }
 
-var TAM_APP=1338954;
+var TAM_APP=1354106;
 function tamanhoApp(){ if(TAM_APP==null){ try{ TAM_APP=new Blob([document.documentElement.outerHTML]).size; }catch(e){ TAM_APP=0; } } return TAM_APP? (TAM_APP/1048576).toFixed(1).replace('.',',')+' MB' : '—'; }
 function rSobre(){
   var nAt=0; S.fichas.forEach(function(f){ nAt+=f.atend.length; });
@@ -3731,7 +3873,7 @@ var ORDEM_ABAS=['hoje','pac','cal','ficha'];
 (function(){
   var g=null;
   function bloqueado(e){
-    if(wideMQ.matches || reduce || dlg.open || $('#menu').style.display==='block' || $('.fantasma') || (CTX && CTX.menu())) return true;
+    if(wideMQ.matches || reduce || dlg.open || document.body.classList.contains('picking') || $('#menu').style.display==='block' || $('.fantasma') || (CTX && CTX.menu())) return true;
     var t=e.target; if(SX && SX.nela(t)) return true;
     if(t.closest && t.closest('.sxa,.pmapa')) return true;
     var x=e.touches[0].clientX, borda= x<BORDA_PG || x>innerWidth-BORDA_PG;
