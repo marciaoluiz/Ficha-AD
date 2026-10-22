@@ -404,7 +404,7 @@ body:not(.wide) #mtit.on{opacity:1;transform:none;filter:none}
 .vic.vk-foto.on{background:var(--fo);color:var(--fo-bg)}.vic.vk-pass.on{background:var(--ev);color:var(--ev-bg)}
 :root{--fo-bg:#dcecf9;--fo:#2b86c8;--ev-bg:#dcf1e3;--ev:#2f9455}
 [data-mode="dark"]{--fo-bg:#16314a;--fo:#7fc0ef;--ev-bg:#173623;--ev:#74d29a}
-.sxb.k-evol{background:#30a457}.sxb.k-pront{background:#0a84ff}.sxb.k-tar{background:#ff9f0a}.sxb.k-arq{background:#34c759}
+.sxb.k-evol{background:#30a457}.sxb.k-pront{background:#0a84ff}.sxb.k-tar{background:#ff9f0a}.sxb.k-doc{background:#5e5ce6}.sxb.k-arq{background:#34c759}
 /* data da ficha diferente da data real da visita (ex.: elegibilidade) */
 .sxb.k-data.fx{background:#9b4dd6}.sxb.k-mover{background:#af52de}
 .sxa.sxtop .sxb[data-lado=esq]{top:var(--sxy)}
@@ -1625,11 +1625,74 @@ body.tab-aj .ii .inv,body.tab-ajImp .ii .inv,body.tab-ajApar .ii .inv,body.tab-a
 .sh .ft .btn.vft{flex:0 0 auto;flex-direction:column;gap:2px;min-width:74px;padding:6px 8px;font-size:12px;font-weight:700;background:var(--acc-soft);border-color:transparent;color:var(--acc-ink)}
 .sh .ft .btn.vft svg{width:20px;height:20px}
 .sh .ft .btn.vft + .btn.pri,.sh .ft .btn.vft ~ .btn.pri{flex:1}
+/* Tarefas: o círculo grande */
+.tring{display:flex;flex:none;margin:-6px 2px -6px -4px}
+
+/* ---------- computador: com cara de app do Mac ---------- */
+#msb,#plist{display:none}
+body.wide #app{display:grid;grid-template-columns:232px minmax(0,1fr) auto;min-height:100vh}
+body.wide #topbar{display:none}
+body.wide #msb{display:flex;flex-direction:column;gap:1px;position:sticky;top:0;height:100vh;overflow:auto;padding:14px 10px 12px;
+  background:color-mix(in srgb,var(--bg) 50%,#dcdce3);border-right:.5px solid var(--sep)}
+[data-mode="dark"] body.wide #msb{background:color-mix(in srgb,var(--bg) 45%,#2b2b31)}
+.mbrand{display:flex;align-items:center;gap:9px;padding:2px 10px 8px}.mbrand img{width:30px;height:auto}.mbrand b{font-size:15px;color:var(--head);letter-spacing:-.2px}
+.msh{font-size:11px;font-weight:700;color:var(--mut);padding:12px 10px 4px}
+.mit{display:flex;align-items:center;gap:9px;width:100%;padding:6px 10px;border:0;border-radius:7px;background:transparent;color:var(--ink);font-size:13.5px;text-align:left;cursor:pointer}
+.mit span{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mit:hover{background:rgba(127,127,127,.12)}.mit.on{background:color-mix(in srgb,var(--acc) 18%,transparent)}
+.mit svg{width:17px;height:17px;color:var(--acc);flex:none}.mit small{color:var(--mut);font-size:12px;font-weight:600}
+.mnova{display:flex;align-items:center;justify-content:center;gap:6px;margin:auto 4px 8px;padding:9px;border:0;border-radius:9px;background:var(--acc);color:#fff;font-weight:700;font-size:13.5px;cursor:pointer;box-shadow:0 4px 12px color-mix(in srgb,var(--acc) 35%,transparent)}
+.mme{display:flex;align-items:center;gap:9px;padding:9px 8px 2px;border:0;border-top:.5px solid var(--sep);background:transparent;color:var(--ink);text-align:left;cursor:pointer;border-radius:0}
+.mme b{display:block;font-size:12.5px}.mme small{display:block;font-size:11px;color:var(--mut)}.mme.on b{color:var(--acc-ink)}
+body.wide #left{border-right:0;padding:0 0 60px;min-width:0}
+body.wide.tab-pront #left{display:flex;align-items:flex-start;padding:0}
+body.wide.tab-pront #plist{display:block;scrollbar-gutter:stable;width:340px;flex:none;height:100vh;overflow:auto;position:sticky;top:0;border-right:.5px solid var(--sep);background:var(--s);padding-bottom:90px}
+body.wide #main{min-width:0;flex:1}
+body.wide:not(.tab-pront) #main{max-width:900px;margin:0 auto}
+body.wide.tab-pront #main{padding-bottom:60px}
+/* a barra de cima de cada página vira a barra de ferramentas */
+body.wide .pagehd,body.wide .nav{position:sticky;top:0;z-index:6;min-height:54px;padding:9px 18px;margin-bottom:12px;background:color-mix(in srgb,var(--bg) 84%,transparent);-webkit-backdrop-filter:blur(20px) saturate(1.6);backdrop-filter:blur(20px) saturate(1.6);border-bottom:.5px solid var(--sep)}
+body.wide .pagehd h1{font-size:19px;letter-spacing:-.2px}body.wide .nav h1{font-size:16px}
+body.wide #plist .pagehd{margin-bottom:8px}
+/* linha escolhida pintada na cor do tema */
+body.wide #plist .rows{background:transparent;box-shadow:none;border:0;border-radius:0;overflow:visible}
+body.wide #plist .pr{margin:0 6px;border-radius:9px}
+body.wide #plist .pr .go{display:none}
+body.wide #plist .pr .ed{padding-right:12px}
+body.wide #plist .pr .t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.wide #plist .pr.sel{background:var(--acc);border-color:transparent}
+body.wide #plist .pr.sel .t,body.wide #plist .pr.sel .s,body.wide #plist .pr.sel .s *{color:#fff!important}
+body.wide #plist .pr.sel .tp{background:rgba(255,255,255,.22)!important}
+body.wide #plist .pr.sel .go{background:rgba(255,255,255,.25);color:#fff}
+body.wide.tab-pront #pBusca{left:248px;right:auto;width:308px;bottom:16px}
+/* do lado: a ficha ou o papel do documento */
+body.wide #side{display:none}
+body.wide.tab-ficha #side,body.wide.tab-doc #side{display:flex;width:min(540px,38vw)}
+body.wide.tab-doc #side{padding:18px 22px 18px;gap:12px}
+.dside{flex:1;overflow:auto;border-radius:6px}.dside .papw{margin:0;box-shadow:0 4px 18px rgba(0,0,0,.14)}
+.dsbt{display:flex;gap:10px}.dsbt .btn{flex:1;min-height:44px}
+body.wide.tab-ficha #dbar{left:248px;width:calc(100vw - 232px - min(540px,38vw) - 32px)}
+body.wide #toast{left:248px}
+/* prontuário: os quatro botões */
+.pracs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:-10px 16px 24px}
+.pracs .pac1{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;height:66px;border:0;border-radius:18px;background:var(--s);color:var(--acc);font:inherit;font-size:12.5px;font-weight:650;padding:0;min-width:0}
+.pracs .pac1 svg{width:22px;height:22px;flex:none}
+.pracs .pac1 span{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pracs .pac1.pri{background:var(--acc);color:#fff}
+.pracs .pac1:active{transform:scale(.96)}
+.prtarh{margin:2px 22px 9px 32px}
+/* Mandar tarefas: escrever uma que vai só na mensagem */
+.mlist .mesc{width:100%;border:0;background:transparent;font:inherit;text-align:left;color:inherit;display:flex;align-items:center;gap:12px;box-shadow:inset 0 .5px 0 var(--line)}
+.mesci{flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:var(--acc-soft);color:var(--acc)}
+.mesc .il{color:var(--acc)}.mesc .il small{color:var(--mut)}
+
 </style>
 </head>
 <body>
 <div id="app">
+  <aside id="msb" aria-label="Seções"></aside>
   <div id="left">
+    <div id="plist"></div>
     <nav id="topbar" class="glass" aria-label="Seções">
       <img id="tbLogo" alt="Melhor em Casa">
       <div class="gseg"><span class="lens"></span>
@@ -1903,7 +1966,7 @@ var FONTES_FICHA = {"mao":{"nome":"Manuscrita","upm":1024,"k":1.1651,"peso":36,"
 <script>
 (function(){
 'use strict';
-var KEY='fichaAD.v1', VERSAO='0.8.2 beta', SIGTAP_PADRAO='0301050147';
+var KEY='fichaAD.v1', VERSAO='0.8.4 beta', SIGTAP_PADRAO='0301050147';
 var F=FICHA;
 var S, tab='hoje', face=0, calMes=null, lastPdf=null;
 var NO_SITE=/^https?:$/.test(location.protocol), IOS=/iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform==='MacIntel' && navigator.maxTouchPoints>1);
@@ -2144,12 +2207,13 @@ function render(){ if(SX) SX.fecha(); if(PICK) fecharPick(true); if(typeof DATA_
   document.body.classList.toggle('semabas', !!SUB[tab]);
   if(!SUB[tab]) pilha=[];
   $$('[data-tab]').forEach(function(b){ b.classList.toggle('on', b.dataset.tab===tab || (b.dataset.tab==='aj' && !!SUB[tab] && pilha[0]==='aj')); });
-  ({hoje:rHoje, ficha:rFicha, cal:rCal, pac:rPac, aj:rAj, sobre:rSobre, ajImp:rAjImp, ajApar:rAjApar, ajVis:rAjVis, ajSig:rAjSig, docs:rDocs, doc:rDoc, ajProf:rAjProf, pront:rPront, evol:rEvol, visitas:rVisitas, ajRec:rAjRec, ajArq:rAjArq, rota:rRota, levar:rLevar, saidos:rSaidos, memoria:rMemoria})[tab]();
-  if(wide) renderSide();
+  if(wide && (tab==='pac'||tab==='pront')) rPacPc(); else { var _pl=$('#plist'); if(_pl && _pl.firstChild) _pl.innerHTML='';
+  ({hoje:rHoje, ficha:rFicha, cal:rCal, pac:rPac, aj:rAj, sobre:rSobre, ajImp:rAjImp, ajApar:rAjApar, ajVis:rAjVis, ajSig:rAjSig, docs:rDocs, doc:rDoc, ajProf:rAjProf, pront:rPront, evol:rEvol, visitas:rVisitas, ajRec:rAjRec, ajArq:rAjArq, rota:rRota, levar:rLevar, saidos:rSaidos, memoria:rMemoria})[tab](); }
+  if(wide){ renderSide(); msbRender(); }
   var px=$('#puxa'); if(px) px.classList.toggle('on', tab==='ficha' && !wide && fichaAtual().atend.length>0);
   moveLens($('#tabbar .gtabs'), true); moveLens($('#topbar .gseg'), true);
   topoPrepara(); topoAtualiza();
-  var pb=$('#pBusca'); if(pb && !pb.style.transform){ var on=tab==='pac' && !wide; if(on && !pb.classList.contains('on')) requestAnimationFrame(function(){ requestAnimationFrame(function(){ if(tab==='pac') pb.classList.add('on'); }); }); else if(!on) pb.classList.remove('on'); }
+  var pb=$('#pBusca'); if(pb && !pb.style.transform){ var on= wide? tab==='pront' : tab==='pac'; if(on && !pb.classList.contains('on')) requestAnimationFrame(function(){ requestAnimationFrame(function(){ if(tab===(wideMQ.matches?'pront':'pac')) pb.classList.add('on'); }); }); else if(!on) pb.classList.remove('on'); }
 }
 wideMQ.addEventListener('change', render);
 // topo flutuante: o desfoque aparece quando o conteúdo passa por baixo dos botões; o título pequeno, quando o grande some
@@ -2949,12 +3013,12 @@ function abrirAtend(idx, novo, fx){
     var tv=[['M','Manhã'],['T','Tarde']]; if(a.turno==='N') tv.push(['N','Noite']);
     b+='<div class="lbl">Turno'+dataHtml()+'</div><div class="big2" data-big="turno">'+tv.map(function(t){ return '<button type="button" data-v="'+t[0]+'"'+(a.turno===t[0]?' class="on"':'')+'>'+I[t[0]]+t[1]+'</button>'; }).join('')+'</div>';
     // visita já salva com a data mudada: dá para mudar só a data da ficha (a visita continua no dia em que aconteceu)
-    if(dReal0 && a.data!==dReal0) b+='<button type="button" class="swrow dfxrow" id="dfxSw"><span class="ic">'+sz(I.cal,20)+'<span>Mudar só na ficha<small>A visita continua em '+DS[parse(dReal0).getDay()].toLowerCase()+', '+ddmm(dReal0)+' para o prontuário e o Início.</small></span></span><span class="tog'+(a.dataReal?' on':'')+'"></span></button>';
+    if(dReal0 && a.data!==dReal0) b+='<button type="button" class="swrow dfxrow" id="dfxSw"><span class="ic">'+sz(I.cal,20)+'<span>Mudar só na ficha<small>A visita continua em '+DS[parse(dReal0).getDay()].toLowerCase()+', '+ddmm(dReal0)+' para o prontuário e o Início.</small></span></span>'+lsw(!!a.dataReal)+'</button>';
     var ci=a.conduta==null?0:a.conduta;
     b+='<div class="lbl">Conduta</div><button type="button" class="crow" id="condRow"><span class="cic c'+ci+'">'+I[CONDUTA_IC[ci]]+'</span><span class="ctx">'+esc(CONDUTA_TXT[ci])+'</span>'+CHEV+'</button>';
     if(podeEleg(a)){
       var est= a.eleg==='el'?'Elegível, entrou no SAD' : a.eleg==='nel'?'Não elegível, encaminhada à AD1' : a.eleg?'Marque o resultado abaixo':'Primeira visita ou readmissão';
-      b+='<div class="egcard'+(a.eleg?' on':'')+'"><button type="button" class="eghd" id="elSw"><span class="egic">'+I.shield+'</span><span class="sp"><b>Visita de elegibilidade</b><small>'+est+'</small></span><span class="tog'+(a.eleg?' on':'')+'"></span></button>'+
+      b+='<div class="egcard'+(a.eleg?' on':'')+'"><button type="button" class="eghd" id="elSw"><span class="egic">'+I.shield+'</span><span class="sp"><b>Visita de elegibilidade</b><small>'+est+'</small></span>'+lsw(!!a.eleg)+'</button>'+
         (a.eleg?'<div class="eg" id="egOpts"><button type="button" class="el'+(a.eleg==='el'?' on':'')+'" data-eg="el">'+I.chk+'Elegível<small>entrou no SAD</small></button><button type="button" class="nel'+(a.eleg==='nel'?' on':'')+'" data-eg="nel">'+I.x+'Não elegível<small>encaminha à AD1</small></button></div>':'')+'</div>';
     }
     var outras=F.CONDICOES.map(function(_,i){return i;}).filter(function(i){ return COND_RAPIDAS.indexOf(i)<0; });
@@ -2970,7 +3034,7 @@ function abrirAtend(idx, novo, fx){
         '<div class="xp'+(aberto.d?' open':'')+'" id="xpD"><div><div class="gbody"><div class="flabel">Local</div><select id="aLocal" style="margin-top:6px">'+F.LOCAIS.map(function(l){ return '<option value="'+l[0]+'"'+(a.local===l[0]?' selected':'')+'>'+l[0]+' – '+esc(l[1])+'</option>'; }).join('')+'</select>'+
         '<div class="flabel" style="margin-top:14px">Modalidade</div><div class="seg" data-seg="modalidade" style="margin-top:6px">'+[['1','AD1'],['2','AD2'],['3','AD3']].map(function(o){ return '<button type="button" data-v="'+o[0]+'"'+(a.modalidade===o[0]?' class="on"':'')+'>'+o[1]+'</button>'; }).join('')+'</div>'+
         '<div class="flabel" style="margin-top:14px">Tipo de atendimento</div><div class="seg" data-segn="tipo" style="margin-top:6px">'+['Programada','Não programada','Pós-óbito'].map(function(o,i){ return '<button type="button" data-v="'+i+'"'+(a.tipo===i?' class="on"':'')+'>'+o+'</button>'; }).join('')+'</div>'+
-        '<button type="button" class="swrow" id="noiteSw"><span class="ic">'+sz(I.N,22)+'Atendimento à noite</span><span class="tog'+(a.turno==='N'?' on':'')+'"></span></button>'+
+        '<button type="button" class="swrow" id="noiteSw"><span class="ic">'+sz(I.N,22)+'Atendimento à noite</span>'+lsw(a.turno==='N')+'</button>'+
         '<div class="flabel" style="margin-top:14px">CIAP2 <span style="font-weight:500">(opcional)</span></div><input id="aCiap" style="margin-top:6px" value="'+esc(a.ciap2)+'" autocapitalize="characters" placeholder="ex.: K90"></div></div></div></div>'+
       '</div>';
     return b;
@@ -2988,6 +3052,7 @@ function abrirAtend(idx, novo, fx){
     openSheet(tituloForm(), formHtml(), foot);
     $('.bd',dlg).scrollTop=st;
     ligarForm();
+    togLiga(dlg);
     dlg._guard=guarda;
   }
   var orig=null;
@@ -3003,7 +3068,7 @@ function abrirAtend(idx, novo, fx){
     ti.onchange=function(){ if(this.value){ a.data=this.value;
       if(dReal0){ if(a.data===dReal0) delete a.dataReal; else a.dataReal=dReal0; }
       draw(); pop($('#tDateL',dlg)); } };
-    var dfx=$('#dfxSw',dlg); if(dfx) dfx.onclick=function(){ var t=$('.tog',this), on=!a.dataReal; t.classList.toggle('on', on); if(on) a.dataReal=dReal0; else delete a.dataReal; $('#tDateL',dlg).classList.toggle('fx', on); };
+    var dfx=$('#dfxSw',dlg); if(dfx) dfx.onclick=function(){ var t=$('.lsw',this), on=!a.dataReal; togVira(t, on); if(on) a.dataReal=dReal0; else delete a.dataReal; $('#tDateL',dlg).classList.toggle('fx', on); };
     var aci=$('#aCiap',dlg); if(aci) aci.onchange=function(){ a.ciap2=this.value.trim().toUpperCase(); resumos(); };
     $$('[data-big] button',dlg).forEach(function(bt){ bt.onclick=function(){ a.turno=bt.dataset.v; $$('[data-big] button',dlg).forEach(function(x){x.classList.toggle('on',x===bt);}); pop(bt); }; });
     $$('[data-cid]',dlg).forEach(function(bt){ bt.onclick=function(){ var was=a.cid10===bt.dataset.cid; $$('[data-cid]',dlg).forEach(function(x){ x.classList.remove('on'); }); a.cid10= was? '' : bt.dataset.cid; if(!was) bt.classList.add('on'); pop(bt); }; });
@@ -3011,7 +3076,7 @@ function abrirAtend(idx, novo, fx){
     var ci=$('#cidIn',dlg); if(ci){ var ok=function(){ var v=ci.value.trim().toUpperCase(); if(v){ a.cid10=v; if(cids.indexOf(v)<0) cids.unshift(v); } outroCid=false; draw(); }; $('#cidOk',dlg).onclick=ok; ci.onkeydown=function(e){ if(e.key==='Enter'){ e.preventDefault(); ok(); } }; }
     var cb=$('#ciapBtn',dlg); if(cb) cb.onclick=function(){ if(!ciap){ ciap=true; draw(); var i=$('#aCiap',dlg); if(i) i.focus(); } };
     $('#condRow',dlg).onclick=function(){ menuConduta($('#condRow',dlg)); };
-    var es=$('#elSw',dlg); if(es) es.onclick=function(){ var t=$('.tog',this); t.classList.toggle('on'); setTimeout(function(){ a.eleg= a.eleg? null : '?'; draw(); var o=$('#egOpts',dlg); if(o && !reduce){ o.animate([{opacity:0,transform:'translateY(-8px) scale(.97)'},{opacity:1,transform:'none'}],{duration:320,easing:'cubic-bezier(.2,1.2,.4,1)'}); o.scrollIntoView({block:'nearest',behavior:'smooth'}); } }, reduce?0:170); };
+    var es=$('#elSw',dlg); if(es) es.onclick=function(){ togVira($('.lsw',this)); setTimeout(function(){ a.eleg= a.eleg? null : '?'; draw(); var o=$('#egOpts',dlg); if(o && !reduce){ o.animate([{opacity:0,transform:'translateY(-8px) scale(.97)'},{opacity:1,transform:'none'}],{duration:320,easing:'cubic-bezier(.2,1.2,.4,1)'}); o.scrollIntoView({block:'nearest',behavior:'smooth'}); } }, reduce?0:170); };
     $$('[data-eg]',dlg).forEach(function(bt){ bt.onclick=function(){ var antes=a.conduta; setEleg(bt.dataset.eg); $$('[data-eg]',dlg).forEach(function(x){x.classList.toggle('on',x===bt);}); pop(bt); setTimeout(function(){ draw(); if(a.conduta!==antes) pop($('#condRow',dlg)); }, reduce?0:200); }; });
     $$('[data-cond]',dlg).forEach(function(bt){ bt.onclick=function(){ var i=+bt.dataset.cond, k=a.condicoes.indexOf(i); if(k>=0) a.condicoes.splice(k,1); else a.condicoes.push(i); a.condicoes.sort(function(x,y){return x-y;}); bt.classList.toggle('on',k<0); pop(bt); }; });
     $$('[data-proc]',dlg).forEach(function(bt){ bt.onclick=function(){ var i=+bt.dataset.proc, k=a.procedimentos.indexOf(i); if(k>=0) a.procedimentos.splice(k,1); else a.procedimentos.push(i); a.procedimentos.sort(function(x,y){return x-y;}); bt.classList.toggle('on',k<0); pop(bt); resumos(); }; });
@@ -3025,7 +3090,7 @@ function abrirAtend(idx, novo, fx){
     $$('[data-seg]',dlg).forEach(function(s){ $$('button',s).forEach(function(bt){ bt.onclick=function(){ a[s.dataset.seg]=bt.dataset.v; $$('button',s).forEach(function(x){x.classList.toggle('on',x===bt);}); resumos(); }; }); });
     $$('[data-segn]',dlg).forEach(function(s){ $$('button',s).forEach(function(bt){ bt.onclick=function(){ a[s.dataset.segn]=+bt.dataset.v; $$('button',s).forEach(function(x){x.classList.toggle('on',x===bt);}); resumos(); }; }); });
     $('#aLocal',dlg).onchange=function(){ a.local=this.value; resumos(); };
-    $('#noiteSw',dlg).onclick=function(){ $('.tog',this).classList.toggle('on'); a.turno= a.turno==='N'? 'M' : 'N'; resumos(); setTimeout(draw, reduce?0:250); };
+    $('#noiteSw',dlg).onclick=function(){ togVira($('.lsw',this)); a.turno= a.turno==='N'? 'M' : 'N'; resumos(); setTimeout(draw, reduce?0:250); };
     $('#cidCad',dlg).onclick=function(){ var cur=pacById(a.pacId); if(!cur){ alert('Este paciente foi removido do cadastro.'); return; } coletar(); editarPaciente(cur, function(np){ p=pacOf(a); if(np && np.cid) a.cid10=np.cid; draw(); }); };
     // atalhos: a evolução desta visita e o prontuário
     function sai(fn){ if(closeSheet()===false) return; setTimeout(fn, 380); }
@@ -3457,7 +3522,7 @@ function tarefaHtml(t, ctx){ var ids=tPacsVivos(t), ok=t.ok||{}, sub='';
   sub+=tAteHtml(t);
   return '<div class="td'+(t.feita?' feito':'')+'" data-tf="'+t.id+'" data-sx="t:'+t.id+'"><button type="button" class="tc'+(t.feita?' on':'')+'" aria-label="Marcar como feita">'+I.chk+'</button><div class="tt" role="button" tabindex="0"><span>'+esc(t.txt)+'</span>'+sub+'</div></div>'; }
 function tarHead(){ var IN=estIni(), sm=semanaTarefas(), ab=S.tarefas.filter(function(t){ return !t.feita; }).length;
-  return (sm.tot? anelP(sm.fe, sm.tot) : '')+'<span class="il">Tarefas</span><span class="iv">'+(ab? (sm.fe? sm.fe+' de '+sm.tot+' na semana' : ab+' a fazer') : (sm.tot?'Tudo feito':''))+'</span><span class="ic rot">'+sz(I.down,15)+'</span>'; }
+  return (sm.tot? '<span class="tring">'+anel(sm.fe, sm.tot, 44)+'</span>' : '')+'<span class="il">Tarefas</span><span class="iv">'+(ab? (sm.fe? sm.fe+' de '+sm.tot+' na semana' : ab+' a fazer') : (sm.tot?'Tudo feito':''))+'</span><span class="ic rot">'+sz(I.down,15)+'</span>'; }
 // a tarefa feita fica mais clara e desce para o fim da lista (as outras sobem junto)
 function reordenaTarefas(cont){
   if(!cont) return; var rows=$$(':scope > [data-tf]',cont); if(!rows.length) return;
@@ -3499,16 +3564,17 @@ function apagarTarefa(t){ var j=S.tarefas.indexOf(t); if(j<0) return; var reg= t
   S.tarefas.splice(j,1); if(reg) S.feito=S.feito.filter(function(x){ return x!==reg; }); save(); render();
   toast('Tarefa apagada.', {label:'Desfazer', fn:function(){ S.tarefas.splice(Math.min(j,S.tarefas.length),0,t); if(reg){ S.feito.unshift(reg); } save(); render(); }}); }
 function arquivarTarefa(t){ t.arq=true; save(); render(); toast('A tarefa foi para Feito.', {label:'Desfazer', fn:function(){ delete t.arq; save(); render(); }}); }
-function editarTarefa(t, pacId){
+function editarTarefa(t, pacId, soMandar){
   var novo=!t; t=t||{id:uid(), txt:'', pacs:pacId?[pacId]:[], ok:{}, criada:hoje(), feita:null};
   var sel=tPacsVivos(t).slice();
   var ps=S.pacientes.slice().sort(function(a,b){ return (a.nome||'').localeCompare(b.nome||'','pt'); });
   var b='<div class="grid"><label class="f">O que fazer<textarea id="tTxt" rows="2" placeholder="Ex.: levar placa de hidrocoloide">'+esc(t.txt)+'</textarea></label>'+
     '<div><div class="flabel">Pacientes <span style="font-weight:500">(opcional)</span></div><div class="tpsel" id="tPacs"></div></div>'+
     '<label class="f">Até <span style="font-weight:500">(opcional)</span><input type="date" id="tAte" value="'+esc(t.ate||'')+'"></label>'+(t.de?'<div class="hint">Veio de '+esc(t.de)+'.</div>':'')+'</div>';
-  openSheet(novo? 'Nova tarefa' : 'Editar tarefa', b, (novo?'':'<button class="btn danger" id="tDel">Excluir</button>')+(!t.feita && recOn('tar')?'<button class="btn" id="tMan2">'+sz(IR.send,18)+(novo?'Só mandar':'Mandar')+'</button>':'')+'<button class="btn pri" id="tOk">Salvar</button>');
-  // na tarefa nova, "Só mandar": vai para quem recebe sem ficar na sua lista
-  var tm2=$('#tMan2',dlg); if(tm2) tm2.onclick=function(){ if(novo){ var v=$('#tTxt',dlg).value.trim(); if(!v){ $('#tTxt',dlg).focus(); return; } t.txt=v; t.pacs=sel.slice(); t.ate=$('#tAte',dlg).value||''; closeSheet(true); setTimeout(function(){ mandarTarefas([t.id], [t]); }, 380); return; } closeSheet(true); setTimeout(function(){ mandarTarefas([t.id]); }, 380); };
+  // soMandar: escrita no "Mandar" das Tarefas; vai só na mensagem, sem ficar na sua lista
+  if(soMandar) openSheet('Tarefa para mandar', b+'<div class="hint" style="margin-top:12px">Vai só na mensagem. Não fica na sua lista.</div>', '<button class="btn pri" id="tOk">'+sz(IR.send,18)+'Pôr na mensagem</button>');
+  else openSheet(novo? 'Nova tarefa' : 'Editar tarefa', b, (novo?'':'<button class="btn danger" id="tDel">Excluir</button>')+(!novo && !t.feita && recOn('tar')?'<button class="btn" id="tMan2">'+sz(IR.send,18)+'Mandar</button>':'')+'<button class="btn pri" id="tOk">Salvar</button>');
+  var tm2=$('#tMan2',dlg); if(tm2) tm2.onclick=function(){ closeSheet(true); setTimeout(function(){ mandarTarefas([t.id]); }, 380); };
   function pinta(){ var box=$('#tPacs',dlg);
     box.innerHTML=sel.map(function(id){ var p=pacById(id); return '<span class="tpch">'+avatar(p,24)+'<b>'+esc(nomeCurto(p))+'</b><button type="button" data-tx="'+id+'" aria-label="Tirar">'+sz(I.x,13)+'</button></span>'; }).join('')+
       '<label class="tpadd">'+sz(I.plus,15)+(sel.length?'Outro paciente':'Paciente')+'<select id="tPacAdd"><option value="">Escolher paciente…</option>'+ps.filter(function(p){ return sel.indexOf(p.id)<0; }).map(function(p){ return '<option value="'+p.id+'">'+esc(p.nome||'(sem nome)')+'</option>'; }).join('')+'</select></label>';
@@ -3517,7 +3583,8 @@ function editarTarefa(t, pacId){
   pinta();
   var tx=$('#tTxt',dlg); if(novo) setTimeout(function(){ tx.focus(); }, 350);
   tx.onkeydown=function(e){ if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); $('#tOk',dlg).click(); } };
-  $('#tOk',dlg).onclick=function(){ var v=tx.value.trim(); if(!v){ tx.focus(); return; } t.txt=v; t.pacs=sel.slice(); t.ok=t.ok||{}; t.ate=$('#tAte',dlg).value||''; Object.keys(t.ok).forEach(function(k){ if(sel.indexOf(k)<0) delete t.ok[k]; });
+  $('#tOk',dlg).onclick=function(){ var v=tx.value.trim(); if(!v){ tx.focus(); return; } t.txt=v; t.pacs=sel.slice(); t.ok=t.ok||{}; t.ate=$('#tAte',dlg).value||'';
+    if(soMandar){ closeSheet(true); setTimeout(function(){ soMandar(t); }, 380); return; } Object.keys(t.ok).forEach(function(k){ if(sel.indexOf(k)<0) delete t.ok[k]; });
     if(!novo && !t.feita && sel.length && sel.every(function(x){ return t.ok[x]; })) t.feita=new Date().toISOString();
     if(novo) S.tarefas.push(t); save(); closeSheet(true); render(); toast(novo?'Tarefa criada.':'Tarefa salva.'); };
   var d=$('#tDel',dlg); if(d) d.onclick=function(){ S.tarefas=S.tarefas.filter(function(x){ return x!==t; }); save(); closeSheet(true); render(); toast('Tarefa excluída.', {label:'Desfazer', fn:function(){ S.tarefas.push(t); save(); render(); }}); };
@@ -4135,7 +4202,7 @@ function rAjApar(){
   var r=$('#oVid'); r.oninput=function(){ o.vidro=+this.value; this.style.setProperty('--p', this.value+'%'); aplicarTema(); }; r.onchange=function(){ save(); };
 }
 
-var TAM_APP=1722774;
+var TAM_APP=1741918;
 function tamanhoApp(){ if(TAM_APP==null){ try{ TAM_APP=new Blob([document.documentElement.outerHTML]).size; }catch(e){ TAM_APP=0; } } return TAM_APP? (TAM_APP/1048576).toFixed(1).replace('.',',')+' MB' : '—'; }
 function rSobre(){
   var nAt=0; S.fichas.forEach(function(f){ nAt+=f.atend.length; });
@@ -4409,7 +4476,7 @@ function abrirAlta(p, ctx){
   function cardEnc(){ var on=tipo>=4; return '<button type="button" class="alc'+(on?' on':'')+'" id="alEnc"><span class="ii" style="--c:'+COND_COR[on?tipo:4]+'">'+I[CONDUTA_IC[on?tipo:4]]+'</span><b>Encaminhado</b><small>'+(on? ENC_C[tipo] : 'AD1, urgência ou internação')+'</small></button>'; }
   function cards(){ return card(2,'Alta clínica')+card(1,'Alta administrativa')+card(3,'Óbito')+cardEnc(); }
   var b='<div class="alta alta2"><div class="altg" id="alG">'+cards()+'</div>'+
-    grupo('', (va? '' : '<label class="ir" id="alSvL"><span class="il">Registrar visita na ficha</span><span class="tog'+(semV?'':' on')+'" id="alSv"></span></label>')+
+    grupo('', (va? '' : '<label class="ir" id="alSvL"><span class="il">Registrar visita na ficha</span>'+lsw(!semV,'id="alSv"')+'</label>')+
       '<div id="alVis"'+(semV?' hidden':'')+'><label class="ir" for="alData"><span class="il">Data</span><input type="date" class="ri" id="alData" value="'+data+'"></label>'+
       '<div class="ir"><span class="il">Turno</span><div class="seg tuseg" id="alTu">'+[['M','Manhã'],['T','Tarde'],['N','Noite']].map(function(x){ return '<button type="button" data-v="'+x[0]+'"'+(turno===x[0]?' class="on"':'')+'>'+x[1]+'</button>'; }).join('')+'</div></div></div>',
       '<span id="alDica">'+dica()+'</span>', 'ni')+
@@ -4423,7 +4490,8 @@ function abrirAlta(p, ctx){
       $$('[data-enc]',m).forEach(function(x){ x.onclick=function(){ tipo=+x.dataset.enc; closeDlgMenu(); $('#alG',dlg).innerHTML=cards(); ligaCards(); pop($('#alEnc .ii',dlg)); }; }); };
   }
   ligaCards();
-  var sv=$('#alSvL',dlg); if(sv) sv.onclick=function(e){ e.preventDefault(); semV=!semV; $('#alSv',dlg).classList.toggle('on',!semV); var vv=$('#alVis',dlg); vv.hidden=semV; if(!semV && !reduce && vv.animate) vv.animate([{opacity:0,transform:'translateY(-6px)'},{opacity:1,transform:'none'}],{duration:240,easing:'ease-out'});
+  togLiga(dlg);
+  var sv=$('#alSvL',dlg); if(sv) sv.onclick=function(e){ e.preventDefault(); semV=!semV; togVira($('#alSv',dlg), !semV); var vv=$('#alVis',dlg); vv.hidden=semV; if(!semV && !reduce && vv.animate) vv.animate([{opacity:0,transform:'translateY(-6px)'},{opacity:1,transform:'none'}],{duration:240,easing:'ease-out'});
     $('#alDica',dlg).innerHTML=dica(); var mm=$('#alMais',dlg); if(mm) mm.style.display=semV?'none':''; $('#alOk',dlg).textContent=semV?'Dar alta':'Registrar'; };
   var ad=$('#alDel',dlg); if(ad) ad.onclick=function(){ closeSheet(true); excluirPaciente(p); };
   var vo=$('#alVolta',dlg); if(vo) vo.onclick=function(){ var antes=p.alta; delete p.alta; save(); closeSheet(true); render();
@@ -4553,8 +4621,8 @@ var SX=null;
     // Início: ações rápidas do lado em que não há outra aba (Últimas visitas: puxando para a direita; Sem visita: para a esquerda)
     // tocar no nome já abre a evolução (visitas) ou o prontuário (Sem visita): esses não viram botão.
     // nas visitas, as iniciais do paciente crescem e viram o botão do prontuário (como o turno na ficha)
-    if(it.tipo==='iv') return { esq: it.p? [{k:'tar', ic:I.chk, nome:'Nova tarefa'}] : [], dir:[] };
-    if(it.tipo==='cv') return { esq: it.p? [{k:'tar', ic:I.chk, nome:'Nova tarefa'}] : [], dir:[{k:'alta', ic:I.alta, nome:'Registrar alta'},{k:'del', ic:I.del, nome:'Apagar visita'}] };
+    if(it.tipo==='iv') return { esq: it.p? [{k:'tar', ic:I.tarefa, nome:'Nova tarefa'},{k:'doc', ic:I.docum, nome:'Documento'}] : [], dir:[] };
+    if(it.tipo==='cv') return { esq: it.p? [{k:'tar', ic:I.tarefa, nome:'Nova tarefa'},{k:'doc', ic:I.docum, nome:'Documento'}] : [], dir:[{k:'alta', ic:I.alta, nome:'Registrar alta'},{k:'del', ic:I.del, nome:'Apagar visita'}] };
     if(it.tipo==='ip') return { esq:[], dir:[{k:'alta', ic:I.alta, nome:'Registrar alta'}] };
     // prontuário: o quadradinho da data vira o botão de mudar a data; ao lado, mudar de ficha e alta
     if(it.tipo==='pv') return { esq:[{k:'copiar', ic:I.copy, nome:'Copiar evolução'}], dir:[{k:'del', ic:I.del, nome:'Apagar visita'}] };
@@ -4683,6 +4751,7 @@ var SX=null;
     if(b.k==='evol'){ fecha(o, true); abrirEvol(it.f.id, it.a.id); return; }
     if(b.k==='pront'){ fecha(o, true); abrirPront(it.p? it.p.id : it.a.pacId); return; }
     if(b.k==='tar'){ fecha(o); editarTarefa(null, it.p.id); return; }
+    if(b.k==='doc'){ fecha(o); docDoPac(it.p); return; }
     if(b.k==='copiar'){ fecha(o); if(it.a.evol) copiar(it.a.evol, 'Evolução copiada.'); else toast('Esta visita ainda não tem evolução escrita.'); return; }
     if(b.k==='mover'){ menuMoverFicha(it.f, it.a, o.bts[lado][i], function(){ fecha(o, true); }); return; }
   }
@@ -5905,6 +5974,7 @@ function lesSheet(p, x){ var novo=!x; x=x? JSON.parse(JSON.stringify(x)) : {id:u
 // ---------- 7) o que levar ----------
 var MATS=['Gaze estéril','Soro fisiológico 250 mL','Soro fisiológico 500 mL','Luva de procedimento','Luva estéril','Seringa 20 mL','Agulha 40x12','Micropore','Atadura de crepom','Sonda Foley 14 Fr','Sonda Foley 16 Fr','Bolsa coletora','Frasco de coleta (urina)','Equipo de dieta','Placa de hidrocoloide','Alginato de cálcio','Espuma com borda','AGE'];
 var LEVAR_DIA=null;
+function remRow(m){ return '<button type="button" class="ir" data-rem="'+m.id+'"><span class="il">'+esc(m.nome)+'<small>'+(m.cont? 'contínuo · ' : m.qt? esc(m.qt)+' · ' : '')+esc(String(m.pos||'').replace(/\n/g,'; '))+'</small></span></button>'; }
 function matRow(x){ return '<button type="button" class="ir" data-mat="'+x.id+'"><span class="il">'+esc(x.nome)+'</span><span class="iv">'+esc(x.q||'1')+'</span></button>'; }
 function matSheet(p, x){ var novo=!x; x=x? JSON.parse(JSON.stringify(x)) : {id:uid(), nome:'', q:'1'};
   var conhecidos={}; MATS.forEach(function(m){ conhecidos[m]=1; }); S.pacientes.forEach(function(q){ (q.mat||[]).forEach(function(m){ conhecidos[m.nome]=1; }); });
@@ -5965,13 +6035,15 @@ function prExtras(p){ var h='', vaz=[];
   sec('cur','Curativos', (p.les||[]).slice().sort(function(a,b){ return (a.prox||'9').localeCompare(b.prox||'9'); }), lesRow, 'Curativo');
   sec('cuid','Cuidador', p.cuid, cuidRow, 'Cuidador');
   sec('levar','Levar nas visitas', p.mat, matRow, 'Material');
+  sec('rem','Remédios', p.meds, remRow, 'Remédio');
   h+=docPrSec(p);
   var ag= recOn('agenda') && ativo(p)? agDe(p.id) : undefined;
   if(vaz.length || ag!==undefined) h+='<div class="pradd">'+(ag!==undefined? '<button type="button" class="pag'+(ag?' tem':'')+'" id="prAg">'+sz(RIC.ag,15)+(ag? 'Próxima visita: '+esc(agTxt(ag)) : 'Agendar próxima visita')+'</button>' : '')+vaz.map(function(v){ return '<button type="button" data-padd="'+v[0]+'">'+sz(I.plus,13)+v[1]+'</button>'; }).join('')+'</div>';
   return h? '<div class="prx">'+h+'</div>' : ''; }
 function ligaExtras(p){
   agLigaFaixa(p);
-  $$('[data-padd]').forEach(function(b){ b.onclick=function(){ var k=b.dataset.padd; if(k==='disp') dispSheet(p); else if(k==='cur') lesSheet(p); else if(k==='cuid') cuidSheet(p); else if(k==='levar') matSheet(p); }; });
+  $$('[data-padd]').forEach(function(b){ b.onclick=function(){ var k=b.dataset.padd; if(k==='disp') dispSheet(p); else if(k==='cur') lesSheet(p); else if(k==='cuid') cuidSheet(p); else if(k==='levar') matSheet(p); else if(k==='rem') medSheet(p, null, {f:{sel:[]}}); }; });
+  $$('[data-rem]').forEach(function(b){ b.onclick=function(){ medSheet(p, (p.meds||[]).filter(function(m){ return m.id===b.dataset.rem; })[0], {f:{sel:[]}}); }; });
   $$('[data-dsp]').forEach(function(b){ b.onclick=function(){ dispSheet(p, (p.disp||[]).filter(function(x){ return x.id===b.dataset.dsp; })[0]); }; });
   $$('[data-les]').forEach(function(b){ b.onclick=function(){ lesSheet(p, (p.les||[]).filter(function(x){ return x.id===b.dataset.les; })[0]); }; });
   $$('[data-cdr]').forEach(function(b){ b.onclick=function(){ cuidSheet(p, (p.cuid||[]).filter(function(x){ return x.id===b.dataset.cdr; })[0]); }; });
@@ -6161,7 +6233,7 @@ function mapaEnd(slot, p, depois){
 // ---------- prontuário: barra de cima e botões de adicionar ----------
 function prBarra(p){ var at=ativo(p);
   return '<span class="prtb">'+(recOn('tar')? '<button class="ib glass" id="prMand" aria-label="Mandar cadastro">'+sz(I.share,19)+'</button>' : '')+
-    (at? '<button class="ib glass" id="prAlta" aria-label="Registrar alta">'+sz(I.alta,19)+'</button>' : '<button class="pill glass gacc" id="prAlta">Readmitir</button>')+'</span>'; }
+    (at? '<button class="ib glass" id="prAlta" aria-label="Registrar alta">'+sz(I.alta,19)+'</button>' : '<button class="ib glass" id="prAlta" aria-label="Readmitir">'+sz(I.readm,19)+'</button>')+'</span>'; }
 function ligaBarra(p){ var b;
   if((b=$('#prMand'))) b.onclick=function(){ mandarCadastro(p); };
   if((b=$('#prAlta'))) b.onclick=function(){ if(ativo(p)) abrirAlta(p); else voltaAcomp(p); }; }
@@ -6358,7 +6430,7 @@ function docLinhaRec(d){ var p=docPac(d), T=DOC_T[d.t]||{n:d.t}, f=d.f, det='';
   if(d.t==='fralda') det=(f.n||'')+' por dia, '+(f.tam||'');
   else if(d.t==='receita') det=((f.sel||[]).length||0)+' remédio'+((f.sel||[]).length===1?'':'s');
   return '<div class="ir drec"><span class="dic" style="--c:'+T.c+'">'+T.L+'</span><span class="il">'+esc(T.n)+' · '+esc(nomeCurto(p))+'<small>'+esc([d.em? ddmm(d.em.slice(0,10)) : '', det].filter(Boolean).join(' · '))+'</small></span><button type="button" class="pill dref" data-dref="'+d.id+'">Refazer</button></div>'; }
-var DOC_ABAS=['lau','rec','pre'];
+var DOC_ABAS=['lau','rec'];
 function docPg(aba){ var h='', recs;
   if(aba==='lau'){
     h+='<div class="dgrid">'+DOC_ORD.map(function(k){ var T=DOC_T[k]; return '<button type="button" class="dtile" data-dt="'+k+'"><span class="dic" style="--c:'+T.c+'">'+T.L+'</span><b>'+T.n+'</b><small>'+T.s+'</small></button>'; }).join('')+'</div>';
@@ -6374,7 +6446,7 @@ function docPg(aba){ var h='', recs;
   return h; }
 function rDocs(){ S.docs=S.docs||[]; if(DOC_ABAS.indexOf(DOC_ABA)<0) DOC_ABA='lau';
   var h='<div class="pagehd"><h1>Documentos</h1>'+(wideMQ.matches?'':'<div class="hbtns flutua"><button class="ib glass maisb" id="hMore" aria-label="Mais opções">'+I.more+'</button></div>')+'</div>';
-  h+='<div class="dsegw">'+segHtml('dSeg', [['lau','Laudos'],['rec','Receitas'],['pre','Prescrições']], DOC_ABA)+'</div>';
+  h+='<div class="dsegw">'+segHtml('dSeg', [['lau','Laudos'],['rec','Receitas']], DOC_ABA)+'</div>';
   if(!docAssinOk()) h+='<button type="button" class="dass" id="dAss2">'+sz(I.pac,20)+'<span><b>Complete sua assinatura</b>Em Ajustes › Seus dados: profissão, conselho e número saem embaixo de todos os documentos.</span>'+sz(I.right,15)+'</button>';
   h+='<div id="dPg"><div class="pgt">'+DOC_ABAS.map(function(a){ return '<div class="pgp" data-pg="'+a+'">'+docPg(a)+'</div>'; }).join('')+'</div></div>';
   $('#main').innerHTML=h;
@@ -6426,7 +6498,7 @@ function rDoc(){ var d=DOC; if(!d){ tab='docs'; pilha=[]; render(); return; }
   $('#dVer').onclick=function(){ docPrevia(d); };
   $('#dPdf').onclick=function(){ docBaixar(d, this); };
 }
-function mud(d){ if(d.ed){ d.ed=null; toast('O texto editado voltou ao automático.'); } }
+function mud(d){ if(d.ed){ d.ed=null; toast('O texto editado voltou ao automático.'); } if(wideMQ.matches && tab==='doc') setTimeout(renderSide, 0); }
 function docFormLaudo(d, p){ var f=d.f, t=d.t, g=gen(p), h='';
   // do cadastro
   var cad='<div class="ir"><span class="il">'+segHtml('dDocT', [['CPF','CPF'],['CNS','CNS']], f.docT||'CPF', 'mini')+'</span><input class="ri mono" id="dDocN" inputmode="numeric" value="'+esc(fmtDoc(f.docN))+'" placeholder="Número"></div>'+
@@ -6521,10 +6593,8 @@ function posUp(s){ return String(s||'').replace(/\b(tomar|aplicar|administrar|us
 function recMeds(d){ var p=docPac(d), ms=p.meds||[]; return (d.f.sel||[]).map(function(id){ return ms.filter(function(m){ return m.id===id; })[0]; }).filter(Boolean); }
 
 // ---------- prévia (dá para editar o texto antes do PDF) ----------
-function docPrevia(d){ var rec=d.t==='receita';
-  if(rec && !recMeds(d).length){ toast('Marque pelo menos um remédio.'); return; }
-  var x=rec? null : (d.ed || docTexto(d)), P=profD(), f=d.f, p=docPac(d), cab=(DOC_T[d.t].cab||'A');
-  function corpo(){ var h='';
+// o papel do documento em HTML (prévia na folha e, no computador, ao lado do formulário)
+function docPapel(d){ var rec=d.t==='receita', x=rec? null : (d.ed || docTexto(d)), P=profD(), f=d.f, p=docPac(d), cab=(DOC_T[d.t].cab||'A'); var h='';
     if(rec){ var ms=recMeds(d);
       h='<div class="pap rec"><div class="pcab c"><img src="'+DOCIMG.mec3+'" alt=""></div><div class="pcar">SERVIÇO DE ATENÇÃO DOMICILIAR<br>PROGRAMA MELHOR EM CASA<br>DEUE/SESMA/PMB</div>'+
         '<p class="pr0"><b>PARA:</b> '+esc(nomeUp(p.nome))+'</p><p class="pc"><b>RECEITA</b></p><p class="pc"><b>'+usoTxt(f.uso)+'</b></p>'+
@@ -6537,6 +6607,10 @@ function docPrevia(d){ var rec=d.t==='receita';
         : '<p class="pdt">'+cidade()+', '+brOuBranco(f.branco?'':f.data)+'.</p><div class="pas"><i></i><span>'+esc(nomeUp(P.nome)||'NOME DO PROFISSIONAL')+'</span><span>'+esc(nomeUp(P.pf))+'</span><span>'+esc(P.cons+': '+(P.num||'______'))+'</span></div>')+
       (d.t==='cama' && f.caixa!==false? '<div class="pcx"><b>CAMA HOSPITALAR<br>DOCUMENTOS NECESSÁRIOS:</b>- LAUDO MÉDICO<br>- RG E CPF<br>- CARTÃO SUS<br>- COMPROVANTE DE RESIDÊNCIA<br><b>ENDEREÇO:</b> CONSELHEIRO FURTADO, 616. BATISTA CAMPOS</div>' : '')+'</div>';
     return h; }
+function docPrevia(d){ var rec=d.t==='receita';
+  if(rec && !recMeds(d).length){ toast('Marque pelo menos um remédio.'); return; }
+  var x=rec? null : (d.ed || docTexto(d)), P=profD(), f=d.f, p=docPac(d), cab=(DOC_T[d.t].cab||'A');
+  function corpo(){ return docPapel(d); }
   var foot=(rec?'':'<button class="btn" id="pEd">'+sz(I.pen,17)+'Editar texto</button>')+'<button class="btn pri" id="pDl">'+I.dl+'Baixar PDF</button>';
   openSheet({html:esc(DOC_T[d.t].n)+' · '+esc(nomeCurto(p))}, '<div class="papw" id="papw">'+corpo()+'</div>'+(d.ed? '<button type="button" class="dvolta" id="pAuto">Voltar ao texto automático</button>' : ''), foot);
   function escala(){ var w=$('#papw',dlg), pp=$('.pap',dlg); if(!w||!pp) return; var k=w.clientWidth/pp.offsetWidth; pp.style.transform='scale('+k+')'; w.style.height=(pp.offsetHeight*k)+'px'; }
@@ -6764,10 +6838,11 @@ var REC_FIXOS={sai:1, tar:1};
 function recOn(k){ if(REC_FIXOS[k]) return true; var r=(S.opc && S.opc.rec)||{}; if((k==='rota'||k==='levar') && r.agenda===false) return false; return r[k]!==false; }
 function nRecs(){ return RECS.filter(function(r){ return !REC_FIXOS[r[0]] && recOn(r[0]); }).length; }
 function rAjRec(){
-  var o=S.opc, h=navbar('Recursos'), lista=RECS.filter(function(r){ return !REC_FIXOS[r[0]]; });
-  h+=grupo('', lista.map(function(r){ var dep=(r[0]==='rota'||r[0]==='levar') && o.rec.agenda===false;
-    return '<div class="ir rcr"><span class="ii" style="--c:'+r[3]+'">'+RIC_AJ[r[4]]+'</span><span class="il">'+r[1]+'<small>'+(dep? 'Precisa de “Agendar próxima visita”' : r[2])+'</small></span>'+lsw(o.rec[r[0]]!==false, 'data-rec="'+r[0]+'"', dep)+'</div>'; }).join(''),
-    'Cada recurso aparece no app só quando está ligado. Desligar não apaga nada: ao ligar de novo, está tudo lá.', 'rcg');
+  var o=S.opc, h=navbar('Recursos');
+  function lin(r){ var dep=(r[0]==='rota'||r[0]==='levar') && o.rec.agenda===false;
+    return '<div class="ir rcr"><span class="ii" style="--c:'+r[3]+'">'+RIC_AJ[r[4]]+'</span><span class="il">'+r[1]+'<small>'+(dep? 'Precisa de “Agendar próxima visita”' : r[2])+'</small></span>'+lsw(o.rec[r[0]]!==false, 'data-rec="'+r[0]+'"', dep)+'</div>'; }
+  REC_GRUPOS.forEach(function(g, i){ h+=grupo(g[0], g[1].map(function(k){ return RECS.filter(function(r){ return r[0]===k; })[0]; }).filter(Boolean).map(lin).join(''),
+    i===REC_GRUPOS.length-1? 'Cada recurso aparece no app só quando está ligado. Desligar não apaga nada: ao ligar de novo, está tudo lá.' : '', 'rcg'); });
   h+=grupo('Saíram do SAD', linha({id:'dVer', icon:RIC_AJ.dem, cor:'#a2845e', rot:'Ver quem saiu', val:String(S.pacientes.filter(function(p){ return !ativo(p); }).length)})+linha({id:'dMes', icon:gl('calendario'), cor:'#ff9500', rot:'Guardar os dados', val:o.demMeses+' meses'})+
     linha({id:'dDep', icon:gl('info'), cor:'#8e8e93', rot:'Depois disso', val:o.demDepois==='apagar'?'apagar tudo':'só nome e CPF'})+linha({id:'dArq', icon:RIC_AJ.dem, cor:'#8e8e93', rot:'Arquivados', val:String(S.arquivo.length)})+linha({id:'dMem', icon:I.fInfo, cor:'#636366', rot:'Memória', val:String((S.memoria||[]).length)}),
     'Quem tem alta, vai a óbito ou não é elegível sai da lista de Pacientes e fica em Saíram do SAD por '+o.demMeses+' meses, com tudo. '+(o.demDepois==='apagar'? 'Depois, o app apaga o cadastro.' : 'Depois, fica só o nome, o CPF ou CNS, a data e o desfecho; se o CPF for cadastrado de novo, o app avisa.'));
@@ -6858,8 +6933,9 @@ function destranca3(cod){ if(!criptoOk()) return Promise.reject(new Error('sem c
   return chaveApp().then(function(k){ return crypto.subtle.decrypt({name:'AES-GCM', iv:u.slice(2,14)}, k, u.slice(14)); })
     .then(function(b){ b=new Uint8Array(b); return u[1]? descomprime(b) : b; }).then(function(b){ return JSON.parse(TDEC.decode(b)); }); }
 function acha3(txt){ var m=String(txt||'').match(/(?:MEC3\s*[·.:]\s*|[#&?]t=)([A-Za-z0-9_-]{20,})/); return m? m[1] : null; }
-function linkApp(cod){ return NO_SITE? location.origin+location.pathname+'#t='+cod : ''; }
-function msgPronta(titulo, cod){ var l=linkApp(cod); return '📋 '+titulo+'\n'+(l? 'Toque para abrir no app: '+l : 'Copie esta mensagem e toque em “Colar” no app Melhor em Casa.\nMEC3·'+cod); }
+// (o app já tem um linkApp() para "Mandar o app"; este tem outro nome para não ser trocado por ele)
+function linkTar(cod){ return NO_SITE? location.origin+location.pathname.replace(/index\.html$/,'')+'#t='+cod : ''; }
+function msgPronta(titulo, cod){ var l=linkTar(cod); return '📋 '+titulo+'\n'+(l? 'Toque para abrir no app: '+l : 'Copie esta mensagem e toque em “Colar” no app Melhor em Casa.\nMEC3·'+cod); }
 // mandar já: o botão usa a mensagem pronta (o iPhone só deixa copiar/compartilhar no mesmo toque)
 function enviaPronta(m, comoCopia){ if(!m){ toast('Preparando a mensagem… toque de novo.'); return; }
   if(comoCopia){ copiar(m, 'Mensagem copiada. Cole no WhatsApp.'); return; }
@@ -6867,13 +6943,17 @@ function enviaPronta(m, comoCopia){ if(!m){ toast('Preparando a mensagem… toqu
   abrirWhats(m); }
 
 function mandarTarefas(sel, soEstas){
-  var ab=(soEstas||[]).concat(soEstas? [] : S.tarefas.filter(function(t){ return !t.feita; }));
-  if(!ab.length){ toast('Nenhuma tarefa a fazer para mandar.'); return; }
+  // soEstas: tarefas escritas só para mandar (não ficam na sua lista); as suas tarefas a fazer vêm junto para escolher
+  var ext=soEstas||[], extId={}; ext.forEach(function(t){ extId[t.id]=1; });
+  var ab=ext.concat(S.tarefas.filter(function(t){ return !t.feita; }));
+  // sem nenhuma tarefa a fazer: já abre para escrever a que vai na mensagem
+  if(!ab.length){ editarTarefa(null, null, function(t){ mandarTarefas([t.id], [t]); }); return; }
   var esc1={}; (sel||ab.map(function(t){ return t.id; })).forEach(function(id){ esc1[id]=1; });
   var cad=true, pronta=null, ver=0;
   function pacsSel(){ var ids={}; ab.forEach(function(t){ if(esc1[t.id]) tPacsVivos(t).forEach(function(id){ ids[id]=1; }); }); return Object.keys(ids).map(pacById); }
   function corpo(){ var ps=pacsSel(), nomes=ps.map(function(p){ return nomeCurto(p).split(' ')[0]; });
-    return '<div class="shbox"><div class="mlist">'+ab.map(function(t){ var n=tNomes(t); return '<div class="ir" data-mt="'+t.id+'"><button type="button" class="lvck'+(esc1[t.id]?' on':'')+'" aria-label="Mandar esta">'+I.chk+'</button><span class="il">'+esc(t.txt)+'<small>'+esc([n, t.ate? 'até '+diaSem(t.ate) : '', soEstas? 'só para mandar' : ''].filter(Boolean).join(' · '))+'</small></span></div>'; }).join('')+'</div>'+
+    return '<div class="shbox"><div class="mlist">'+ab.map(function(t){ var n=tNomes(t); return '<div class="ir" data-mt="'+t.id+'"><button type="button" class="lvck'+(esc1[t.id]?' on':'')+'" aria-label="Mandar esta">'+I.chk+'</button><span class="il">'+esc(t.txt)+'<small>'+esc([n, t.ate? 'até '+diaSem(t.ate) : '', extId[t.id]? 'só vai na mensagem' : ''].filter(Boolean).join(' · '))+'</small></span></div>'; }).join('')+
+      '<button type="button" class="ir mesc" id="mEsc"><span class="mesci">'+sz(I.plus,15)+'</span><span class="il">Escrever uma tarefa<small>Vai só na mensagem, não fica na sua lista</small></span></button></div>'+
       (ps.length? '<div class="shrow"><span class="il">Mandar o cadastro de '+esc(nomes.length>2? nomes.slice(0,2).join(', ')+' e mais '+(nomes.length-2) : nomes.join(' e '))+' junto</span>'+lsw(cad, 'id="mCad"')+'</div>' : '')+
       '<div class="hint">'+sz(IR.lock,13)+' Vai trancado: no WhatsApp aparece só '+(NO_SITE? 'um link' : 'um código')+', e só o app abre. '+(ps.length && cad? 'Vai: nome, nascimento, CPF ou CNS, bairro, endereço, tipo e CID. Não vão visitas nem evoluções.' : 'Vão as tarefas e o nome dos pacientes.')+'</div></div>'; }
   openSheet('Mandar tarefa', corpo(), '<button class="btn" id="mCop">'+sz(I.copy,18)+'Copiar</button><button class="btn pri" id="mWa">'+sz(IR.send,18)+'Mandar</button>');
@@ -6883,6 +6963,7 @@ function mandarTarefas(sel, soEstas){
     var nc=cad? ps.length : 0, tit='Melhor em Casa: '+ts.length+' tarefa'+(ts.length>1?'s':'')+(nc? ' e '+nc+' paciente'+(nc>1?'s':'') : '')+(quemSou()? ', de '+quemSou().split(' ')[0] : '');
     tranca3(obj).then(function(cod){ if(v===ver) pronta=msgPronta(tit, cod); }, function(){ if(v===ver) pronta=''; }); }
   function liga(){ var bd=$('.bd',dlg);
+    var me=$('#mEsc',bd); if(me) me.onclick=function(){ var s0=Object.keys(esc1); closeSheet(true); setTimeout(function(){ editarTarefa(null, null, function(t){ mandarTarefas(s0.concat(t.id), ext.concat(t)); }); }, 380); };
     $$('[data-mt]',bd).forEach(function(r){ var c=$('.lvck',r); r.onclick=function(){ var id=r.dataset.mt; esc1[id]=!esc1[id]; if(!esc1[id]) delete esc1[id]; c.classList.toggle('on', !!esc1[id]); pop(c); var y=bd.scrollTop; bd.innerHTML=corpo(); liga(); bd.scrollTop=y; prepara(); }; });
     lswLiga(bd, function(sw, on){ if(sw.id==='mCad'){ cad=on; prepara(); setTimeout(function(){ var y=bd.scrollTop; bd.innerHTML=corpo(); liga(); bd.scrollTop=y; }, 420); } }); }
   liga(); prepara();
@@ -6904,9 +6985,107 @@ function mandarCadastro(p){
   $('#mWa',dlg).onclick=function(){ vai(false); };
 }
 // abriu pelo link: já mostra o que chegou
-setTimeout(function(){ var c=acha3(location.hash); if(!c) return;
+function abreDoLink(){ var c=acha3(location.hash); if(!c) return;
   try{ history.replaceState(null, '', location.pathname+location.search); }catch(e){}
-  colarTarefas('MEC3·'+c); }, 700);
+  if(dlg.open) closeSheet(true); setTimeout(function(){ colarTarefas('MEC3·'+c); }, dlg.open? 350 : 0); }
+setTimeout(abreDoLink, 700);
+// o app já estava aberto e chegou outro link (só muda o que vem depois do #)
+window.addEventListener('hashchange', abreDoLink);
+
+// ---------- chaves antigas: agora a de vidro líquido (o toque na linha também liga/desliga) ----------
+function togVira(sw, on){ if(!sw) return; if(sw._ja){ sw._ja=false; return; } var v= on==null? !sw.classList.contains('on') : !!on; if(sw._set) sw._set(v); else sw.classList.toggle('on', v); }
+function togLiga(root){ lswLiga(root, function(sw){ var b=sw.closest('button,label'); if(b && b.onclick){ sw._ja=true; b.onclick.call(b, {preventDefault:function(){}, stopPropagation:function(){}}); } }); }
+
+// ---------- Readmitir: ícone (porta com a seta para dentro) ----------
+I.readm='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 4h5a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-5"/><path d="M3 12h11"/><path d="m10 8 4 4-4 4"/></svg>';
+
+// ---------- Recursos separados por tipo ----------
+var REC_GRUPOS=[['Visitas',['turno','agenda','rota','levar']],['Enfermagem',['disp','cur','cuid']]];
+
+// ---------- computador: barra lateral, lista + prontuário lado a lado, papel do documento ao lado ----------
+var MSB_IC={
+  hoje:'<path d="M12 3.2 2.8 11c-.5.4-.2 1.2.4 1.2H5v7.6c0 .6.4 1 1 1h4v-5.6h4v5.6h4c.6 0 1-.4 1-1v-7.6h1.8c.6 0 .9-.8.4-1.2z" fill="currentColor"/>',
+  pac:'<circle cx="12" cy="8" r="4.2" fill="currentColor"/><path d="M3.8 20.2c.6-4.3 3.9-6.7 8.2-6.7s7.6 2.4 8.2 6.7c.1.6-.3 1-.9 1H4.7c-.6 0-1-.4-.9-1z" fill="currentColor"/>',
+  cal:'<rect x="3" y="4.5" width="18" height="16.5" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 9.5h18M8 2.8v3.4M16 2.8v3.4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
+  docs:'<path d="M9 2.5h6a1.5 1.5 0 0 1 1.5 1.5H18A2 2 0 0 1 20 6v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1.5A1.5 1.5 0 0 1 9 2.5z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 11.5h8M8 15.5h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
+  ficha:'<rect x="5" y="2.5" width="14" height="19" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8.5 8h7M8.5 12h7M8.5 16h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
+  tar:'<path d="M3.5 6.5l1.7 1.7 3-3.2M3.5 12.5l1.7 1.7 3-3.2M3.5 18.5l1.7 1.7 3-3.2M11.5 6.7H20.5M11.5 12.7H20.5M11.5 18.7H20.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
+  sai:'<path d="M14 4h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-4M10 16l-4-4 4-4M6 12h10" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>'};
+function msbI(k){ return '<svg viewBox="0 0 24 24">'+MSB_IC[k]+'</svg>'; }
+function msbRender(){ var sb=$('#msb'); if(!sb) return;
+  var ab=S.tarefas.filter(function(t){ return !t.feita; }).length, sai=S.pacientes.filter(function(p){ return !ativo(p); }).length, nP=S.pacientes.length-sai, f=fichaAtual(), P=S.prof||{};
+  var aj=tab==='aj' || /^aj/.test(tab) || tab==='sobre' || (SUB[tab] && pilha[0]==='aj');
+  function it(id, ic, rot, n, on){ return '<button type="button" class="mit'+(on?' on':'')+'" data-msb="'+id+'">'+msbI(ic)+'<span>'+rot+'</span>'+(n!=null && n!==''?'<small>'+n+'</small>':'')+'</button>'; }
+  var fs=fichasReais().filter(function(x){ return x!==f && x.atend.length; }).slice(-3).reverse();
+  sb.innerHTML='<div class="mbrand"><img src="'+LOGO+'" alt=""><b>Melhor em Casa</b></div>'+
+    '<div class="msh">Melhor em Casa</div>'+it('hoje','hoje','Início','',tab==='hoje')+it('pac','pac','Pacientes',nP, tab==='pac'||tab==='pront')+it('cal','cal','Calendário','',tab==='cal')+it('docs','docs','Documentos','',tab==='docs'||tab==='doc')+
+    '<div class="msh">Atalhos</div>'+it('ficha','ficha','Ficha atual',f.atend.length+'/13',tab==='ficha')+it('tar','tar','Tarefas',ab||'',false)+(sai? it('sai','sai','Saíram do SAD',sai,tab==='saidos') : '')+
+    (fs.length? '<div class="msh">Fichas</div>'+fs.map(function(x){ return '<button type="button" class="mit" data-msbf="'+x.id+'">'+msbI('ficha')+'<span>'+esc(periodo(x))+'</span></button>'; }).join('') : '')+
+    '<button type="button" class="mnova" id="msbNova">'+sz(I.plus,16)+'Nova visita</button>'+
+    '<button type="button" class="mme'+(aj?' on':'')+'" data-msb="aj">'+(P.nome? avatar({nome:P.nome,id:P.nome},28) : '<span class="av" style="width:28px;height:28px;background:var(--field)">'+sz(I.pac,15)+'</span>')+'<span><b>'+esc(P.nome||'Seus dados')+'</b><small>Ajustes</small></span></button>';
+  $$('[data-msb]',sb).forEach(function(b){ b.onclick=function(){ var k=b.dataset.msb;
+    if(k==='ficha') abrirFicha(); else if(k==='tar'){ estIni().tar=true; irTab('hoje'); setTimeout(function(){ var t=$('#tAdd'); if(t) t.scrollIntoView({block:'center',behavior:'smooth'}); }, 450); }
+    else if(k==='sai'){ pilha=[]; irPara('saidos'); } else irTab(k); }; });
+  $$('[data-msbf]',sb).forEach(function(b){ b.onclick=function(){ trocarFicha(b.dataset.msbf); }; });
+  $('#msbNova',sb).onclick=function(){ escolherPaciente(); }; }
+// Pacientes no computador: a lista fica à esquerda e o prontuário de quem está selecionado à direita
+// a largura certa da coluna só existe depois que os nomes voltam: refaz a posição das páginas e da lente
+function plistAjusta(){ var v=$('#plist #pl2'); if(v && v._pg) v._pg.base(); var sg=$('#plist #pOrd'); if(sg) moveLens(sg, false); }
+window.addEventListener('resize', function(){ if(wideMQ.matches && tab==='pront') plistAjusta(); });
+function pacSel(){ $$('#plist .pr').forEach(function(r){ var b=$('[data-ed]',r); r.classList.toggle('sel', !!b && b.dataset.ed===PRONT); }); }
+function rPacPc(){
+  if(tab==='pac'){ tab='pront'; pilha=[]; document.body.className=document.body.className.replace(/\btab-\w+/g,'').trim()+' tab-pront'; }
+  // a lista é desenhada direto na coluna dela (troca os nomes por um instante, para as medidas saírem da largura certa)
+  var m=$('#main'), pl=$('#plist'); m.id='mainPc'; pl.id='main';
+  try{ rPac(); } finally { pl.id='plist'; m.id='main'; }
+  plistAjusta();
+  if(!PRONT || !pacById(PRONT)){ var f1=$('#plist [data-ed]'); PRONT= f1? f1.dataset.ed : null; }
+  if(PRONT) rPront(); else m.innerHTML='<div class="empty">'+I.pac+'<b>Nenhum paciente</b>Cadastre o primeiro paciente.</div>';
+  pacSel(); }
+function abrirPront(id){ if(PRONT!==id && !(EVOL && PRONT_EV)) PRONT_EV=null; PRONT=id;
+  if(wideMQ.matches){ closeMenu(); EVOL=null; if(tab==='pront' && $('#plist .pr')){ rPront(); pacSel(); window.scrollTo(0,0); return; } pilha=[]; tab='pront'; render(); window.scrollTo(0,0); return; }
+  irPara('pront'); EVOL=null; }
+// ao lado: a ficha (na página da ficha) ou o papel do documento (na página do documento)
+function renderSide(){ var sd=$('#side'); if(!sd) return;
+  if(tab==='doc' && DOC){
+    if(DOC.t==='receita' && !recMeds(DOC).length){ sd.innerHTML='<div class="empty" style="margin:auto">'+I.tDocs+'<b>Prévia da receita</b>Marque pelo menos um remédio.</div>'; return; }
+    sd.innerHTML='<div class="dside"><div class="papw" id="papSide">'+docPapel(DOC)+'</div></div><div class="dsbt"><button type="button" class="btn" id="sdVer">'+sz(I.pen,17)+'Editar texto</button><button type="button" class="btn pri" id="sdPdf">'+I.dl+'Baixar PDF</button></div>';
+    var w=$('#papSide'), pp=$('.pap',w); if(w && pp){ var k=w.clientWidth/pp.offsetWidth; pp.style.transform='scale('+k+')'; w.style.height=(pp.offsetHeight*k)+'px'; }
+    $('#sdVer').onclick=function(){ docPrevia(DOC); }; $('#sdPdf').onclick=function(){ docBaixar(DOC, this); };
+    if(DOC.t==='receita') $('#sdVer').remove(); return; }
+  if(tab!=='ficha'){ sd.innerHTML=''; return; }
+  var f=fichaAtual();
+  sd.innerHTML='<div class="pgw">'+pagina(f, face, S.ultData)+'</div><div class="pvt"><div class="glass"><button class="fv'+(face===0?' on':'')+'" data-fv="0">Frente</button><button class="fv'+(face===1?' on':'')+'" data-fv="1">Verso</button></div></div>';
+  $$('#side [data-fv]').forEach(function(b){ b.onclick=function(){ face=+b.dataset.fv; renderSide(); }; });
+  var pg=$('#side .page'), w2=$('#side .pgw');
+  if(pg && w2){ var hh=w2.clientHeight, ww=w2.clientWidth; if(ww/hh < 595/842){ pg.style.height='auto'; pg.style.width='100%'; } else { pg.style.height='100%'; pg.style.width='auto'; } } }
+
+// ---------- ícone das tarefas: lista com checks ----------
+I.tarefa='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 6.5l1.7 1.7 3-3.2M3.5 12.5l1.7 1.7 3-3.2M3.5 18.5l1.7 1.7 3-3.2M11.5 6.7H20.5M11.5 12.7H20.5M11.5 18.7H20.5"/></svg>';
+I.docum='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg>';
+I.remed='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.2" y="8.6" width="17.6" height="6.8" rx="3.4" transform="rotate(-40 12 12)"/><path d="M9.4 8.9l5.2 6.2"/></svg>';
+GL.lista='<path d="M3.6 6.4l1.8 1.8 3.1-3.3M3.6 12.4l1.8 1.8 3.1-3.3M3.6 18.4l1.8 1.8 3.1-3.3M11.4 6.6H20.6M11.4 12.6H20.6M11.4 18.6H20.6" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>';
+RIC_AJ.tar=gl('lista');
+
+// ---------- prontuário: Tarefa, Laudo, Receita e Atender, quatro botões iguais ----------
+function prAcoes(p){ function bt(id, ic, t, cl){ return '<button type="button" class="pac1'+(cl?' '+cl:'')+'" id="'+id+'">'+sz(ic,22)+'<span>'+t+'</span></button>'; }
+  return '<div class="pracs">'+bt('prTar', I.tarefa, 'Tarefa')+bt('prLau', I.docum, 'Laudo')+bt('prRec', I.remed, 'Receita')+bt('prAt', I.plus, 'Atender', 'pri')+'</div>'; }
+// os documentos já feitos continuam aparecendo (sem os botões, que agora ficam lá em cima)
+function docPrSec(p){ var l=(S.docs||[]).filter(function(d){ return d.pac===p.id; }).slice(0,5);
+  return l.length? '<div class="prsh igh"><span>Documentos</span></div><div class="ig"><div class="igb ni">'+l.map(docLinhaRec).join('')+'</div></div>' : ''; }
+function prResto(p){
+  var vs=visitasDe(p.id), h=prAcoes(p)+prExtras(p);
+  var tp=ordemTarefas(S.tarefas).filter(function(t){ return tPacs(t).indexOf(p.id)>=0; }), ab=tp.filter(function(t){ return !t.feita; }).length;
+  if(tp.length) h+='<div class="igh prtarh">A fazer <span class="nb">'+(ab||'')+'</span></div><div class="prtl sxl" id="prTarL">'+tp.map(function(t){ return tarefaHtml(t, p.id); }).join('')+'</div>';
+  h+='<div class="igh" style="margin:0 32px 9px">Visitas <span class="nb">'+vs.length+'</span></div>';
+  if(!vs.length) h+='<div class="rvz"><b>Nenhuma visita ainda</b>Toque em Atender para registrar a primeira.</div>';
+  else h+='<div id="prEvl"></div>';
+  return h; }
+// do Início (deslizando a visita): escolher o documento já com o paciente
+function docDoPac(p){ if(!p) return;
+  var b='<div class="dgrid dgs">'+DOC_ORD.concat('receita').map(function(k){ var T=DOC_T[k]; return '<button type="button" class="dtile" data-dt3="'+k+'"><span class="dic" style="--c:'+T.c+'">'+T.L+'</span><b>'+T.n+'</b></button>'; }).join('')+'</div>';
+  openSheet('Documento de '+nomeCurto(p).split(' ')[0], b);
+  $$('[data-dt3]',dlg).forEach(function(x){ x.onclick=function(){ closeSheet(true); var t=x.dataset.dt3; setTimeout(function(){ docAbrir(docNovo(t, p)); }, 200); }; }); }
 // ---------- início ----------
 S=load(); migrar();
 try{ localStorage.setItem(KEY+'.t','1'); localStorage.removeItem(KEY+'.t'); }catch(e){ storageOk=false; }
