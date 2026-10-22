@@ -1552,6 +1552,19 @@ body.semabas.tab-ficha #puxa.on{display:flex}
 .dedh{font-size:13px;color:var(--mut);margin:0 2px 8px}
 .dtx{display:block;width:100%;margin:0 0 8px;resize:none;line-height:1.45;font-size:15px;border:1.5px solid var(--field);background:var(--input);border-radius:14px;padding:10px 12px;overflow:hidden}
 .dtx.tit{font-weight:800;text-align:center}.dtx.li{margin-left:18px;width:calc(100% - 18px)}
+.dcid input.ri.dcc{flex:none;width:62px;min-width:0;text-align:left;font-weight:800;font-size:15px;color:var(--ink);padding:0}
+.dcid.off .dcc{opacity:.45}
+.dcx{flex:none;border:0;background:color-mix(in srgb,var(--mut) 14%,transparent);color:var(--mut);width:26px;height:26px;border-radius:50%;display:grid;place-items:center;padding:0}
+/* curativo: materiais de marcar */
+.dcm{gap:12px;min-height:52px}
+.dcm .il{flex:1;min-width:0;line-height:1.3}
+.dcm:not(.on) .il,.dcm:not(.on) .dmn{color:var(--mut)}
+.dcm:not(.on) .dst{display:none}
+.dcm .dcob{display:inline-block;width:auto;max-width:150px;min-width:0;border:0;border-radius:8px;background:var(--acc-soft);color:var(--acc-ink);font:inherit;font-weight:700;padding:2px 8px;margin:2px 0;field-sizing:content}
+.dcm input.ri.dmn{flex:1;min-width:0;text-align:left}
+.dst{flex:none;display:flex;align-items:center;border-radius:999px;background:color-mix(in srgb,var(--mut) 14%,transparent)}
+.dst button{border:0;background:transparent;color:var(--acc);font-size:20px;font-weight:700;width:32px;height:32px;padding:0;line-height:1}
+.dst input{width:34px;border:0;background:transparent;text-align:center;font:inherit;font-weight:800;font-size:15px;color:var(--ink);padding:0;font-variant-numeric:tabular-nums;min-height:0}
 /* ---------- 0.8.1: cores, linhas e ícones como nos Ajustes do iPhone ---------- */
 /* as cores do iOS só nas páginas dos Ajustes */
 :root{--sep:#c6c6c8}[data-mode="dark"]{--sep:#38383a}
@@ -1685,7 +1698,25 @@ body.wide #toast{left:248px}
 .mlist .mesc{width:100%;border:0;background:transparent;font:inherit;text-align:left;color:inherit;display:flex;align-items:center;gap:12px;box-shadow:inset 0 .5px 0 var(--line)}
 .mesci{flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:var(--acc-soft);color:var(--acc)}
 .mesc .il{color:var(--acc)}.mesc .il small{color:var(--mut)}
+/* Remédios no quadro do prontuário */
+.prmd .prcs .pc{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:pointer}
+.prcs .pc.tmp{background:color-mix(in srgb,var(--mut) 13%,transparent);color:var(--mut)}
+/* a ficha como aba: começa abaixo do título da página de trás; a barra de baixo continua */
+#fAtras{display:none}
+body.fichaaba{--fy:calc(env(safe-area-inset-top) + 60px)}
+body.fichaaba #main{margin-top:var(--fy)}
+body.fichaaba:not(.wide) .flutua{top:calc(env(safe-area-inset-top) + 16px + var(--fy))}
+body.fichaaba:not(.wide) #borda{top:var(--fy)}
+body.fichaaba:not(.wide) #mtit{top:calc(env(safe-area-inset-top) + 16px + var(--fy))}
+body.fichaaba #fAtras{display:block;position:fixed;left:0;right:0;top:0;height:var(--fy);z-index:5;background:color-mix(in srgb,var(--bg) 70%,#000);overflow:visible;cursor:pointer}
+body.fichaaba #fAtras .fat{transform:scale(.94);transform-origin:50% 0;filter:brightness(.7);pointer-events:none}
+body.fichaaba #fAtras .pagehd{margin:0;background:transparent;padding-top:env(safe-area-inset-top)}
+body.fichaaba #fAtras .fcap{position:absolute;left:0;right:0;top:100%;height:22px;background:var(--bg);border-radius:22px 22px 0 0;opacity:0;pointer-events:none;transition:opacity .15s}
+body.fichaaba #fAtras .fcap::before{content:"";position:absolute;top:7px;left:50%;width:38px;height:5px;margin-left:-19px;border-radius:3px;background:color-mix(in srgb,var(--mut) 45%,transparent)}
+body.fichaaba #fAtras.rolou .fcap{opacity:1}
 
+/* enquanto a ficha sobe ou é puxada, o botão de cima anda junto com ela */
+body.fichaaba:not(.wide) #main.frente .flutua,body.fichaaba:not(.wide) #main[style*="translate"] .flutua{top:calc(env(safe-area-inset-top) + 16px)}
 </style>
 </head>
 <body>
@@ -1966,7 +1997,7 @@ var FONTES_FICHA = {"mao":{"nome":"Manuscrita","upm":1024,"k":1.1651,"peso":36,"
 <script>
 (function(){
 'use strict';
-var KEY='fichaAD.v1', VERSAO='0.8.4 beta', SIGTAP_PADRAO='0301050147';
+var KEY='fichaAD.v1', VERSAO='0.8.5 beta', SIGTAP_PADRAO='0301050147';
 var F=FICHA;
 var S, tab='hoje', face=0, calMes=null, lastPdf=null;
 var NO_SITE=/^https?:$/.test(location.protocol), IOS=/iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform==='MacIntel' && navigator.maxTouchPoints>1);
@@ -2204,15 +2235,15 @@ function render(){ if(SX) SX.fecha(); if(PICK) fecharPick(true); if(typeof DATA_
   var wide=wideMQ.matches;
   document.body.classList.toggle('wide', wide);
   document.body.className=document.body.className.replace(/\btab-\w+/g,'').trim()+' tab-'+tab;
-  document.body.classList.toggle('semabas', !!SUB[tab]);
+  document.body.classList.toggle('semabas', !!SUB[tab] && !(tab==='ficha' && !wide));
   if(!SUB[tab]) pilha=[];
-  $$('[data-tab]').forEach(function(b){ b.classList.toggle('on', b.dataset.tab===tab || (b.dataset.tab==='aj' && !!SUB[tab] && pilha[0]==='aj')); });
+  $$('[data-tab]').forEach(function(b){ b.classList.toggle('on', b.dataset.tab===tab || (b.dataset.tab==='aj' && !!SUB[tab] && pilha[0]==='aj') || (tab==='ficha' && !wide && b.dataset.tab===pilha[pilha.length-1])); });
   if(wide && (tab==='pac'||tab==='pront')) rPacPc(); else { var _pl=$('#plist'); if(_pl && _pl.firstChild) _pl.innerHTML='';
   ({hoje:rHoje, ficha:rFicha, cal:rCal, pac:rPac, aj:rAj, sobre:rSobre, ajImp:rAjImp, ajApar:rAjApar, ajVis:rAjVis, ajSig:rAjSig, docs:rDocs, doc:rDoc, ajProf:rAjProf, pront:rPront, evol:rEvol, visitas:rVisitas, ajRec:rAjRec, ajArq:rAjArq, rota:rRota, levar:rLevar, saidos:rSaidos, memoria:rMemoria})[tab](); }
   if(wide){ renderSide(); msbRender(); }
   var px=$('#puxa'); if(px) px.classList.toggle('on', tab==='ficha' && !wide && fichaAtual().atend.length>0);
   moveLens($('#tabbar .gtabs'), true); moveLens($('#topbar .gseg'), true);
-  topoPrepara(); topoAtualiza();
+  fichaAba(); topoPrepara(); topoAtualiza();
   var pb=$('#pBusca'); if(pb && !pb.style.transform){ var on= wide? tab==='pront' : tab==='pac'; if(on && !pb.classList.contains('on')) requestAnimationFrame(function(){ requestAnimationFrame(function(){ if(tab===(wideMQ.matches?'pront':'pac')) pb.classList.add('on'); }); }); else if(!on) pb.classList.remove('on'); }
 }
 wideMQ.addEventListener('change', render);
@@ -2221,7 +2252,7 @@ var TOPO={lim:1e9, raf:0};
 function topoPrepara(){
   var mt=$('#mtit'); if(!mt || wideMQ.matches) return;
   var tit= tab==='ficha'? $('#tSw span') : $('#main .pagehd h1'), W=innerWidth;
-  TOPO.lim= tit? tit.getBoundingClientRect().bottom+window.scrollY-(env0()+37) : 1e9;
+  TOPO.lim= tit? tit.getBoundingClientRect().bottom+window.scrollY-(env0()+37+fichaY()) : 1e9;
   mt.textContent= tit? tit.textContent : ''; mt.style.textAlign='center'; mt.style.left='16px'; mt.style.right='16px';
   if(!tit) return;
   var g=$('#main .flutua'), dir= g? g.getBoundingClientRect().left-10 : W-16, meia=Math.min(W/2-16, dir-W/2);
@@ -2232,7 +2263,7 @@ function topoPrepara(){
 }
 var ENV0=null;
 function env0(){ if(ENV0!=null) return ENV0; var d=document.createElement('div'); d.style.cssText='position:fixed;top:0;height:env(safe-area-inset-top);visibility:hidden'; document.body.appendChild(d); ENV0=d.offsetHeight; d.remove(); return ENV0; }
-function topoAtualiza(){ TOPO.raf=0; var y=window.scrollY, b=$('#borda'), mt=$('#mtit'); if(!b) return;
+function topoAtualiza(){ TOPO.raf=0; var y=window.scrollY, b=$('#borda'), mt=$('#mtit'); var fa=$('#fAtras'); if(fa) fa.classList.toggle('rolou', y>2); if(!b) return;
   b.classList.toggle('on', y>2); mt.classList.toggle('on', y>TOPO.lim); }
 window.addEventListener('scroll', function(){ if(!TOPO.raf) TOPO.raf=requestAnimationFrame(topoAtualiza); }, {passive:true});
 window.addEventListener('resize', function(){ ENV0=null; topoPrepara(); topoAtualiza(); });
@@ -2341,7 +2372,7 @@ function menuOpcoes(anchor){
 function exportarBackup(){ S.ultBackup=hoje(); save(); if(tab==='aj'){ var bx=$('#bUlt'); if(bx) bx.textContent='Último backup em '+brDate(S.ultBackup)+'. '; } baixarJson({app:'fichaAD',v:2,tipo:'completo',exportado:new Date().toISOString(),prof:S.prof,pacientes:S.pacientes,fichas:S.fichas,atual:S.atual,opc:S.opc,tarefas:S.tarefas,agenda:S.agenda,arquivo:S.arquivo,memoria:S.memoria,docs:S.docs||[]}, 'backup-ficha-AD-'+hoje()+'.json'); }
 function trocarFicha(id){ S.atual=id; var r=faixa(fichaAtual()); if(r) S.ultData=r.fim; lastPdf=null; save(); abrirFicha(); }
 // a ficha é uma folha que sobe por cima da página (fecha puxando para baixo); tudo o que ela fazia como página continua igual
-function abrirFicha(){ closeMenu(); if(tab==='ficha'){ render(); return; } transicao('sobe', function(){ pilha.push(tab); tab='ficha'; render(); window.scrollTo(0,0); }); }
+function abrirFicha(){ closeMenu(); if(tab==='ficha'){ render(); return; } var h1=$('#main .pagehd h1') || $('#main .nav h1') || $('#main h1'); FICHA_DE= h1? h1.textContent.trim() : ''; transicao('sobe', function(){ pilha.push(tab); tab='ficha'; render(); window.scrollTo(0,0); }); }
 function novaFicha(){
   var f=fichaAtual();
   if(!f.atend.length){ toast('Esta ficha ainda está vazia. As próximas visitas vão para ela.'); abrirFicha(); return; }
@@ -2853,13 +2884,14 @@ function pickGota(abrindo, fim){
     quadro(abrindo? p*T : (1-vgIO(p))*T); if(p>=1){ acaba(); return; } raf=requestAnimationFrame(passo); }
   quadro(abrindo? 0 : T); raf=requestAnimationFrame(passo); PKG=acaba;
 }
-function abrirPick(){
+// op (opcional): {titulo, escolhe(id)}; sem op é o "+ Nova visita"
+function abrirPick(op){ op=op||{}; var tit=op.titulo||'Quem foi atendido?', escolhe=op.escolhe||function(id){ novoAtend(id); };
   if(PICK){ pickBusca(!document.body.classList.contains('pkbusca')); return; }
   var na=fichaAtual().atend.filter(function(a){return a.data===S.ultData;}).map(function(a){return a.pacId;});
   // folha que sobe por baixo (como as outras), e fecha puxando para baixo
   var bg=document.createElement('div'); bg.id='pickBg'; document.body.appendChild(bg);
-  var ov=document.createElement('div'); ov.id='pick'; ov.className='sh'; ov.setAttribute('role','dialog'); ov.setAttribute('aria-label','Quem foi atendido?');
-  ov.innerHTML='<div class="grab"></div><div class="top"><h2>Quem foi atendido?</h2><button type="button" class="x" id="pkFecha" aria-label="Fechar">'+I.x+'</button></div><div class="bd" id="pkL"></div>';
+  var ov=document.createElement('div'); ov.id='pick'; ov.className='sh'; ov.setAttribute('role','dialog'); ov.setAttribute('aria-label',tit);
+  ov.innerHTML='<div class="grab"></div><div class="top"><h2>'+esc(tit)+'</h2><button type="button" class="x" id="pkFecha" aria-label="Fechar">'+I.x+'</button></div><div class="bd" id="pkL"></div>';
   document.body.appendChild(ov);
   var gt=$('#tabbar .gtabs'), cad=document.createElement('div'); cad.id='pkCad';
   cad.innerHTML='<button type="button" id="pNovo">'+sz(I.plus,18)+'<span>Cadastrar paciente novo</span></button>'+
@@ -2868,12 +2900,12 @@ function abrirPick(){
   PICK={ov:ov, cad:cad, na:na, bg:bg};
   var q=$('#pq',cad), box=$('#pkL',ov);
   function lista(){ box.innerHTML=pickLinhas(q.value);
-    $$('[data-p]',box).forEach(function(b){ b.onclick=function(){ var id=b.dataset.p; fecharPick(true); novoAtend(id); }; }); }
+    $$('[data-p]',box).forEach(function(b){ b.onclick=function(){ var id=b.dataset.p; fecharPick(true); escolhe(id); }; }); }
   PICK.lista=lista; lista();
   q.oninput=function(){ lista(); box.scrollTop=0; cad.classList.toggle('tem', !!q.value); pickTeclado(); };
   q.addEventListener('focus', function(){ [60,200,400,700].forEach(function(t){ setTimeout(pickTeclado, t); }); });
   q.addEventListener('blur', function(){ setTimeout(function(){ if(PICK && !q.value && document.activeElement!==q) pickBusca(false); }, 150); });
-  $('#pNovo',cad).onclick=function(){ editarPaciente(null, function(p){ fecharPick(true); novoAtend(p.id); }); };
+  $('#pNovo',cad).onclick=function(){ editarPaciente(null, function(p){ fecharPick(true); escolhe(p.id); }); };
   $('#pkFecha',ov).onclick=function(){ fecharPick(); };
   bg.onclick=function(){ fecharPick(); };
   // puxar para baixo fecha (no topo da lista, ou pela alça/título)
@@ -3941,7 +3973,7 @@ function prAcomp(p){
     '<div class="ir prend"><button type="button" class="baip glass'+(p.bairro?'':' vz')+'" id="prBaiB" aria-label="Bairro">'+esc(p.bairro||'Bairro')+sz(I.down,13)+'</button><input class="ri" id="prEnd" placeholder="Endereço: rua e número" value="'+esc(p.end||'')+'" autocomplete="off" autocapitalize="words" aria-label="Endereço"><button type="button" class="pmb" id="prMapB" aria-label="Ver no mapa">'+sz(I.pin,19)+'</button></div><div id="prESug"></div><div class="emap" id="prMap" data-nopg hidden></div>'+
     '<div class="ir"><span class="il">Última visita'+(u?'<small>'+esc(diaTxt(dataV(u)))+'</small>':'')+'</span><span class="iv">'+(u? '<span class="dd '+corDias(du)+'">'+haDias(du)+'</span>' : 'Nenhuma ainda')+'</span></div>'+
     '<div class="ir prch prcod" id="prCodW"><span class="il">'+miniSeg('prCodT',[['cid','CID'],['ciap','CIAP']],codTipo())+'</span><span class="prcs cods"></span></div>'+
-    condRow(p)+
+    condRow(p)+medRow(p)+
     '</div></div>';
 }
 function prCad(p){
@@ -3986,7 +4018,7 @@ function ligaCard(p){
   if((b=$('#prBaiB'))) b.onclick=function(){ menuBairro(p, b); };
   if((b=$('#prEnd'))) endSugere(b, $('#prESug'), p, function(){ save(); var bt=$('#prBaiB'); if(bt){ bt.innerHTML=esc(p.bairro||'Bairro')+sz(I.down,13); bt.classList.toggle('vz', !p.bairro); } var m2=$('#prMap'); if(m2) mapaEnd(m2, p, function(){ save(); }); });
   if((b=$('#prEnd'))) b.onchange=function(){ p.end=this.value.trim(); if(p.geo && p.geo.q!==geoQ(p) && p.geo.m==='m') delete p.geo; save(); if(p.end){ var m2=$('#prMap'); if(m2) mapaEnd(m2, p, function(){ save(); }); } };
-  codEditor($('#prCodW'), p, true); ligaCond(p);
+  codEditor($('#prCodW'), p, true); ligaCond(p); ligaMed(p);
   var mp=$('#prMap'), mb=$('#prMapB'); if(mb) mb.onclick=function(){ if(!mp.hidden){ mp.hidden=true; if(mp._m){ try{ mp._m.remove(); }catch(_){} mp._m=null; } return; } mapaEnd(mp, p, function(){ save(); }); };
   // Cadastro: tudo editável aqui mesmo
   if((b=$('#pcNome'))) b.onchange=function(){ var v=this.value.trim(); if(!v){ this.value=p.nome||''; return; } p.nome=v; snapPac(p); save(); hd(); };
@@ -4202,7 +4234,7 @@ function rAjApar(){
   var r=$('#oVid'); r.oninput=function(){ o.vidro=+this.value; this.style.setProperty('--p', this.value+'%'); aplicarTema(); }; r.onchange=function(){ save(); };
 }
 
-var TAM_APP=1741918;
+var TAM_APP=1759172;
 function tamanhoApp(){ if(TAM_APP==null){ try{ TAM_APP=new Blob([document.documentElement.outerHTML]).size; }catch(e){ TAM_APP=0; } } return TAM_APP? (TAM_APP/1048576).toFixed(1).replace('.',',')+' MB' : '—'; }
 function rSobre(){
   var nAt=0; S.fichas.forEach(function(f){ nAt+=f.atend.length; });
@@ -4617,12 +4649,12 @@ var SX=null;
   // botões de cada lado: o último de cada lista fica na beirada e é o do "deslizar até o fim"
   function lados(it){
     // no Calendário: só mudar data de um lado; do outro, mudar de ficha e apagar (sem alta)
-    if(it.tipo==='v') return { esq:[{k:'data', ic:I.cal, nome:'Mudar data'}], dir:(tab==='cal'? [] : [{k:'alta', ic:I.alta, nome:'Registrar alta'}]).concat([{k:'mover', ic:I.mover, nome:'Mudar de ficha'},{k:'del', ic:I.del, nome:'Apagar visita'}]) };
+    if(it.tipo==='v') return { esq:[{k:'data', ic:I.cal, nome:'Mudar data'}], dir:[{k:'mover', ic:I.mover, nome:'Mudar de ficha'},{k:'del', ic:I.del, nome:'Apagar visita'}] };
     // Início: ações rápidas do lado em que não há outra aba (Últimas visitas: puxando para a direita; Sem visita: para a esquerda)
     // tocar no nome já abre a evolução (visitas) ou o prontuário (Sem visita): esses não viram botão.
     // nas visitas, as iniciais do paciente crescem e viram o botão do prontuário (como o turno na ficha)
-    if(it.tipo==='iv') return { esq: it.p? [{k:'tar', ic:I.tarefa, nome:'Nova tarefa'},{k:'doc', ic:I.docum, nome:'Documento'}] : [], dir:[] };
-    if(it.tipo==='cv') return { esq: it.p? [{k:'tar', ic:I.tarefa, nome:'Nova tarefa'},{k:'doc', ic:I.docum, nome:'Documento'}] : [], dir:[{k:'alta', ic:I.alta, nome:'Registrar alta'},{k:'del', ic:I.del, nome:'Apagar visita'}] };
+    if(it.tipo==='iv') return { esq: it.p? [{k:'doc', ic:I.docum, nome:'Documento'},{k:'tar', ic:I.tarefa, nome:'Nova tarefa'}] : [], dir:[] };
+    if(it.tipo==='cv') return { esq: it.p? [{k:'doc', ic:I.docum, nome:'Documento'},{k:'tar', ic:I.tarefa, nome:'Nova tarefa'}] : [], dir:[{k:'alta', ic:I.alta, nome:'Registrar alta'},{k:'del', ic:I.del, nome:'Apagar visita'}] };
     if(it.tipo==='ip') return { esq:[], dir:[{k:'alta', ic:I.alta, nome:'Registrar alta'}] };
     // prontuário: o quadradinho da data vira o botão de mudar a data; ao lado, mudar de ficha e alta
     if(it.tipo==='pv') return { esq:[{k:'copiar', ic:I.copy, nome:'Copiar evolução'}], dir:[{k:'del', ic:I.del, nome:'Apagar visita'}] };
@@ -6035,7 +6067,7 @@ function prExtras(p){ var h='', vaz=[];
   sec('cur','Curativos', (p.les||[]).slice().sort(function(a,b){ return (a.prox||'9').localeCompare(b.prox||'9'); }), lesRow, 'Curativo');
   sec('cuid','Cuidador', p.cuid, cuidRow, 'Cuidador');
   sec('levar','Levar nas visitas', p.mat, matRow, 'Material');
-  sec('rem','Remédios', p.meds, remRow, 'Remédio');
+  // os remédios ficam numa linha dentro do quadro de Acompanhamento (medRow)
   h+=docPrSec(p);
   var ag= recOn('agenda') && ativo(p)? agDe(p.id) : undefined;
   if(vaz.length || ag!==undefined) h+='<div class="pradd">'+(ag!==undefined? '<button type="button" class="pag'+(ag?' tem':'')+'" id="prAg">'+sz(RIC.ag,15)+(ag? 'Próxima visita: '+esc(agTxt(ag)) : 'Agendar próxima visita')+'</button>' : '')+vaz.map(function(v){ return '<button type="button" data-padd="'+v[0]+'">'+sz(I.plus,13)+v[1]+'</button>'; }).join('')+'</div>';
@@ -6309,13 +6341,14 @@ var DOC_T={
   cadeira:{n:'Cadeira de rodas', s:'locomoção', c:'#30b0c7', L:'R'},
   dieta:{n:'Dieta enteral', s:'dispensa de nutrição', c:'#34c759', L:'N'},
   curativo:{n:'Curativo', s:'materiais da semana', c:'#ff375f', L:'+'},
+  energia:{n:'Energia', s:'tarifa social (Energia Azul)', c:'#ffcc00', L:'E'},
   inss:{n:'INSS', s:'incapacidade', c:'#ff9500', L:'I'},
   vida:{n:'Prova de vida', s:'com o responsável', c:'#8e8e93', L:'V'},
   curatela:{n:'Curatela', s:'para o processo judicial', c:'#a2845e', L:'J'},
   livre:{n:'Laudo livre', s:'cabeçalho, paciente e CID', c:'#636366', L:'L'},
   receita:{n:'Receita', s:'duas vias na folha', c:'#ff9f0a', L:'Rx', rec:1}
 };
-var DOC_ORD=['fralda','cama','cadeira','dieta','curativo','inss','vida','curatela','decl','livre'];
+var DOC_ORD=['fralda','cama','cadeira','dieta','curativo','energia','inss','vida','curatela','decl','livre'];
 // CID-10 mais comuns no SAD (a descrição sai entre parênteses; dá para trocar no próprio laudo e ela fica no paciente)
 var CIDN={A15:'tuberculose respiratória',B20:'doença pelo HIV',C16:'neoplasia maligna do estômago',C18:'neoplasia maligna do cólon',C34:'neoplasia maligna dos brônquios e pulmões',C50:'neoplasia maligna da mama',C61:'neoplasia maligna da próstata',C64:'neoplasia maligna do rim',C80:'neoplasia maligna sem especificação de localização',C81:'doença de Hodgkin',
   E10:'diabetes mellitus tipo 1',E11:'diabetes mellitus tipo 2',E14:'diabetes mellitus',E43:'desnutrição proteico-calórica grave',F00:'demência na doença de Alzheimer',F01:'demência vascular',F03:'demência',G12:'atrofia muscular espinal','G12.2':'esclerose lateral amiotrófica',G20:'doença de Parkinson',G30:'doença de Alzheimer',G35:'esclerose múltipla',G40:'epilepsia',
@@ -6345,15 +6378,48 @@ var PAR_G={'filho(a)':['filho','filha'],'cônjuge':['esposo','esposa'],'neto(a)'
 
 // ---------- o que cada documento diz ----------
 var SIT=[['dom','Domiciliado'],['leito','Restrito ao leito'],['long','Idoso longevo'],['fral','Fraldas'],['med','Medicamentos contínuos'],['gtt','Gastrostomia'],['sne','Dieta enteral'],['lpp','Lesão por pressão']];
-function sitTxt(p, f){ var g=gen(p), s=f.sit||[], a=[];
+function sitTxt(p, f, t){ var g=gen(p), s=f.sit||[], a=[];
   if(s.indexOf('dom')>=0) a.push(g('domiciliado','domiciliada'));
   if(s.indexOf('leito')>=0) a.push(g('restrito','restrita')+' ao leito');
   if(s.indexOf('long')>=0) a.push(g('idoso longevo','idosa longeva'));
   if(s.indexOf('gtt')>=0) a.push('em uso de gastrostomia'); else if(s.indexOf('sne')>=0) a.push('com dieta enteral');
-  if(s.indexOf('lpp')>=0) a.push('com lesão por pressão');
+  if(s.indexOf('lpp')>=0 && t!=='curativo') a.push('com lesão por pressão');
   var uso=[]; if(s.indexOf('fral')>=0) uso.push('fraldas'); if(s.indexOf('med')>=0) uso.push('medicamentos de uso contínuo');
   if(uso.length) a.push('em uso diário de '+uso.join(' e '));
   return a.length>1? a.slice(0,-1).join(', ')+' e '+a[a.length-1] : (a[0]||''); }
+// ---------- curativo: os materiais da semana (quantidades do laudo modelo) ----------
+var MAT_CUR=[
+  {k:'placa', n1:'placa de', n:'placas de', q:7, cob:1},
+  {k:'soro', n1:'frasco de soro fisiológico 0,9% 250 mL', n:'frascos de soro fisiológico 0,9% 250 mL', q:5},
+  {k:'gaze', n1:'pacote de gaze', n:'pacotes de gaze', q:50},
+  {k:'atad', n1:'pacote de atadura tamanho M', n:'pacotes de atadura tamanho M', q:15},
+  {k:'luva', n1:'caixa de luva de procedimento tamanho M', n:'caixas de luva de procedimento tamanho M', q:1},
+  {k:'lest', n1:'luva estéril tamanho 7,5', n:'luvas estéreis tamanho 7,5', q:10},
+  {k:'hgel', n1:'tubo de hidrogel', n:'tubos de hidrogel', q:2},
+  {k:'espa', n1:'rolo de esparadrapo', n:'rolos de esparadrapo', q:5},
+  {k:'micr', n1:'rolo de fita microporosa', n:'rolos de fita microporosa', q:5}];
+// ---------- energia (tarifa social): aparelhos e horas por dia sugeridas ----------
+var APS_ENE=[
+  {k:'colch', n:'Colchão pneumático', h:24},
+  {k:'o2', n:'Concentrador de oxigênio', h:24},
+  {k:'bomba', n:'Bomba de infusão de dieta enteral', h:20},
+  {k:'cpap', n:'CPAP / BiPAP', h:8},
+  {k:'asp', n:'Aspirador de secreção', h:2},
+  {k:'cama', n:'Cama hospitalar elétrica', h:2},
+  {k:'neb', n:'Nebulizador', h:1},
+  {k:'vent', n:'Ventilador', h:24},
+  {k:'ar', n:'Ar-condicionado', h:12}];
+function eneDef(a){ return APS_ENE.filter(function(x){ return x.k===a.k; })[0]||null; }
+function eneLinhas(f){ return (f.aps||[]).filter(function(a){ return a.on!==false && a.on!==undefined; }).map(function(a){ var A=eneDef(a), nm=A? A.n : String(a.n||'').trim(), h=+a.h||1; if(!nm) return '';
+  return nm+': '+h+' '+(h===1?'hora':'horas')+' por dia, cerca de '+(h*30)+' horas por mês'; }).filter(Boolean); }
+function curDef(m){ return MAT_CUR.filter(function(x){ return x.k===m.k; })[0]||null; }
+function curLinhas(f){ return (f.mats||[]).filter(function(m){ return m.on!==false; }).map(function(m){ var M=curDef(m), q=+m.q||1;
+    var nome= M? (q===1? M.n1 : M.n)+(M.cob? ' '+String(m.cob||'').trim() : '') : String(m.n||'').trim(); return nome? q+' '+nome.trim() : ''; }).filter(Boolean); }
+function curFerida(f){ if(!f.mats && f.ferida) return f.ferida; return (f.sit||[]).indexOf('lpp')>=0? 'lesões por pressão' : 'feridas'; }
+// laudo antigo (materiais em texto livre): cada linha vira um material próprio
+function curMigra(f, p){ f.mats=String(f.itens||'').split('\n').map(function(x){ return x.trim().replace(/[;.,]+$/,''); }).filter(Boolean).map(function(x){ var m=x.match(/^(\d+)\s+(.*)$/); return {k:'x'+uid(), on:true, q: m? +m[1] : 1, n: m? m[2] : x}; });
+  if(!f.mats.length) f.mats=MAT_CUR.map(function(m){ return {k:m.k, on:true, q:m.q, cob: m.cob? 'Urgo Clean' : undefined}; });
+  if(f.ferida==='lesões por pressão' && (f.sit||[]).indexOf('lpp')<0) f.sit=(f.sit||[]).concat('lpp'); }
 function depTxt(f){ return f.dep==='parcial'? 'dependente parcial para as atividades básicas diárias e instrumentais' : 'totalmente dependente para todas as atividades básicas diárias e instrumentais'; }
 function cidsTxt(p, f, curto){ var l=(f.cids||[]).filter(function(c){ return c.on!==false && c.c; });
   return l.map(function(c){ var d=c.d!=null? c.d : cidNome(p, c.c); return curto? c.c : c.c+(d?' ('+d+')':''); }).join('; '); }
@@ -6366,7 +6432,7 @@ function diagTxt(p, f, fim){ var n=nCids(f); if(!n) return '';
   return 'Conforme os registros médicos, '+artPac(p)+' apresenta o diagnóstico '+(n>1? 'das seguintes patologias' : 'da seguinte patologia')+' de CID-10: '+cidsTxt(p, f)+(fim||'')+'.'; }
 function frase(s){ s=String(s||'').trim(); return s? s.charAt(0).toUpperCase()+s.slice(1) : ''; }
 // devolve {tit, ps:[{t, li, sem}]}: li = item de lista (sem recuo), sem = sem recuo
-function docTexto(d){ var p=docPac(d), f=d.f, g=gen(p), t=d.t, ps=[], tit='LAUDO MÉDICO', sit=sitTxt(p, f), atual=sit? 'Atualmente encontra-se '+sit : 'Atualmente encontra-se';
+function docTexto(d){ var p=docPac(d), f=d.f, g=gen(p), t=d.t, ps=[], tit='LAUDO MÉDICO', sit=sitTxt(p, f, t), atual=sit? 'Atualmente encontra-se '+sit : 'Atualmente encontra-se';
   function P(x){ if(x) ps.push({t:x}); }
   if(t==='decl'){ var id=p.nasc? idade(p.nasc) : '';
     tit='DECLARAÇÃO MÉDICA PARA AQUISIÇÃO E FORNECIMENTO DE FRALDA GERIÁTRICA';
@@ -6392,14 +6458,21 @@ function docTexto(d){ var p=docPac(d), f=d.f, g=gen(p), t=d.t, ps=[], tit='LAUDO
     P(diagTxt(p, f, ', com comprometimento na capacidade de alimentar-se, o que impacta diretamente na quantidade de calorias ingerida diariamente. Necessita, portanto, de dispensa de nutrição enteral') ||
       frase(artPac(p))+' apresenta comprometimento na capacidade de alimentar-se, o que impacta diretamente na quantidade de calorias ingerida diariamente. Necessita, portanto, de dispensa de nutrição enteral.'); }
   else if(t==='inss'){ P(diagTxt(p, f)); P(atual+(sit?', ':' ')+'sendo '+depTxt(f)+' e '+g('incapaz','incapaz')+' de exercer atividades laborais, sendo esta enfermidade sem previsão de alta clínica.'); }
-  else if(t==='curativo'){ P(diagTxt(p, f)); P(atual+(sit?', ':' ')+'em uso de curativo diariamente em '+(f.ferida||'lesões por pressão')+'. Dessa forma, '+artPac(p)+' necessita de dispensa semanal dos seguintes itens para melhor promoção de cuidado com as feridas:');
-    var it=String(f.itens||'').split('\n').map(function(x){ return x.trim().replace(/[;.,]+$/,''); }).filter(Boolean);
+  else if(t==='curativo'){ P(diagTxt(p, f)); P(atual+(sit?', ':' ')+'em uso de curativo diariamente em '+curFerida(f)+'. Dessa forma, '+artPac(p)+' necessita de dispensa semanal dos seguintes itens para melhor promoção de cuidado com as feridas:');
+    var it= f.mats? curLinhas(f) : String(f.itens||'').split('\n').map(function(x){ return x.trim().replace(/[;.,]+$/,''); }).filter(Boolean);
     it.forEach(function(x, i){ ps.push({t:x+(i===it.length-1?'.':';'), li:1}); }); }
   else if(t==='vida'){ var cu2=docCuid(p, f), par='';
     P(diagTxt(p, f, ', com comprometimento de manifestação de vontade e prejuízo do discernimento, que '+g('o','a')+' impede de praticar atos de natureza patrimonial ou negocial, sendo '+g('absolutamente incapaz','absolutamente incapaz')+' para a prática dos atos da vida civil'));
     if(cu2){ var cf2=docSexoCuid(cu2)==='F', pg=PAR_G[cu2.par]; par= pg? (cf2?'sua ':'seu ')+pg[cf2?1:0]+', ' : ''; }
     P(atual+(sit?', ':' ')+'sendo '+depTxt(f)+' e incapaz para os atos da vida civil, sendo esta enfermidade sem previsão de alta clínica'+
       (cu2? ', estando os cuidados sob responsabilidade de '+par+nomeUp(cu2.nome)+(cu2.nasc? ', '+idade(cu2.nasc) : '')+(dig(cu2.cpf)? ', '+(docSexoCuid(cu2)==='F'?'portadora':'portador')+' do CPF: '+fmtDoc(cu2.cpf) : '') : '')+'.'); }
+  else if(t==='energia'){ var ap=eneLinhas(f);
+    P(diagTxt(p, f)); P(atual+(sit?', ':' ')+'necessitando, para a continuidade do tratamento no domicílio, do uso contínuo '+(ap.length>1? 'dos seguintes equipamentos elétricos' : 'do seguinte equipamento elétrico')+':');
+    ap.forEach(function(x, i){ ps.push({t:x+(i===ap.length-1?'.':';'), li:1}); });
+    if((f.aps||[]).some(function(a){ return a.on!==false && (a.k==='vent' || a.k==='ar'); }))
+      P('O controle da temperatura do ambiente é necessário por se tratar de '+artPac(p).replace(/^[ao] /,'')+' '+((f.sit||[]).indexOf('leito')>=0? g('restrito ao leito','restrita ao leito') : g('domiciliado','domiciliada'))+', com maior risco de lesões de pele e de complicações associadas ao calor.');
+    P('Previsão de uso: '+(f.prev==='6'? '6 (seis) meses' : f.prev==='12'? '12 (doze) meses' : 'tempo indeterminado (uso contínuo)')+'. Endereço da unidade consumidora: '+(String(f.endUC||'').trim() || '________________________________________')+'. NIS: '+(dig(f.nis)? dig(f.nis) : '____________________')+'.');
+    P('Laudo emitido para fins de solicitação da Tarifa Social de Energia Elétrica, conforme a Portaria Interministerial MME/MS nº 630/2011 e a Resolução Normativa ANEEL nº 1.000/2021.'); }
   else if(t==='livre'){ P(diagTxt(p, f)); String(f.livre||'').split(/\n\s*\n|\n/).forEach(function(x){ P(x.trim()); }); }
   return {tit:tit, ps:ps}; }
 function docCuid(p, f){ if(!f.cuid) return null; var c=(p.cuid||[]).filter(function(x){ return x.id===f.cuid; })[0]; return c||null; }
@@ -6416,11 +6489,15 @@ function docNovo(t, p){ var ult=(S.docs||[]).filter(function(x){ return x.t===t 
   f.sit=s; f.dep='total'; f.data=hoje(); f.branco=false;
   if(t==='fralda'){ f.n=5; f.tam='G'; }
   if(t==='cama') f.caixa=true;
-  if(t==='curativo'){ f.ferida=(p.les||[]).length && (p.les||[]).every(function(x){ return x.tipo==='LPP'; })? 'lesões por pressão' : (p.les||[]).length? 'feridas' : 'lesões por pressão';
-    f.itens=(p.mat||[]).map(function(m){ return (m.q && m.q!=='1'? m.q+' ' : '')+m.nome; }).join('\n'); }
+  if(t==='energia'){ f.aps=APS_ENE.map(function(a){ return {k:a.k, on:false, h:a.h}; }); f.prev='ind'; f.nis='';
+    f.endUC=[p.end, p.bairro, cidade()].filter(function(x){ return x && String(x).trim(); }).join(', ');
+    if((p.les||[]).length || s.indexOf('lpp')>=0) f.aps[0].on=true; }
+  if(t==='curativo'){ var les=p.les||[]; if(!(les.length && !les.some(function(x){ return x.tipo==='LPP'; }))) s.push('lpp');
+    var cob=(les.filter(function(x){ return x.cob; })[0]||{}).cob||'Urgo Clean';
+    f.mats=MAT_CUR.map(function(m){ return {k:m.k, on:true, q:m.q, cob: m.cob? cob : undefined}; }); }
   if(t==='vida' || t==='curatela'){ f.cuid=((p.cuid||[])[0]||{}).id||''; f.sit=f.sit.filter(function(x){ return x!=='lpp'; }); }
   if(t==='receita'){ f={uso:'int', vias:2, data:hoje(), branco:false, sel:(p.meds||[]).map(function(m){ return m.id; })}; }
-  if(ult){ var o=JSON.parse(JSON.stringify(ult.f)); ['docT','docN','adm','cids','data','branco','sel','cuid','itens'].forEach(function(k){ delete o[k]; }); Object.assign(f, o); }
+  if(ult){ var o=JSON.parse(JSON.stringify(ult.f)); ['docT','docN','adm','cids','data','branco','sel','cuid','itens','ferida'].forEach(function(k){ delete o[k]; }); if(t==='curativo' && !o.mats) delete o.sit; Object.assign(f, o); }
   return {id:uid(), t:t, pac:p.id, f:f, ed:null}; }
 
 // ---------- a aba ----------
@@ -6464,6 +6541,8 @@ function rDocs(){ S.docs=S.docs||[]; if(DOC_ABAS.indexOf(DOC_ABA)<0) DOC_ABA='la
 }
 function docAbrir(d){ DOC=d; if(tab==='doc') render(); else irPara('doc'); }
 function docEscolhePac(titulo, fn){
+  // no celular: a mesma escolha do "+ Nova visita" (a busca sobe junto com o teclado)
+  var tb=$('#tabbar'); if(!wideMQ.matches && tb && getComputedStyle(tb).display!=='none' && typeof abrirPick==='function'){ closeMenu(); abrirPick({titulo:titulo+': de quem?', escolhe:function(id){ var p=pacById(id); if(p) fn(p); }}); return; }
   var b='<label class="pkq dpq">'+sz(I.srch,18)+'<input type="search" id="dpq" placeholder="Buscar paciente" autocomplete="off" enterkeyhint="search"></label><div id="dpl"></div>';
   openSheet(titulo+': de quem?', b);
   function lista(){ var q=$('#dpq',dlg).value, ps=filtra(q).filter(function(p){ return q || !saiu(p); });
@@ -6507,22 +6586,40 @@ function docFormLaudo(d, p){ var f=d.f, t=d.t, g=gen(p), h='';
   h+=grupo('Do cadastro', cad, '', 'ni');
   // CID
   if(t!=='curatela' || true){ var ci=(f.cids||[]).map(function(c, i){ var dsc=c.d!=null? c.d : cidNome(p, c.c);
-      return '<div class="ir dcid'+(c.on===false?' off':'')+'"><button type="button" class="dck" data-ci="'+i+'" aria-label="Usar este CID">'+sz(I.chk,14)+'</button><b class="mono">'+esc(c.c)+'</b><input class="ri dcd" data-cd="'+i+'" value="'+esc(dsc)+'" placeholder="descrição (sai entre parênteses)"></div>'; }).join('');
+      return '<div class="ir dcid'+(c.on===false?' off':'')+'"><button type="button" class="dck" data-ci="'+i+'" aria-label="Usar este CID">'+sz(I.chk,14)+'</button><input class="ri mono dcc" data-cc="'+i+'" value="'+esc(c.c)+'" aria-label="Código do CID" autocapitalize="characters" autocomplete="off" enterkeyhint="done"><input class="ri dcd" data-cd="'+i+'" value="'+esc(dsc)+'" placeholder="descrição (sai entre parênteses)"><button type="button" class="dcx" data-cx="'+i+'" aria-label="Tirar este CID">'+sz(I.x,13)+'</button></div>'; }).join('');
     ci+='<div class="ir dcid add"><span class="dck">'+sz(I.plus,14)+'</span><input class="ri mono" id="dCidN" placeholder="Outro CID (ex.: Z74)" autocapitalize="characters" autocomplete="off" enterkeyhint="done"></div>';
-    h+=grupo('CID-10', ci, nCids(f)? '' : 'Sem CID marcado, a frase do diagnóstico não sai.', 'ni'); }
+    h+=grupo('CID-10', ci, nCids(f)? 'São os mesmos CIDs do prontuário: o que mudar aqui muda lá. A bolinha só escolhe o que sai neste laudo.' : 'Sem CID marcado, a frase do diagnóstico não sai.', 'ni'); }
   // situação
   if(t!=='decl' && t!=='curatela'){
     var sit=SIT.map(function(s){ var r=s[1]; if(s[0]==='dom') r=g('Domiciliado','Domiciliada'); if(s[0]==='leito') r=g('Restrito','Restrita')+' ao leito'; if(s[0]==='long') r=g('Idoso longevo','Idosa longeva'); return [s[0], r]; });
     h+=grupo('Como '+g('ele','ela')+' está', '<div class="ipad"><div class="chs" id="dSit">'+chipsHtml(sit, f.sit, 'si', '')+'</div></div>'+
-      (t!=='cadeira'? '<div class="ir"><span class="il">Dependência</span>'+segHtml('dDep', [['total','Total'],['parcial','Parcial']], f.dep||'total', 'mini')+'</div>' : ''), '', 'ni'); }
+      (t!=='cadeira' && t!=='energia'? '<div class="ir"><span class="il">Dependência</span>'+segHtml('dDep', [['total','Total'],['parcial','Parcial']], f.dep||'total', 'mini')+'</div>' : ''), '', 'ni'); }
   // de cada modelo
   if(t==='fralda'){ var n=+f.n||1;
     h+=grupo('Fraldas', '<div class="ir"><span class="il">Por dia</span><span class="dstp"><button type="button" id="dMenos" aria-label="Menos">−</button><b>'+n+'</b><button type="button" id="dMais" aria-label="Mais">+</button></span></div>'+
       '<div class="ir"><span class="il">Por mês</span><span class="iv">'+esc(numExt(n*30))+'</span></div>'+
       '<div class="ir"><span class="il">Tamanho</span><span class="chs dtam">'+chipsHtml([['P','P'],['M','M'],['G','G'],['GG','GG'],['XG','XG'],['EG','EG']], f.tam, 'tm', '')+'</span></div>', '', 'ni'); }
   if(t==='cama') h+=grupo('', '<div class="ir"><span class="il">Quadro dos documentos<small>Laudo, RG e CPF, cartão SUS, comprovante e o endereço da retirada</small></span>'+lsw(f.caixa!==false,'id="dCx"')+'</div>', '', 'ni');
-  if(t==='curativo') h+=grupo('Materiais da semana', '<div class="ipad"><textarea id="dIt" rows="6" placeholder="Um por linha. Ex.:\n7 placas de hidrocoloide\n5 frascos de soro fisiológico 0,9% 250 mL">'+esc(f.itens||'')+'</textarea></div>'+
-    '<div class="ir"><span class="il">Feridas</span>'+segHtml('dFer', [['lesões por pressão','LPP'],['feridas','Outras']], f.ferida==='feridas'?'feridas':'lesões por pressão', 'mini')+'</div>', (p.mat||[]).length? 'Veio da lista "Levar nas visitas" do paciente.' : '', 'ni');
+  if(t==='curativo'){ if(!f.mats) curMigra(f, p);
+    h+=grupo('Materiais da semana', f.mats.map(function(m, i){ var M=curDef(m), on=m.on!==false;
+      return '<div class="ir dcu dcm'+(on?' on':'')+'"><button type="button" class="dck" data-mk="'+i+'" aria-label="Pedir este material">'+sz(I.chk,14)+'</button>'+
+        (M? '<span class="il">'+esc(m.q==1? M.n1 : M.n)+(M.cob? ' <input class="dcob" data-mc="'+i+'" value="'+esc(m.cob||'')+'" placeholder="nome da placa" autocomplete="off" autocapitalize="words">' : '')+'</span>'
+          : '<input class="ri dmn" data-mn="'+i+'" value="'+esc(m.n||'')+'" placeholder="Ex.: frascos de PHMB" autocomplete="off">')+
+        '<span class="dst"><button type="button" data-mm="'+i+'" aria-label="Menos">−</button><input data-mq="'+i+'" inputmode="numeric" value="'+esc(String(m.q||''))+'" aria-label="Quantidade"><button type="button" data-mp="'+i+'" aria-label="Mais">+</button></span></div>'; }).join('')+
+      '<button type="button" class="ir dcid add" id="dMatN"><span class="dck">'+sz(I.plus,14)+'</span><span class="il" style="color:var(--acc)">Outro material</span></button>',
+      'Quantidades para uma semana. Toque no número para escrever outro. No laudo saem só os marcados.', 'ni'); }
+  if(t==='energia'){ if(!f.aps) f.aps=APS_ENE.map(function(a){ return {k:a.k, on:false, h:a.h}; });
+    h+=grupo('Aparelhos elétricos', f.aps.map(function(a, i){ var A=eneDef(a), on=a.on!==false;
+      return '<div class="ir dcu dcm'+(on?' on':'')+'"><button type="button" class="dck" data-ek="'+i+'" aria-label="Usa este aparelho">'+sz(I.chk,14)+'</button>'+
+        (A? '<span class="il">'+esc(A.n)+(on? '<small>cerca de '+((+a.h||1)*30)+' horas por mês</small>' : '')+'</span>' : '<input class="ri dmn" data-en="'+i+'" value="'+esc(a.n||'')+'" placeholder="Nome do aparelho" autocomplete="off">')+
+        '<span class="dst"><button type="button" data-em="'+i+'" aria-label="Menos">−</button><input data-eh="'+i+'" inputmode="numeric" value="'+esc(String(a.h||''))+'" aria-label="Horas por dia"><button type="button" data-ep="'+i+'" aria-label="Mais">+</button></span></div>'; }).join('')+
+      '<button type="button" class="ir dcid add" id="dApN"><span class="dck">'+sz(I.plus,14)+'</span><span class="il" style="color:var(--acc)">Outro aparelho</span></button>',
+      'O número é de horas por dia; o laudo calcula as horas por mês. Ventilador e ar-condicionado põem no laudo a frase do controle da temperatura.', 'ni');
+    h+=grupo('Para a Equatorial',
+      '<div class="ir"><span class="il">Previsão de uso</span>'+segHtml('dPrev', [['ind','Contínuo'],['6','6 meses'],['12','12 meses']], f.prev||'ind', 'mini')+'</div>'+
+      '<label class="ir"><span class="il">NIS</span><input class="ri mono" id="dNis" inputmode="numeric" value="'+esc(f.nis||'')+'" placeholder="opcional" autocomplete="off"></label>'+
+      '<div class="ipad"><div class="shl" style="margin:0 0 6px">Endereço da conta de luz</div><textarea id="dEndUC" class="dtx" rows="2" placeholder="Rua, número, bairro, cidade">'+esc(f.endUC||'')+'</textarea></div>',
+      'A família leva à Equatorial este laudo, RG e CPF, a conta de luz e o NIS atualizado. Renda de até 3 salários mínimos.', 'ni'); }
   if(t==='vida' || t==='curatela'){ var cs=p.cuid||[], cu=docCuid(p, f);
     var rows=cs.map(function(c){ return '<button type="button" class="ir dcu'+(f.cuid===c.id?' on':'')+'" data-cu="'+c.id+'"><span class="dck">'+sz(I.chk,14)+'</span><span class="il">'+esc(c.nome||'(sem nome)')+'<small>'+esc([c.par, dig(c.cpf)? 'CPF '+fmtDoc(c.cpf) : 'sem CPF', c.nasc? idade(c.nasc) : ''].filter(Boolean).join(' · '))+'</small></span></button>'; }).join('');
     rows+='<button type="button" class="ir" id="dCuN"><span class="dck">'+sz(I.plus,14)+'</span><span class="il">'+(cu? 'Editar '+esc(nomeCurto(cu).split(' ')[0]) : 'Cadastrar o responsável')+'<small>Nome, parentesco, CPF e nascimento</small></span></button>';
@@ -6536,14 +6633,42 @@ function docLigaLaudo(d, p){ var f=d.f;
   var sx=$('#dSx'); if(sx) segLiga(sx, function(v){ if(!v) return; p.sexo=v; snapPac(p); save(); mud(d); setTimeout(render, 250); });
   $$('[data-ci]').forEach(function(b){ b.onclick=function(){ var c=f.cids[+b.dataset.ci]; c.on= c.on===false; mud(d); render(); }; });
   $$('[data-cd]').forEach(function(i){ i.onchange=function(){ var c=f.cids[+i.dataset.cd]; c.d=this.value.trim(); p.cidD=p.cidD||{}; p.cidD[c.c]=c.d; save(); mud(d); }; });
-  var cn=$('#dCidN'); if(cn){ function addCid(){ var c=cn.value.trim().toUpperCase().replace(/\s+/g,''); if(!c) return; if(!f.cids.some(function(x){ return x.c===c; })) f.cids.push({c:c, on:true}); mud(d); render(); }
+  // os CIDs do laudo são os do prontuário: adicionar, corrigir e tirar aqui vale lá também
+  function pcids(){ return cidsDe(p); }
+  $$('[data-cc]').forEach(function(i){ i.onkeydown=function(e){ if(e.key==='Enter'){ e.preventDefault(); this.blur(); } };
+    i.onchange=function(){ var k=+i.dataset.cc, c=f.cids[k], novo=this.value.trim().toUpperCase().replace(/\s+/g,''), velho=c.c; if(!novo){ this.value=velho; return; } if(novo===velho) return;
+      if(f.cids.some(function(x, j){ return j!==k && x.c===novo; })){ toast('Esse CID já está na lista.'); this.value=velho; return; }
+      c.c=novo; c.d=null; var l=pcids(), w=l.indexOf(velho); if(w>=0) l[w]=novo; else if(l.indexOf(novo)<0) l.push(novo); p.cids=l; if(p.cid===velho) p.cid=novo;
+      save(); mud(d); render(); toast(velho+' trocado por '+novo+', aqui e no prontuário.'); }; });
+  $$('[data-cx]').forEach(function(b){ b.onclick=function(){ var k=+b.dataset.cx, c=f.cids[k], antes=pcids().slice(), cidAntes=p.cid;
+    f.cids.splice(k,1); p.cids=antes.filter(function(x){ return x!==c.c; }); if(p.cid===c.c) p.cid=p.cids[0]||''; save(); mud(d); render();
+    toast(c.c+' tirado do laudo e do prontuário.', {label:'Desfazer', fn:function(){ f.cids.splice(k,0,c); p.cids=antes; p.cid=cidAntes; save(); mud(d); render(); }}); }; });
+  var cn=$('#dCidN'); if(cn){ function addCid(){ var c=cn.value.trim().toUpperCase().replace(/\s+/g,''); if(!c) return; if(!f.cids.some(function(x){ return x.c===c; })) f.cids.push({c:c, on:true}); var l=pcids(); if(l.indexOf(c)<0){ l.push(c); p.cids=l; if(!p.cid) p.cid=c; save(); } mud(d); render(); }
     cn.onkeydown=function(e){ if(e.key==='Enter'){ e.preventDefault(); addCid(); } }; cn.onchange=addCid; }
   var ds=$('#dSit'); if(ds) pegaChips(ds, 'si', function(v, on){ f.sit=(f.sit||[]).filter(function(x){ return x!==v; }); if(on) f.sit.push(v); mud(d); }, true);
   var dp=$('#dDep'); if(dp) segLiga(dp, function(v){ f.dep=v; mud(d); });
   var mn=$('#dMenos'); if(mn){ mn.onclick=function(){ f.n=Math.max(1,(+f.n||1)-1); mud(d); render(); }; $('#dMais').onclick=function(){ f.n=Math.min(12,(+f.n||1)+1); mud(d); render(); };
     pegaChips($('.dtam'), 'tm', function(v, on){ f.tam= on? v : f.tam; mud(d); render(); }); }
-  var it=$('#dIt'); if(it) it.oninput=function(){ f.itens=this.value; mud(d); };
-  var fe=$('#dFer'); if(fe) segLiga(fe, function(v){ f.ferida=v; mud(d); });
+  if(f.aps){ var as=f.aps;
+    $$('[data-ek]').forEach(function(b){ b.onclick=function(){ var a=as[+b.dataset.ek]; a.on= a.on===false || a.on===undefined? true : false; mud(d); render(); }; });
+    function poeH(i, h){ as[i].h=Math.max(1, Math.min(24, h||1)); mud(d); render(); }
+    $$('[data-em]').forEach(function(b){ b.onclick=function(){ var i=+b.dataset.em; poeH(i, (+as[i].h||1)-1); }; });
+    $$('[data-ep]').forEach(function(b){ b.onclick=function(){ var i=+b.dataset.ep; poeH(i, (+as[i].h||0)+1); }; });
+    $$('[data-eh]').forEach(function(x){ x.onfocus=function(){ this.select(); }; x.onchange=function(){ poeH(+x.dataset.eh, parseInt(dig(this.value),10)); }; x.onkeydown=function(e){ if(e.key==='Enter'){ e.preventDefault(); this.blur(); } }; });
+    $$('[data-en]').forEach(function(x){ x.oninput=function(){ as[+x.dataset.en].n=this.value; mud(d); }; });
+    var an=$('#dApN'); if(an) an.onclick=function(){ as.push({k:'x'+uid(), on:true, h:24, n:''}); mud(d); render(); setTimeout(function(){ var l=$$('[data-en]'); if(l.length) l[l.length-1].focus(); }, 60); };
+    var pv=$('#dPrev'); if(pv) segLiga(pv, function(v){ f.prev=v; mud(d); });
+    var ni=$('#dNis'); if(ni) ni.oninput=function(){ f.nis=this.value; mud(d); };
+    var eu=$('#dEndUC'); if(eu) eu.oninput=function(){ f.endUC=this.value; mud(d); }; }
+  if(f.mats){ var ms=f.mats;
+    $$('[data-mk]').forEach(function(b){ b.onclick=function(){ var m=ms[+b.dataset.mk]; m.on= m.on===false; var r=b.closest('.dcm'); r.classList.toggle('on', m.on); pop(b); if(m.on && !m.q){ m.q=1; $('[data-mq]',r).value='1'; } mud(d); }; });
+    function poeQ(i, q){ var m=ms[i]; q=Math.max(1, Math.min(999, q||1)); var mudouN= (m.q==1)!==(q==1); m.q=q; var x=$('[data-mq="'+i+'"]'); if(x) x.value=q; mud(d); if(mudouN && curDef(m)) render(); }
+    $$('[data-mm]').forEach(function(b){ b.onclick=function(){ var i=+b.dataset.mm; poeQ(i, (+ms[i].q||1)-1); }; });
+    $$('[data-mp]').forEach(function(b){ b.onclick=function(){ var i=+b.dataset.mp; poeQ(i, (+ms[i].q||0)+1); }; });
+    $$('[data-mq]').forEach(function(x){ x.onfocus=function(){ this.select(); }; x.onchange=function(){ poeQ(+x.dataset.mq, parseInt(dig(this.value),10)); }; x.onkeydown=function(e){ if(e.key==='Enter'){ e.preventDefault(); this.blur(); } }; });
+    $$('[data-mc]').forEach(function(x){ x.oninput=function(){ ms[+x.dataset.mc].cob=this.value; mud(d); }; });
+    $$('[data-mn]').forEach(function(x){ x.oninput=function(){ ms[+x.dataset.mn].n=this.value; mud(d); }; });
+    var mn=$('#dMatN'); if(mn) mn.onclick=function(){ ms.push({k:'x'+uid(), on:true, q:1, n:''}); mud(d); render(); setTimeout(function(){ var l=$$('[data-mn]'); if(l.length) l[l.length-1].focus(); }, 60); }; }
   var lv=$('#dLv'); if(lv) lv.oninput=function(){ f.livre=this.value; mud(d); };
   lswLiga($('#main'), function(el, on){ if(el.id==='dCx'){ f.caixa=on; } if(el.id==='dBr'){ f.branco=on; render(); } });
   $$('[data-cu]').forEach(function(b){ b.onclick=function(){ f.cuid= f.cuid===b.dataset.cu? '' : b.dataset.cu; mud(d); render(); }; });
@@ -6685,11 +6810,11 @@ async function docPdf(d){
       async function cabA(){ pg.drawImage(await img('saude'), {x:85, y:H-102-51, width:221, height:51}); pg.drawImage(await img('mec'), {x:369, y:H-62-77, width:141, height:77}); }
       await cabA(); centro(x.tit, W/2, 203, 11, B);
       var y2=232, np={lim:790, fn:function(){ pg=pdf.addPage([W, H]); return 80; }};
-      var fs=d.t==='curatela'? 11 : 12, lh=d.t==='curatela'? 17 : 20.7;
-      x.ps.forEach(function(q){ if(q.li){ y2=para(q.t, L2+36, R2-L2-36, y2, fs, 17, 0, false, np); } else { if(y2>232) y2+=d.t==='curatela'? 7 : 8.6; y2=para(q.t, L2, R2-L2, y2, fs, lh, 36, true, np); } });
-      var yd=y2+(d.t==='curatela'? 30 : 44); if(yd>740){ pg=pdf.addPage([W, H]); yd=100; }
+      var fs=(d.t==='curatela'||d.t==='energia')? 11 : 12, lh=(d.t==='curatela'||d.t==='energia')? 17 : 20.7;
+      x.ps.forEach(function(q){ if(q.li){ y2=para(q.t, L2+36, R2-L2-36, y2, fs, 17, 0, false, np); } else { if(y2>232) y2+=(d.t==='curatela'||d.t==='energia')? 7 : 8.6; y2=para(q.t, L2, R2-L2, y2, fs, lh, 36, true, np); } });
+      var yd=y2+((d.t==='curatela'||d.t==='energia')? 30 : 44); if(yd>740){ pg=pdf.addPage([W, H]); yd=100; }
       txt(cidade()+', '+brOuBranco(f.branco?'':f.data)+'.', L2+36, yd, 12);
-      var ys=Math.max(yd+(d.t==='curatela'? 56 : 70), 663); if(ys>790){ pg=pdf.addPage([W, H]); ys=200; }
+      var ys=Math.max(yd+((d.t==='curatela'||d.t==='energia')? 56 : 70), 663); if(ys>790){ pg=pdf.addPage([W, H]); ys=200; }
       linhaH(182, 449, ys); centro(nomeUp(P.nome), W/2, ys+19, 12); centro(nomeUp(P.pf), W/2, ys+33, 12); centro(P.cons+': '+(P.num||'______'), W/2, ys+47, 12);
       if(d.t==='cama' && f.caixa!==false){ var bx=438, by=704, bw=146, bh=124; pg.drawRectangle({x:bx, y:H-by-bh, width:bw, height:bh, borderColor:rgb, borderWidth:.8});
         centro('CAMA HOSPITALAR', bx+bw/2, by+14, 9, B); centro('DOCUMENTOS NECESSÁRIOS:', bx+bw/2, by+26, 9, B);
@@ -7086,6 +7211,26 @@ function docDoPac(p){ if(!p) return;
   var b='<div class="dgrid dgs">'+DOC_ORD.concat('receita').map(function(k){ var T=DOC_T[k]; return '<button type="button" class="dtile" data-dt3="'+k+'"><span class="dic" style="--c:'+T.c+'">'+T.L+'</span><b>'+T.n+'</b></button>'; }).join('')+'</div>';
   openSheet('Documento de '+nomeCurto(p).split(' ')[0], b);
   $$('[data-dt3]',dlg).forEach(function(x){ x.onclick=function(){ closeSheet(true); var t=x.dataset.dt3; setTimeout(function(){ docAbrir(docNovo(t, p)); }, 200); }; }); }
+
+// ---------- Remédios: uma linha no quadro de Acompanhamento (a mesma lista da Receita) ----------
+function medRow(p){ var ms=p.meds||[];
+  return '<div class="ir prch prmd" id="prMed"><span class="il">Remédios</span><span class="prcs">'+ms.map(function(m){ return '<button type="button" class="pc on'+(m.cont? '' : ' tmp')+'" data-pmed="'+m.id+'">'+esc(m.nome||'')+'</button>'; }).join('')+
+    (ms.length? '' : '<span class="pcv">Nenhum</span>')+'<button type="button" class="pc mais" id="prMedA" aria-label="Adicionar remédio">'+sz(I.plus,15)+'</button></span></div>'; }
+function ligaMed(p){ var a=$('#prMedA'); if(a) a.onclick=function(){ medSheet(p, null, {f:{sel:[]}}); };
+  $$('[data-pmed]').forEach(function(b){ b.onclick=function(){ medSheet(p, (p.meds||[]).filter(function(m){ return m.id===b.dataset.pmed; })[0], {f:{sel:[]}}); }; }); }
+
+// ---------- a ficha como aba (celular): o título da página de trás continua aparecendo e a barra de baixo fica ----------
+var FICHA_DE='';
+var TIT_ABA={hoje:'Início', pac:'Pacientes', cal:'Calendário', docs:'Documentos', pront:'Prontuário', aj:'Ajustes'};
+function fichaY(){ var fa=document.body.classList.contains('fichaaba') && $('#fAtras'); return fa? fa.offsetHeight : 0; }
+function fichaAba(){ var on= tab==='ficha' && !wideMQ.matches, fa=$('#fAtras');
+  document.body.classList.toggle('fichaaba', on);
+  if(!on){ if(fa) fa.remove(); return; }
+  if(!fa){ fa=document.createElement('div'); fa.id='fAtras'; document.body.appendChild(fa); fa.onclick=function(){ if(tab==='ficha') voltarPag(); }; }
+  var t=FICHA_DE || TIT_ABA[pilha[pilha.length-1]] || 'Início';
+  fa.innerHTML='<div class="fat"><div class="pagehd"><h1>'+esc(t)+'</h1></div></div><i class="fcap"></i>';
+  fa.setAttribute('aria-label', 'Voltar para '+t); fa.setAttribute('role','button'); }
+
 // ---------- início ----------
 S=load(); migrar();
 try{ localStorage.setItem(KEY+'.t','1'); localStorage.removeItem(KEY+'.t'); }catch(e){ storageOk=false; }
