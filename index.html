@@ -7,7 +7,7 @@
 <meta name="theme-color" content="#f2f2f7">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Melhor em Casa">
+<meta name="apple-mobile-web-app-title" content="MeC">
 <meta property="og:title" content="Melhor em Casa">
 <meta property="og:description" content="Tarefa do Melhor em Casa. Toque para abrir no app.">
 <meta property="og:image" content="https://marciaoluiz.github.io/Ficha-AD/icon-512.png">
@@ -2738,7 +2738,7 @@ var FONTES_FICHA = {"mao":{"nome":"Manuscrita","upm":1024,"k":1.1651,"peso":36,"
 <script>
 (function(){
 'use strict';
-var KEY='fichaAD.v1', VERSAO='0.8.14 beta', SIGTAP_PADRAO='0301050147';
+var KEY='fichaAD.v1', VERSAO='0.8.15 beta', SIGTAP_PADRAO='0301050147';
 var F=FICHA;
 var S, tab='hoje', face=0, calMes=null, lastPdf=null;
 var NO_SITE=/^https?:$/.test(location.protocol), IOS=/iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform==='MacIntel' && navigator.maxTouchPoints>1);
@@ -3594,11 +3594,11 @@ function filtra(q){ q=(q||'').toLowerCase().trim(); var qd=dig(q);
 function avatar(p, n){ n=n||42; return '<span class="av" style="width:'+n+'px;height:'+n+'px;--avc:'+corDe(p.id||p.nome)+';background:var(--avc)">'+esc(iniciais(p.nome))+'</span>'; }
 // ---------- quem foi atendido (celular): a lista ocupa a tela; a barra de baixo vira "Cadastrar paciente novo" e o + vira a lupa ----------
 var PICK=null;
-function pickLinhas(q){ var ps=filtra(q).filter(function(p){ return q || !PICK || !PICK.soAtivos || ativo(p); }).map(function(p){ return [p, ultimaVisita(p.id)]; }), na=PICK? PICK.na : [];
+function pickLinhas(q){ var ps=filtra(q).filter(function(p){ return !PICK || !PICK.soAtivos || ativo(p); }).map(function(p){ return [p, ultimaVisita(p.id)]; }), na=PICK? PICK.na : [];
   ps.sort(function(a,b){ return q? (a[0].nome||'').localeCompare(b[0].nome||'','pt') : (b[1]||'').localeCompare(a[1]||'') || (a[0].nome||'').localeCompare(b[0].nome||'','pt'); });
   return ps.length? '<div class="sech" style="margin-top:4px">'+(q? ps.length+' encontrado'+(ps.length>1?'s':'') : 'Atendidos recentemente')+'</div><div class="rows">'+ps.map(function(x){ var p=x[0];
     return '<button type="button" class="pick" data-p="'+p.id+'">'+avatar(p)+'<span class="sp"><span class="t">'+esc(p.nome||'(sem nome)')+'</span><span class="s">'+(x[1]?'Última visita: '+ddmm(x[1]):'Ainda sem visitas')+(na.indexOf(p.id)>=0?'. Já atendido neste dia':'')+'</span></span></button>'; }).join('')+'</div>'
-    : '<div class="empty">'+I.pac+'<b>'+(S.pacientes.length?'Nenhum paciente encontrado':'Nenhum paciente cadastrado')+'</b>'+(S.pacientes.length?'Tente outro nome ou CPF.':(PICK && PICK.branco? 'Toque em "Fazer em branco" para fazer sem paciente.' : 'Toque em "Cadastrar paciente novo".'))+'</div>'; }
+    : '<div class="empty">'+I.pac+'<b>'+(S.pacientes.length?'Nenhum paciente encontrado':'Nenhum paciente cadastrado')+'</b>'+(S.pacientes.length?'Tente outro nome ou CPF.'+(PICK && PICK.soAtivos? ' Aqui só aparecem os pacientes em acompanhamento.' : ''):(PICK && PICK.branco? 'Toque em "Fazer em branco" para fazer sem paciente.' : 'Toque em "Cadastrar paciente novo".'))+'</div>'; }
 // a gota de vidro (o mesmo vidro líquido do calendário): escorre do + para a esquerda, cobre a barra e só então se solta do +
 function pickCamadas(){
   var NS='http://www.w3.org/2000/svg', id='vgp'+(++VGN), esc=document.documentElement.getAttribute('data-mode')==='dark';
@@ -5022,7 +5022,7 @@ function rAjApar(){
   var r=$('#oVid'); r.oninput=function(){ o.vidro=+this.value; this.style.setProperty('--p', this.value+'%'); aplicarTema(); }; r.onchange=function(){ save(); };
 }
 
-var TAM_APP=2314635;
+var TAM_APP=2314724;
 function tamanhoApp(){ if(TAM_APP==null){ try{ TAM_APP=new Blob([document.documentElement.outerHTML]).size; }catch(e){ TAM_APP=0; } } return TAM_APP? (TAM_APP/1048576).toFixed(1).replace('.',',')+' MB' : '—'; }
 function rSobre(){
   var nAt=0; S.fichas.forEach(function(f){ nAt+=f.atend.length; });
@@ -7536,10 +7536,10 @@ function docEscolhePac(titulo, fn, branco){
     '<label class="pkq dpq">'+sz(I.srch,18)+'<input type="search" id="dpq" placeholder="Buscar paciente" autocomplete="off" enterkeyhint="search"></label><div id="dpl"></div>';
   openSheet(titulo+': de quem?', b);
   var bb=$('#dpBr',dlg); if(bb) bb.onclick=function(){ closeSheet(true); setTimeout(branco, 200); };
-  function lista(){ var q=$('#dpq',dlg).value, ps=filtra(q).filter(function(p){ return q || ativo(p); });
+  function lista(){ var q=$('#dpq',dlg).value, ps=filtra(q).filter(ativo);
     ps.sort(function(a,b){ return (a.nome||'').localeCompare(b.nome||'','pt'); });
     $('#dpl',dlg).innerHTML= ps.length? ps.map(function(p){ return '<button type="button" class="pick" data-dp="'+p.id+'">'+avatar(p)+'<span class="sp"><span class="t">'+esc(p.nome||'(sem nome)')+'</span><span class="s">'+esc([idade(p.nasc), p.cid].filter(Boolean).join(' · ')||'Sem dados')+'</span></span></button>'; }).join('')
-      : '<div class="empty" style="padding:24px">Nenhum paciente encontrado.</div>';
+      : '<div class="empty" style="padding:24px">Nenhum paciente encontrado.<br>Aqui só aparecem os pacientes em acompanhamento.</div>';
     $$('[data-dp]',dlg).forEach(function(x){ x.onclick=function(){ var p=pacById(x.dataset.dp); closeSheet(true); setTimeout(function(){ fn(p); }, 200); }; }); }
   $('#dpq',dlg).oninput=lista; lista(); }
 function docAssinSheet(){ var P=S.prof||{}, pf=P.pf||'Médico', PFS=['Médico','Médica','Enfermeiro','Enfermeira'];
