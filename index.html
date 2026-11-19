@@ -2724,6 +2724,7 @@ body.pgaba.pgmorf:not(.wide):not(.pgcheia) #navBack svg{transform:scaleY(0);opac
 .cd .dts i.mais::before,.cd .dts i.mais::after{content:"";position:absolute;left:50%;top:50%;background:var(--ink);opacity:.55;border-radius:1px;transform:translate(-50%,-50%)}
 .cd .dts i.mais::before{width:100%;height:1.5px}.cd .dts i.mais::after{width:1.5px;height:100%}
 .cd.sel .dts i.mais::before,.cd.sel .dts i.mais::after{background:#fff;opacity:1}
+:root{--pd-fch:#af52de;--pd-out:#8e8e93}
 /* dia de frequência: número sublinhado */
 .cd.fq::after{display:none!important}
 .cd.fq .n{color:var(--acc-ink);text-decoration:underline;text-decoration-thickness:2.5px;text-underline-offset:4px;text-decoration-color:color-mix(in srgb,var(--acc) 75%,transparent)}
@@ -3007,6 +3008,8 @@ dialog.sheet{background:var(--bg)}
 .funil{position:relative;display:grid;place-items:center;width:34px;height:30px;border:0;border-radius:999px;background:color-mix(in srgb,var(--mut) 14%,transparent);color:var(--mut);margin:-6px 0}
 .funil.on{background:color-mix(in srgb,var(--acc) 18%,transparent);color:var(--acc)}
 .funil b{position:absolute;top:-4px;right:-4px;min-width:16px;height:16px;border-radius:8px;background:var(--acc);color:#fff;font:700 10px/16px system-ui;padding:0 4px}
+/* o selo do funil saía cortado: a lista de Pacientes recortava o topo; agora recorta só os lados e embaixo */
+#pl2.pgvp{overflow:visible;display:flow-root;clip-path:inset(-12px 0 0 0)}
 .m3b .m3ic{width:34px;height:34px;padding:0;justify-content:center;margin-left:0;flex:none;border-radius:50%}
 .m3b .m3ic:not(.on){background:color-mix(in srgb,var(--mut) 16%,transparent);color:var(--mut)}
 .m3b .m3ic.m3ic1{margin-left:auto}
@@ -4758,11 +4761,12 @@ function rCal(){
   var first=new Date(y,mo,1,12), start=addDays(isoOf(first), -first.getDay());
   // duas visões: as datas da ficha (Fichas) ou os dias em que as visitas aconteceram de verdade (Visitas)
   var modo=S.opc.calModo==='v'?'v':'f';
-  var dia={};
+  var dia={}, LGP={};
   var PM=porMes(), MA=mesAtualProd(), MV={}; if(PM) mesesComVisitas().forEach(function(m){ MV[m.ini]=1; });
   // modo mês: a faixa laranja é o mês de produção de hoje; a azul, os meses anteriores que têm visitas
   function bandaMes(iso){ var mp=mesProd(iso); return mp.ini===MA.ini? 'r' : (mp.ini<MA.ini && MV[mp.ini])? 'b' : ''; }
-  function calcDia(){ dia={}; S.fichas.forEach(function(f){ if(modo!=='v' && f.hist) return; f.atend.forEach(function(a){ var dt= modo==='v'? dataV(a) : a.data, d=dia[dt]=dia[dt]||{n:0,cur:0,c:[]}; d.n++; if(PM? (dt>=MA.ini && dt<=MA.fim) : f===cur) d.cur++;
+  function calcDia(){ dia={}; LGP={}; S.fichas.forEach(function(f){ if(modo!=='v' && f.hist) return; f.atend.forEach(function(a){ var dt= modo==='v'? dataV(a) : a.data, d=dia[dt]=dia[dt]||{n:0,cur:0,c:[]}; d.n++; var ec= PM? (dt>=MA.ini && dt<=MA.fim) : f===cur; if(ec) d.cur++;
+    if(modo!=='v'){ var sp=(a.st && a.st.limpo)? 'f' : (a.dataReal && a.dataReal!==a.data)? 'o' : ''; d.p=d.p||[]; d.p.push({c:ec, s:sp}); if(sp) LGP[sp]=1; }
     var pp=pacById(a.pacId); d.c.push(pp&&pp.perfil==='cur'?'var(--pf-cur)':pp&&pp.perfil==='cli'?'var(--pf-cli)':'var(--oth-dot)'); }); }); }
   calcDia();
   function fichaDoDia(iso){ var best=null; fichasReais().forEach(function(f){ var r=faixa(f); if(r && iso>=r.ini && iso<=r.fim){ if(!best || f===cur) best=f; } }); return best; }
@@ -4776,7 +4780,7 @@ function rCal(){
     var s='<div class="calg cpg'+(atual?' cur':' '+lado)+'"'+(atual?'':' aria-hidden="true"')+'>';
     for(var i=0;i<nCel;i++){
       var iso=addDays(st1,i), d=parse(iso), o= CPM? (iso<CPM.ini || iso>CPM.fim) : d.getMonth()!==mo1, f= modo==='f' && !PM? fichaDoDia(iso) : null, cls='cd'+(o?' o':'')+(FQD[iso]?' fq':'');
-      if(modo==='f' && PM){ var tm=bandaMes(iso); if(tm){ var mpd=mesProd(iso), wdm=d.getDay(); cls+=' '+tm+((iso===mpd.ini||wdm===0)?' '+tm+'s':'')+((iso===mpd.fim||wdm===6)?' '+tm+'e':''); } }
+      if(modo==='f' && PM){ var tm=bandaMes(iso); if(o && tm==='b') tm=''; if(tm){ var mpd=mesProd(iso), wdm=d.getDay(); cls+=' '+tm+((iso===mpd.ini||wdm===0)?' '+tm+'s':'')+((iso===mpd.fim||wdm===6)?' '+tm+'e':''); } }
       if(f){ var t=f===cur?'r':'b', wd=d.getDay(), pf=fichaDoDia(addDays(iso,-1)), nf=fichaDoDia(addDays(iso,1));
         cls+=' '+t+((pf!==f||wd===0)?' '+t+'s':'')+((nf!==f||wd===6)?' '+t+'e':''); }
       if(iso===hj) cls+=' t'; if(iso===calSel) cls+=' sel';
@@ -4793,7 +4797,7 @@ function rCal(){
   function animaTit(x0, dur, ez){ var t=$('#cMes .cmt'); if(!t || reduce || !t.animate) return; poeTit(0); anT=t.animate([{transform:'translateX('+(x0*kTit()).toFixed(1)+'px)'},{transform:'none'}],{duration:dur,easing:ez}); }
   function mostraHoje(){ var b=$('#cHoje'), hj=hoje(); if(b) b.classList.toggle('off', calSel===hj && calMes.slice(0,7)===hj.slice(0,7)); }
   h+='<div class="cvp"><div class="ctrk">'+mesPg(mesMais(-1), false, 'ant')+mesPg(calMes, true)+mesPg(mesMais(1), false, 'prox')+'</div></div>';
-  function legenda(){ return modo==='f'? '<span><i style="background:var(--acc-soft);border:1px solid var(--acc-line)"></i>'+(PM? 'Mês atual' : 'Ficha atual')+'</span><span><i style="background:var(--oth-soft)"></i>'+(PM? 'Meses anteriores' : 'Fichas anteriores')+'</span>'+(fqAlgum()? '<span><i class="lgfq"></i>Frequência</span>' : '')
+  function legenda(){ return modo==='f'? '<span><i style="background:var(--acc-soft);border:1px solid var(--acc-line)"></i>'+(PM? 'Mês atual' : 'Ficha atual')+'</span><span><i style="background:var(--oth-soft)"></i>'+(PM? 'Meses anteriores' : 'Fichas anteriores')+'</span>'+(fqAlgum()? '<span><i class="lgfq"></i>Frequência</span>' : '')+(LGP.o? '<span><i class="lp" style="background:var(--pd-out)"></i>De outro dia</span>' : '')+(LGP.f? '<span><i class="lp" style="background:var(--pd-fch)"></i>Fichinha</span>' : '')
     : '<span><i class="lp" style="background:var(--pf-cur)"></i>Curativo</span><span><i class="lp" style="background:var(--pf-cli)"></i>Clínico</span><span><i class="lp" style="background:var(--oth-dot)"></i>Sem tipo</span>'; }
   h+='<div class="calft"><div class="legend">'+legenda()+'</div><button type="button" class="pill" id="cHoje">Hoje</button></div></div>';
   h+='<div class="gtabs glass iseg calseg noswipe" id="calModo" role="tablist"><span class="lens"></span><button type="button" role="tab" data-v="v"'+(modo==='v'?' class="on"':'')+'>'+sz(I.visit||I.pac,17)+'Visitas</button><button type="button" role="tab" data-v="f"'+(modo==='f'?' class="on"':'')+'>'+(PM? sz(I.cal,17)+'Produção' : sz(I.ficha,17)+'Fichas')+'</button></div>';
@@ -10679,6 +10683,7 @@ function fqVolta(g){ g.l.forEach(function(x){ x.a.data=x.d; x.a.turno=x.t; if(x.
   S.freq=S.freq||{}; if(g.fq) S.freq[g.ini]=g.fq; else delete S.freq[g.ini]; fichasReais().forEach(function(f){ ordenar(f); f.impressa=false; }); lastPdf=null; save(); flipVisitas(function(){ render(); }, null, true, g.ini); }
 // o "ímã": quem já está num dia da frequência fica; os outros vão para o dia marcado mais perto (o com menos visitas pesa a favor),
 // sem inverter a ordem e sem repetir paciente no mesmo dia; o turno é sorteado entre manhã e tarde, equilibrando o dia
+var FQ_PESO=3;
 function fqAjusta(mp, F){ var g=fqGuarda(mp), Fd=Object.keys(F).sort(); if(!Fd.length) return;
   // se já estava ligada, começa de onde as visitas estavam antes
   visitasMes(mp).forEach(function(a){ if(a.fqA){ a.data=a.fqA.d; a.turno=a.fqA.t; if(a.fqA.r) a.dataReal=a.fqA.r; else delete a.dataReal; delete a.fqA; } });
@@ -10687,8 +10692,9 @@ function fqAjusta(mp, F){ var g=fqGuarda(mp), Fd=Object.keys(F).sort(); if(!Fd.l
   vs.forEach(function(a){ if(F[a.data]){ load[a.data]=(load[a.data]||0)+1; pd[a.pacId+'|'+a.data]=1; if(a.turno==='M'||a.turno==='T') tc(a.data)[a.turno]++; } });
   vs.forEach(function(a, j){ if(F[a.data]){ ultimo=a.data; return; }
     var cima='9999'; for(var q=j+1;q<vs.length;q++) if(F[vs[q].data]){ cima=vs[q].data; break; }
-    var c=Fd.filter(function(d){ return d>=ultimo && d<=cima; }); if(!c.length) c=Fd.filter(function(d){ return d>=ultimo; }); if(!c.length) c=Fd;
-    var best=c[0], bs=1e9; c.forEach(function(d){ var s2=Math.abs(diasDesde(a.data, d)) + 2.5*(load[d]||0) + (pd[a.pacId+'|'+d]? 1000 : 0); if(s2<bs){ bs=s2; best=d; } });
+    // a ordem é preferência, não regra: sair dela custa um pouco por dia; dia cheio pesa contra; sem limite de visitas por dia
+    var best=Fd[0], bs=1e9; Fd.forEach(function(d){ var fora= d<ultimo? diasDesde(d, ultimo) : d>cima? diasDesde(cima, d) : 0;
+      var s2=Math.abs(diasDesde(a.data, d)) + FQ_PESO*(load[d]||0) + 1.5*fora + (pd[a.pacId+'|'+d]? 1000 : 0); if(s2<bs){ bs=s2; best=d; } });
     a.fqA={d:a.data, t:a.turno, r:a.dataReal||null};
     var real=a.dataReal||a.data; a.data=best; if(real!==best) a.dataReal=real; else delete a.dataReal;
     load[best]=(load[best]||0)+1; pd[a.pacId+'|'+best]=1; ultimo=best; foram++;
@@ -12556,7 +12562,7 @@ function fqNova(a, nova, orig){ try{
     var Fd=Object.keys(fq.d).filter(function(d){ return d>=mp.ini && d<=mp.fim; }).sort(); if(!Fd.length) return '';
     var load={}, pd={}, tur={};
     visitasMes(mp).forEach(function(v){ if(v===a || v.id===a.id) return; load[v.data]=(load[v.data]||0)+1; pd[v.pacId+'|'+v.data]=1; if(v.turno==='M' || v.turno==='T'){ tur[v.data]=tur[v.data]||{M:0, T:0}; tur[v.data][v.turno]++; } });
-    var best=Fd[0], bs=1e9; Fd.forEach(function(d){ var s=Math.abs(diasDesde(a.data, d)) + 2.5*(load[d]||0) + (pd[a.pacId+'|'+d]? 1000 : 0); if(s<bs){ bs=s; best=d; } });
+    var best=Fd[0], bs=1e9; Fd.forEach(function(d){ var s=Math.abs(diasDesde(a.data, d)) + FQ_PESO*(load[d]||0) + (pd[a.pacId+'|'+d]? 1000 : 0); if(s<bs){ bs=s; best=d; } });
     var real=a.dataReal||a.data; a.fqA={d:a.data, t:a.turno, r:a.dataReal||null};
     a.data=best; if(real!==best) a.dataReal=real; else delete a.dataReal;
     var t=tur[best]||{M:0, T:0}; a.turno= t.M<t.T? 'M' : t.T<t.M? 'T' : (a.turno==='M' || a.turno==='T'? a.turno : (Math.random()<.5? 'M' : 'T'));
@@ -13177,7 +13183,9 @@ function calDots(d, modo){
   var N=d.n, n=Math.min(N,10), top, bot;
   if(n<=4){ top=n; bot=0; } else if(n<=8){ top=4; bot=n-4; } else { top=n-5; bot=5; }
   var j=0, s='';
-  function cor(k){ return modo==='v'? d.c[k] : k<d.cur? 'var(--acc)' : 'var(--oth-dot)'; }
+  // Produção: roxo = fichinha gerada; cinza = visita trazida de outro dia; as do próprio dia seguem laranja (mês atual) ou azul
+  var P= modo!=='v' && d.p? d.p.slice().sort(function(x, y){ var o={'':0, o:1, f:2}; return (y.c-x.c) || (o[x.s]-o[y.s]); }) : null;
+  function cor(k){ if(modo==='v') return d.c[k]; if(P){ var x=P[k]; return x.s==='f'? 'var(--pd-fch)' : x.s==='o'? 'var(--pd-out)' : x.c? 'var(--acc)' : 'var(--oth-dot)'; } return k<d.cur? 'var(--acc)' : 'var(--oth-dot)'; }
   [[top, top===5],[bot, bot===5]].forEach(function(r, ri){ var c=r[0]; if(!c) return;
     s+='<u class="'+(r[1]? 'p' : c===4 || (ri===0 && bot)? 'q' : '')+'">';
     for(var q=0;q<c;q++){ var mais= N>10 && j===9; s+='<i'+(mais? ' class="mais"' : ' style="--c:'+cor(j)+'"')+'></i>'; j++; }
@@ -14138,7 +14146,7 @@ function filtrosSheet(soEmad){ var f=JSON.parse(JSON.stringify(pf())), em=emadAt
     lswLiga(B, function(el, on){ if(el.id==='fTar') f.tarefa=on; else if(el.id==='fInc') f.inc=on; else if(el.id==='fDias') f.dias=on; atual(); }); }
   function atual(){ var ok=$('#fOk',dlg); if(ok && !soEmad){ var n=conta(); ok.textContent='Mostrar '+n+' paciente'+(n===1?'':'s'); } }
   liga();
-  var lp=$('#fLimpa',dlg); if(lp) lp.onclick=function(){ f={bairros:[],conds:[]}; em=''; $('#fBody',dlg).innerHTML=corpo(); liga(); atual(); };
+  var lp=$('#fLimpa',dlg); if(lp) lp.onclick=function(){ S.opc.pfil={bairros:[],conds:[]}; S.opc.emadAt=''; save(); closeSheet(); render(); };
   $('#fOk',dlg).onclick=function(){ if(!soEmad) S.opc.pfil=f; S.opc.emadAt=em; save(); closeSheet(); render(); };
 }
 // ---------- Remédio: o nome desce para a barra de busca (lupa à direita) + círculo ✓ salvar ----------
