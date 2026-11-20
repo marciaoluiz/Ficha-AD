@@ -3206,6 +3206,20 @@ dialog.sheet.exp .sh{transition:padding-top .34s cubic-bezier(.2,.9,.3,1)}
 dialog.sheet.exp .sh .grab{transition:opacity .22s ease}
 dialog.sheet.exp .shvolta{display:grid!important;place-items:center;width:0;min-width:0;margin-right:-10px;opacity:0;transform:scale(.6);overflow:hidden;padding:0;transition:width .34s cubic-bezier(.2,.9,.3,1),margin-right .34s cubic-bezier(.2,.9,.3,1),opacity .24s ease,transform .34s cubic-bezier(.2,.9,.3,1);animation:none!important;pointer-events:none}
 dialog.sheet.exp.cheia .shvolta{width:38px;margin-right:0;opacity:1;transform:none;pointer-events:auto}
+
+/* ===================== 0.9.10 ===================== */
+/* selo do desfecho na linha do dia (Paciente › Visitas) */
+.evhl{display:flex;flex-wrap:wrap;align-items:center;column-gap:8px;row-gap:4px;min-width:0;flex:1 1 auto}
+.evh>.evhl+.sp{flex:0 0 0!important;width:0;min-width:0;padding:0;margin:0}
+.evtgi{display:inline-flex;flex-wrap:wrap;gap:6px;min-width:0;align-items:center}
+.evtgi>*{white-space:nowrap}
+/* Saíram do SAD e In memoriam: sem a barra de abas */
+html body.semabas.tab-saidos[class] #tabbar,html body.semabas.tab-memoria[class] #tabbar{transform:translateY(calc(100% + 30px + var(--tbb)))!important;opacity:0!important;pointer-events:none!important}
+html body.semabas.tab-saidos[class] #main,html body.semabas.tab-memoria[class] #main{padding-bottom:calc(28px + env(safe-area-inset-bottom))!important}
+/* Resumo › Saídas: linha tocável; a cruz do óbito */
+.rssai{cursor:pointer}
+.rssai:active{opacity:.6}
+.rsr2 i svg{width:15px;height:15px;display:block}
 </style>
 </head>
 <body>
@@ -3732,7 +3746,7 @@ function render(){ if(SX) SX.fecha(); if(PICK) fecharPick(true); if(typeof DATA_
   if(tab!=='docs') DOC_ORDV=null;
   $$('[data-tab]').forEach(function(b){ b.classList.toggle('on', b.dataset.tab===tab || (b.dataset.tab==='aj' && !!SUB[tab] && pilha[0]==='aj') || (tab==='ficha' && !wide && b.dataset.tab===pilha[pilha.length-1])); });
   if(wide && (tab==='pac'||tab==='pront')) rPacPc(); else { var _pl=$('#plist'); if(_pl && _pl.firstChild) _pl.innerHTML='';
-  ({hoje:rHoje, ficha:rFicha, cal:rCal, pac:rPac, aj:rAj, sobre:rSobre, ajImp:rAjImp, ajApar:rAjApar, ajVis:rAjVis, ajSig:rAjSig, docs:rDocs, doc:rDoc, ajProf:rAjProf, pront:rPront, evol:rEvol, visitas:rVisitas, ajRec:rAjRec, ajArq:rAjArq, rota:rRota, levar:rLevar, saidos:rSaidos, memoria:rMemoria, feitos:rFeitos, resumo:rResumo, ajDocs:rAjDocs, rpad:rRpad, fotos:rFotos, ajProd:rAjProd, ajOnde:rAjOnde, ajPrazo:rAjPrazo, ajMandar:rAjMandar, ajLimpo:rAjLimpo, rem:rRem})[tab](); }
+  ({hoje:rHoje, ficha:rFicha, cal:rCal, pac:rPac, aj:rAj, sobre:rSobre, ajImp:rAjImp, ajApar:rAjApar, ajVis:rAjVis, ajSig:rAjSig, docs:rDocs, doc:rDoc, ajProf:rAjProf, pront:rPront, evol:rEvol, visitas:rVisitas, ajRec:rAjRec, ajArq:rAjArq, rota:rRota, levar:rLevar, saidos:rSaidos, memoria:rMemoria, feitos:rFeitos, resumo:rResumo, ajDocs:rAjDocs, rpad:rRpad, fotos:rFotos, ajProd:rAjProd, ajOnde:rAjOnde, ajPrazo:rAjPrazo, ajMandar:rAjMandar, ajLimpo:rAjLimpo, rem:rRem, ajHist:function(){ rAjHist(); }})[tab](); }
   if(wide){ renderSide(); msbRender(); }
   var px=$('#puxa'); if(px) px.classList.toggle('on', tab==='ficha' && !wide && fichaAtual().atend.length>0);
   moveLens($('#tabbar .gtabs'), true); moveLens($('#topbar .gseg'), true);
@@ -3871,7 +3885,7 @@ function menuOpcoes(anchor){
 function exportarBackup(){ S.ultBackup=hoje(); if(S.opc) delete S.opc.bkAdia; save(); if(tab==='aj'){ var bx=$('#bUlt'); if(bx) bx.textContent='Último backup em '+brDate(S.ultBackup)+'. '; } baixarJson({app:'fichaAD',v:2,tipo:'completo',exportado:new Date().toISOString(),prof:S.prof,pacientes:S.pacientes,fichas:S.fichas,atual:S.atual,opc:S.opc,tarefas:S.tarefas,agenda:S.agenda,arquivo:S.arquivo,memoria:S.memoria,docs:S.docs||[]}, 'backup-ficha-AD-'+hoje()+'.json'); }
 function trocarFicha(id){ S.atual=id; var r=faixa(fichaAtual()); if(r) S.ultData=r.fim; lastPdf=null; save(); abrirFicha(); }
 // a ficha é uma folha que sobe por cima da página (fecha puxando para baixo); tudo o que ela fazia como página continua igual
-function abrirFicha(){ closeMenu(); if(porMes() && tab!=='ficha'){ abrirMesVisitas(mesProd(S.ultData||hoje())); return; } if(tab==='ficha'){ render(); return; } var h1=$('#main .pagehd h1') || $('#main .nav h1') || $('#main h1'); FICHA_DE= h1? h1.textContent.trim() : ''; transicao('sobe', function(){ pilha.push(tab); tab='ficha'; render(); window.scrollTo(0,0); }); }
+function abrirFicha(){ closeMenu(); if(porMes() && tab!=='ficha'){ abrirMesVisitas(mesProd(S.ultData||hoje())); return; } if(tab==='ficha'){ render(); return; } var h1=$('#main .pagehd h1') || $('#main .nav h1') || $('#main h1'); FICHA_DE= h1? h1.textContent.trim() : ''; transicao('sobe', function(){ pilhaPoe(); tab='ficha'; render(); window.scrollTo(0,0); }); }
 function novaFicha(){
   var f=fichaAtual();
   if(!f.atend.length){ toast('Esta ficha ainda está vazia. As próximas visitas vão para ela.'); abrirFicha(); return; }
@@ -4544,7 +4558,6 @@ function abrirAtend(idx, novo, fx){
   function dataHtml(){ var d=parse(a.data); return '<label class="tdate'+(a.dataReal && a.dataReal!==a.data?' fx':'')+'" id="tDateL">'+sz(I.cal,16)+DS[d.getDay()].toLowerCase()+' '+ddmm(a.data)+sz(I.down,14)+'<input type="date" id="tDate" tabindex="-1" value="'+esc(a.data)+'" aria-label="Data da visita"></label>'; }
   function formHtml(){
     var b='';
-    if(a._pre) b+='<div class="prefill">Preenchido com a última visita. Confira e ajuste o que mudou.</div>';
     b+='<div class="who"><span class="av" style="width:46px;height:46px;background:'+corAv(p)+'">'+esc(iniciais(p.nome))+'</span><span class="sp"><b>'+esc(p.nome||'(sem nome)')+'</b><span class="k">'+esc([idade(p.nasc), 'coluna '+col()].filter(Boolean).join(', '))+'</span>'+
       '<button type="button" class="cidtag'+(a.cid10?'':' vazio')+'" id="cidCad">'+(a.cid10? 'CID '+esc(a.cid10) : 'Sem CID: definir no cadastro')+sz(I.pen,13)+'</button></span>'+(idx>=0? '<span class="vatl"><button type="button" class="pill vdel" id="aDel">'+sz(I.del,15)+'Remover</button></span>' : '')+'</div>';
     var tv=[['M','Manhã'],['T','Tarde']]; if(a.turno==='N') tv.push(['N','Noite']);
@@ -4825,7 +4838,7 @@ function rCal(){
   function kTit(){ var c=$('#cMes'); return c? c.clientWidth/Math.max(1,Wpg()) : 0; }
   function poeTit(x){ var t=$('#cMes .cmt'); if(t) t.style.transform= x? 'translateX('+(x*kTit()).toFixed(1)+'px)' : ''; }
   function animaTit(x0, dur, ez){ var t=$('#cMes .cmt'); if(!t || reduce || !t.animate) return; poeTit(0); anT=t.animate([{transform:'translateX('+(x0*kTit()).toFixed(1)+'px)'},{transform:'none'}],{duration:dur,easing:ez}); }
-  function mostraHoje(){ var b=$('#cHoje'), hj=hoje(); if(b) b.classList.toggle('off', calSel===hj && calMes.slice(0,7)===hj.slice(0,7)); }
+  function mostraHoje(){ var b=$('#cHoje'), hj=hoje(), CP=calProdMes(calMes), ve= CP? (hj>=CP.ini && hj<=CP.fim) : calMes.slice(0,7)===hj.slice(0,7); if(b) b.classList.toggle('off', calSel===hj && ve); }
   h+='<div class="cvp"><div class="ctrk">'+mesPg(mesMais(-1), false, 'ant')+mesPg(calMes, true)+mesPg(mesMais(1), false, 'prox')+'</div></div>';
   // a legenda tem sempre duas linhas, em Visitas e em Produção: a barra "Visitas | Produção" não sobe nem desce ao trocar
   function legenda(){ var fq= fqAlgum()? '<span><i class="lgfq"></i>Frequência</span>' : '';
@@ -5353,9 +5366,9 @@ function evolLista(box, pacId, aid){
   function anterior(b){ return VS.filter(function(x){ return x.a!==b && x.a.evol && dataV(x.a)<=dataV(b); })[0]; }
   function cartao(x, ativo){ var b=x.a, dd=parse(dataV(b)), st=b.st||{}, c=b.conduta||0;
     var tags=(c? desfTag({c:c}, true) : '')+(b.dataReal?'<span class="tg dfxt">'+I.cal+'na ficha '+ddmm(b.data)+'</span>':'');
-    var h='<div class="evh">'+(ativo? '<label class="tdate evdt'+(b.dataReal?' fx':'')+'">'+sz(I.cal,15)+DS[dd.getDay()].toLowerCase()+' '+ddmm(dataV(b))+sz(I.down,13)+'<input type="date" tabindex="-1" value="'+esc(dataV(b))+'" aria-label="Data da visita"></label>'
+    var h='<div class="evh"><span class="evhl">'+(ativo? '<label class="tdate evdt'+(b.dataReal?' fx':'')+'">'+sz(I.cal,15)+DS[dd.getDay()].toLowerCase()+' '+ddmm(dataV(b))+sz(I.down,13)+'<input type="date" tabindex="-1" value="'+esc(dataV(b))+'" aria-label="Data da visita"></label>'
         : '<span class="evdia">'+DSL[dd.getDay()]+(dd.getFullYear()!==new Date().getFullYear()?' de '+dd.getFullYear():'')+'</span>')+
-      (b.turno && recOn('turno')?'<span class="evtu">'+TUR[b.turno]+'</span>':'')+'<span class="sp"></span>'+vicHtml('foto', st.foto)+(typeof vicLesHtml==='function'? vicLesHtml(b) : '')+vicHtml('pass', st.pass)+'</div>'+(tags?'<div class="evtg">'+tags+'</div>':'');
+      (b.turno && recOn('turno')?'<span class="evtu">'+TUR[b.turno]+'</span>':'')+(tags?'<span class="evtgi">'+tags+'</span>':'')+'</span><span class="sp"></span>'+vicHtml('foto', st.foto)+(typeof vicLesHtml==='function'? vicLesHtml(b) : '')+vicHtml('pass', st.pass)+'</div>';
     if(!ativo) return h+'<div class="evb">'+(b.evol? '<p class="tle">'+esc(b.evol)+'</p>' : '<p class="tle vz">Sem evolução escrita. Toque para escrever.</p>')+'</div>';
     return h+'<div class="evb">'+
       '<textarea class="evt" placeholder="Escreva a evolução desta visita">'+esc(b.evol||'')+'</textarea>'+
@@ -5914,15 +5927,15 @@ function transicao(tipo, fazer){
   a1.onfinish=function(){ soltarFoto(f); };
 }
 var pilha=[], FDESCE=0;
-var SUB={ajLimpo:1, resumo:1, ajProd:1, ajOnde:1, ajPrazo:1, ajMandar:1, fotos:1, ficha:1, doc:1, ajProf:1, aj:1, sobre:1, ajImp:1, ajApar:1, ajVis:1, ajSig:1, pront:1, evol:1, visitas:1, ajRec:1, ajArq:1, rota:1, levar:1, saidos:1, memoria:1, feitos:1, ajDocs:1, rpad:1};
+var SUB={ajLimpo:1, resumo:1, ajProd:1, ajOnde:1, ajPrazo:1, ajMandar:1, fotos:1, ficha:1, doc:1, ajProf:1, aj:1, sobre:1, ajImp:1, ajApar:1, ajVis:1, ajSig:1, pront:1, evol:1, visitas:1, ajRec:1, ajArq:1, rota:1, levar:1, saidos:1, memoria:1, feitos:1, ajDocs:1, rpad:1, ajHist:1};
 function irPara(t){ closeMenu(); if(t===tab) return; var sub=!!SUB[t];
-  transicao(sub?'push':'fade', function(){ if(sub) pilha.push(tab); else pilha=[]; tab=t; render(); window.scrollTo(0,0); }); }
+  transicao(sub?'push':'fade', function(){ if(sub) pilhaPoe(); else pilha=[]; tab=t; render(); window.scrollTo(0,0); }); }
 function irTab(t, semAnim){ closeMenu();
   if(t===tab && !pilha.length){ window.scrollTo({top:0,behavior:'smooth'}); return; }
   var i=ORDEM_ABAS.indexOf(tab), j=ORDEM_ABAS.indexOf(t), tipo= (SUB[tab]||i<0||j<0)? 'fade' : (j>i?'esq':'dir');
   function fazer(){ pilha=[]; tab=t; render(); window.scrollTo(0,0); }
   if(semAnim) fazer(); else transicao(tipo, fazer); }
-function voltarPag(semAnim){ var era=tab; function fazer(){ tab=pilha.pop()||'cal'; render(); window.scrollTo(0,0); } if(semAnim) fazer(); else transicao(era==='ficha'? 'desce' : 'pop', fazer); }
+function voltarPag(semAnim){ var era=tab; function fazer(){ tab=pilha.pop()||'cal'; render(); window.scrollTo(0,yVolta(tab)); } if(semAnim) fazer(); else transicao(era==='ficha'? 'desce' : 'pop', fazer); }
 
 // ---------- gestos: deslizar entre abas e da borda para voltar ----------
 var ORDEM_ABAS=['hoje','pac','cal','docs'];
@@ -5955,7 +5968,7 @@ var ORDEM_ABAS=['hoje','pac','cal','docs'];
     if(SX) SX.fecha();
     var W=innerWidth; g.W=W; g.sy=window.scrollY; g.de=tab;
     if(g.modo==='voltar'){
-      g.f=fotografar(true); g.ant=pilha.pop(); tab=g.ant||'cal'; render(); window.scrollTo(0,0); $('#main').classList.add('frente');
+      g.f=fotografar(true); g.ant=pilha.pop(); tab=g.ant||'cal'; render(); window.scrollTo(0,yVolta(tab)); $('#main').classList.add('frente');
     } else {
       var i=ORDEM_ABAS.indexOf(tab); g.s= dx<0? 1 : -1; g.para=ORDEM_ABAS[i+g.s];
       if(!g.para){ g.borda=true; return; }
@@ -7520,18 +7533,19 @@ function rSaidos(){
   h+=grupoS('Não elegíveis', 'Avaliados e não admitidos: já estavam na internação ou na AD1, e para lá voltaram.', ne);
   h+=grupoS('Alta e encaminhamentos', 'Eram do programa e saíram.', al);
   h+=grupoS('Óbitos', '', ob);
-  h+='<div style="height:18px"></div>'+grupo('', linha({id:'sArq', rot:'Arquivados', val:String(S.arquivo.length)})+linha({id:'sMem', rot:'In memoriam', val:String(S.memoria.length)}),
-    'Tudo fica guardado por '+S.opc.demMeses+' meses depois da saída (muda em Ajustes › Recursos). Para trazer alguém de volta, abra o prontuário e toque em Readmitir.', 'ni');
+  h+='<div style="height:18px"></div>'+grupo('', linha({id:'sArq', rot:'Arquivados', val:String(S.arquivo.length)})+linha({id:'sMem', rot:'In memoriam', val:String(obitosTodos().length)}),
+    'Tudo fica guardado por '+S.opc.demMeses+' meses depois da saída (muda em Ajustes › Histórico). Para trazer alguém de volta, abra o prontuário e toque em Readmitir.', 'ni');
   $('#main').innerHTML=h; ligarNav();
   $$('[data-sp]').forEach(function(b){ b.onclick=function(){ abrirPront(b.dataset.sp); }; });
   var b; if((b=$('#sArq'))) b.onclick=function(){ irPara('ajArq'); }; if((b=$('#sMem'))) b.onclick=function(){ irPara('memoria'); };
   if((b=$('#sArqA'))) b.onclick=function(){ if(!confirm('Arquivar '+venc+' paciente(s)? '+(S.opc.demDepois==='apagar'?'O cadastro será apagado.':'Fica só o nome, o CPF e o desfecho (no óbito, o nome e a data).')+' As visitas nas fichas não mudam. Se quiser, faça antes um backup em Ajustes.')) return;
     var n=saiArquiva(true); save(); rSaidos(); toast(n+' paciente(s) arquivado(s).'); };
 }
-function rMemoria(){ var h=navbar('In memoriam'), l=S.memoria.slice().sort(function(a,b){ return (b.d||'').localeCompare(a.d||''); });
-  if(!l.length) h+='<div class="empty">'+RIC.dem+'<b>Ninguém aqui</b>Depois do prazo, de quem foi a óbito ficam só o nome e a data.</div>';
-  else h+=grupo('', l.map(function(x){ return '<button type="button" class="ir" data-mem="'+x.id+'"><span class="il">'+esc(x.nome||'(sem nome)')+'</span><span class="iv">'+(x.d? brDate(x.d) : '')+'</span></button>'; }).join(''), '', 'ni');
+function rMemoria(){ var h=navbar('In memoriam'), l=obitosTodos();
+  if(!l.length) h+='<div class="empty">'+RIC.dem+'<b>Ninguém aqui</b>Quem foi a óbito aparece aqui. Depois do prazo, fica só o nome e a data.</div>';
+  else h+=grupo('', l.map(function(x){ return '<button type="button" class="ir" '+(x.p? 'data-memp="'+x.id+'"' : 'data-mem="'+x.id+'"')+'><span class="il">'+esc(x.nome||'(sem nome)')+(x.p? '' : '<small>só o nome e a data</small>')+'</span><span class="iv">'+(x.d? brDate(x.d) : '')+'</span></button>'; }).join(''), '', 'ni');
   $('#main').innerHTML=h; ligarNav();
+  $$('[data-memp]').forEach(function(b){ b.onclick=function(){ abrirPront(b.dataset.memp); }; });
   $$('[data-mem]').forEach(function(b){ b.onclick=function(){ var x=S.memoria.filter(function(y){ return y.id===b.dataset.mem; })[0]; if(!x) return;
     openMenu(b, '<button class="mo" data-a="x" style="color:var(--bad)">'+I.del+'<span><b>Apagar</b></span></button>');
     $('#menu [data-a=x]').onclick=function(){ closeMenu(); var k=S.memoria.indexOf(x); S.memoria.splice(k,1); save(); rMemoria(); toast('Apagado.', {label:'Desfazer', fn:function(){ S.memoria.splice(k,0,x); save(); rMemoria(); }}); }; }; }); }
@@ -8618,14 +8632,18 @@ var REM_LIB_TXT=['Losartana 25 mg|oral|comprimido|1||1,12;1,1x','Losartana 50 mg
   'Azitromicina 500 mg|oral|comprimido|0||1,1x,,3','Metronidazol 400 mg|oral|comprimido|0||1,8,,7','Clindamicina 300 mg|oral|capsula|0||1,6,,7','Fluconazol 150 mg|oral|capsula|0||1,du',
   'Ácidos graxos essenciais (AGE)|top||1||,2x,,,nas áreas de apoio','Óxido de zinco pomada|top||1||,troca,,,na região perianal','Nistatina + óxido de zinco creme|top||0||,3x,,,na região perianal',
   'Sulfadiazina de prata 1% creme|top||1||,1x,,,na lesão','Colagenase pomada|top||1||,1x,,,na lesão','Cetoconazol 2% creme|top||0||,1x,,14,na lesão','Ureia 10% creme|top||1||,2x,,,na pele',
-  'Colírio lubrificante (hipromelose)|oft|gota|1||1,3x,,,em cada olho','Tobramicina colírio|oft|gota|0||1,4,,7,no olho afetado'];
+  'Colírio lubrificante (hipromelose)|oft|gota|1||1,3x,,,em cada olho','Tobramicina colírio|oft|gota|0||1,4,,7,no olho afetado',
+  // 0.9.9: mais remédios (receituário HABE + RENAME / cuidado domiciliar)
+  'Nifedipino 10 mg|oral|comprimido|1||1,8;1,12','Nifedipino retard 20 mg|oral|comprimido|1||1,12','Metildopa 250 mg|oral|comprimido|1||1,12;1,8','Metildopa 500 mg|oral|comprimido|1||1,12','Losartana 100 mg|oral|comprimido|1||1,1x','Enalapril 5 mg|oral|comprimido|1||1,12','Captopril 50 mg|oral|comprimido|1||1,12;1,8','Anlodipino 2,5 mg|oral|comprimido|1||1,1x','Hidroclorotiazida 50 mg|oral|comprimido|1||1,man','Clortalidona 12,5 mg|oral|comprimido|1||1,man','Clortalidona 25 mg|oral|comprimido|1||1,man','Indapamida 1,5 mg (liberação prolongada)|oral|comprimido|1||1,man','Furosemida 20 mg|oral|comprimido|1||1,man','Espironolactona 50 mg|oral|comprimido|1||1,man','Espironolactona 100 mg|oral|comprimido|1||1,man','Atenolol 100 mg|oral|comprimido|1||1,1x','Carvedilol 25 mg|oral|comprimido|1||1,12,após as refeições','Metoprolol (succinato) 25 mg|oral|comprimido|1||1,1x','Metoprolol (succinato) 50 mg|oral|comprimido|1||1,1x','Metoprolol (succinato) 100 mg|oral|comprimido|1||1,1x','Bisoprolol 2,5 mg|oral|comprimido|1||1,1x','Bisoprolol 5 mg|oral|comprimido|1||1,1x','Propranolol 10 mg|oral|comprimido|1||1,12','Hidralazina 50 mg|oral|comprimido|1||1,8','Isossorbida (mononitrato) 20 mg|oral|comprimido|1||1,12','Isossorbida (mononitrato) 40 mg|oral|comprimido|1||1,12','Isossorbida (dinitrato) 5 mg sublingual|sl|comprimido|0||1,sn,se dor no peito','Digoxina 0,25 mg|oral|comprimido|1||1,1x','Amiodarona 200 mg|oral|comprimido|1||1,1x','Verapamil 80 mg|oral|comprimido|1||1,8','Diltiazem 60 mg|oral|comprimido|1||1,8','Valsartana 80 mg|oral|comprimido|1||1,1x','Valsartana 160 mg|oral|comprimido|1||1,1x','Olmesartana 20 mg|oral|comprimido|1||1,1x','Olmesartana 40 mg|oral|comprimido|1||1,1x','Ramipril 5 mg|oral|capsula|1||1,1x','Sacubitril + valsartana 50 mg|oral|comprimido|1||1,12','Sacubitril + valsartana 100 mg|oral|comprimido|1||1,12','Dapagliflozina 10 mg|oral|comprimido|1||1,1x','Empagliflozina 10 mg|oral|comprimido|1||1,1x','Empagliflozina 25 mg|oral|comprimido|1||1,1x','Ácido acetilsalicílico (AAS) 81 mg|oral|comprimido|1||1,1x,após o almoço','Varfarina 5 mg|oral|comprimido|1||1,1x','Rivaroxabana 10 mg|oral|comprimido|1||1,1x','Rivaroxabana 15 mg|oral|comprimido|1||1,1x','Rivaroxabana 20 mg|oral|comprimido|1||1,1x','Apixabana 2,5 mg|oral|comprimido|1||1,12','Apixabana 5 mg|oral|comprimido|1||1,12','Dabigatrana 110 mg|oral|capsula|1||1,12','Dabigatrana 150 mg|oral|capsula|1||1,12','Enoxaparina 20 mg/0,2 mL|sc|seringa|1||1,1x','Enoxaparina 60 mg/0,6 mL|sc|seringa|1||1,12','Heparina 5.000 UI/0,25 mL|sc|ampola|1||1,12;1,8','Sinvastatina 10 mg|oral|comprimido|1||1,noi','Atorvastatina 10 mg|oral|comprimido|1||1,1x','Atorvastatina 80 mg|oral|comprimido|1||1,1x','Rosuvastatina 10 mg|oral|comprimido|1||1,1x','Rosuvastatina 20 mg|oral|comprimido|1||1,1x','Pravastatina 20 mg|oral|comprimido|1||1,noi','Ciprofibrato 100 mg|oral|comprimido|1||1,1x','Fenofibrato 200 mg|oral|capsula|1||1,1x','Ezetimiba 10 mg|oral|comprimido|1||1,1x','Cilostazol 100 mg|oral|comprimido|1||1,12,antes das refeições','Pentoxifilina 400 mg|oral|comprimido|1||1,8','Diosmina + hesperidina 500 mg|oral|comprimido|1||1,12','Metformina 1 g|oral|comprimido|1||1,12,após as refeições','Metformina XR 500 mg|oral|comprimido|1||1,1x,após o jantar','Metformina XR 750 mg|oral|comprimido|1||1,1x,após o jantar','Glimepirida 1 mg|oral|comprimido|1||1,man,no café da manhã','Glimepirida 2 mg|oral|comprimido|1||1,man,no café da manhã','Glimepirida 4 mg|oral|comprimido|1||1,man,no café da manhã','Sitagliptina 50 mg|oral|comprimido|1||1,1x','Sitagliptina 100 mg|oral|comprimido|1||1,1x','Vildagliptina 50 mg|oral|comprimido|1||1,12','Linagliptina 5 mg|oral|comprimido|1||1,1x','Pioglitazona 15 mg|oral|comprimido|1||1,1x','Pioglitazona 30 mg|oral|comprimido|1||1,1x','Insulina glargina 100 UI/mL|sc|ui|1||10,noi,antes de dormir','Insulina asparte 100 UI/mL|sc|ui|1||','Insulina lispro 100 UI/mL|sc|ui|1||','Semaglutida 0,25 mg|sc|seringa|1||1,sem','Metimazol 5 mg|oral|comprimido|1||1,1x','Metimazol 10 mg|oral|comprimido|1||1,1x','Alopurinol 100 mg|oral|comprimido|1||1,1x','Alopurinol 300 mg|oral|comprimido|1||1,1x','Colchicina 0,5 mg|oral|comprimido|0||1,12','Prednisolona 3 mg/mL solução oral|oral|ml|0||10,man,,5','Dexametasona 4 mg|oral|comprimido|0||1,man;1,12','Dexametasona 4 mg/mL injetável|im|ampola|0||1,du','Hidrocortisona 100 mg injetável|ev|ampola|0||1,du','Alendronato 70 mg|oral|comprimido|1||1,sem,em jejum','Carbonato de cálcio 500 mg|oral|comprimido|1||1,12,após as refeições','Carbonato de cálcio + vitamina D 500 mg + 400 UI|oral|comprimido|1||1,12','Colecalciferol (vitamina D) 200 UI/gota|oral|gota|1||5,1x','Doxazosina 2 mg|oral|comprimido|1||1,noi','Estriol 1 mg/g creme vaginal|vag|aplicador|0||1,noi,,14','Sulfato ferroso 40 mg (ferro elementar)|oral|comprimido|1||1,1x,em jejum','Sulfato ferroso 25 mg/mL gotas|oral|gota|1||30,1x,em jejum','Cianocobalamina (vitamina B12) 5.000 mcg injetável|im|ampola|0||1,sem','Tiamina 100 mg|oral|comprimido|1||1,1x','Complexo B|oral|comprimido|1||1,1x','Polivitamínico e minerais|oral|comprimido|1||1,1x','Cloreto de potássio 600 mg|oral|comprimido|0||1,12,após as refeições','Cloreto de potássio xarope 6%|oral|ml|0||15,12,após as refeições','Sais para reidratação oral|oral|sache|0||1,sn,diluir em 1 litro de água','Dipirona 500 mg/mL injetável|im|ampola|0||1,6,se dor ou febre','Paracetamol 750 mg + codeína 30 mg|oral|comprimido|0||1,6,se dor','Codeína 30 mg|oral|comprimido|0||1,6,se dor','Tramadol 100 mg/mL gotas|oral|gota|0||20,8,se dor','Tramadol 50 mg/mL injetável|sc|ampola|0||1,8,se dor','Morfina 30 mg|oral|comprimido|0|A|1,4,se dor','Morfina 10 mg/mL solução oral|oral|ml|0|A|0.5,4,se dor','Morfina 10 mg/mL injetável|sc|ampola|0|A|0.2,4,se dor','Oxicodona 10 mg (liberação prolongada)|oral|comprimido|1|A|1,12','Oxicodona 20 mg (liberação prolongada)|oral|comprimido|1|A|1,12','Metadona 5 mg|oral|comprimido|1|A|1,12','Metadona 10 mg|oral|comprimido|1|A|1,12','Fentanila 25 mcg/h adesivo|trans|adesivo|1|A|1,sem,trocando o local a cada aplicação','Ibuprofeno 400 mg|oral|comprimido|0||1,8,após as refeições,5','Ibuprofeno 600 mg|oral|comprimido|0||1,8,após as refeições,5','Ibuprofeno 50 mg/mL gotas|oral|gota|0||20,8,,5','Diclofenaco potássico 50 mg|oral|comprimido|0||1,8,após as refeições,5','Diclofenaco 75 mg/3 mL injetável|im|ampola|0||1,du','Cetoprofeno 100 mg|oral|comprimido|0||1,12,após as refeições,5','Naproxeno 500 mg|oral|comprimido|0||1,12,após as refeições,5','Meloxicam 15 mg|oral|comprimido|0||1,1x,após as refeições,5','Nimesulida 100 mg|oral|comprimido|0||1,12,após as refeições,5','Etoricoxibe 90 mg|oral|comprimido|0||1,1x,,5','Cetorolaco 10 mg sublingual|sl|comprimido|0||1,8,,5','Ciclobenzaprina 5 mg|oral|comprimido|0||1,noi','Ciclobenzaprina 10 mg|oral|comprimido|0||1,noi','Tizanidina 2 mg|oral|comprimido|0||1,8','Baclofeno 25 mg|oral|comprimido|1||1,8','Orfenadrina + dipirona + cafeína|oral|comprimido|0||1,8,se dor','Escopolamina + dipirona (Buscopan composto)|oral|comprimido|0||1,8,se dor abdominal','Escopolamina 20 mg/mL injetável|sc|ampola|0||1,8','Gabapentina 600 mg|oral|comprimido|1||1,8','Pregabalina 150 mg|oral|capsula|1||1,12','Lidocaína 2% gel|top||0||,sn,,,no local','Lidocaína 5% pomada|top||0||,3x,,,no local','Sumatriptana 50 mg|oral|comprimido|0||1,du,no início da crise','Ácido mefenâmico 500 mg|oral|comprimido|0||1,8,após as refeições,3','Omeprazol 10 mg|oral|capsula|1||1,1x,em jejum','Esomeprazol 20 mg|oral|comprimido|1||1,1x,em jejum','Esomeprazol 40 mg|oral|comprimido|1||1,1x,em jejum','Pantoprazol 20 mg|oral|comprimido|1||1,1x,em jejum','Lansoprazol 30 mg|oral|capsula|1||1,1x,em jejum','Ranitidina 150 mg|oral|comprimido|1||1,12','Famotidina 20 mg|oral|comprimido|1||1,12','Hidróxido de alumínio 61,5 mg/mL suspensão|oral|ml|0||10,8,após as refeições','Simeticona 40 mg|oral|comprimido|0||1,8,se gases','Simeticona 75 mg/mL gotas|oral|gota|0||13,8,se gases','Metoclopramida 4 mg/mL gotas|oral|gota|0||50,8,se náusea ou vômito','Metoclopramida 10 mg/2 mL injetável|im|ampola|0||1,8,se náusea ou vômito','Ondansetrona 2 mg/mL injetável|ev|ampola|0||2,8,se náusea ou vômito','Dimenidrinato + piridoxina 50 mg|oral|comprimido|0||1,6,se náusea ou vômito','Bromoprida 4 mg/mL gotas|oral|gota|0||20,8,se náusea ou vômito','Macrogol 3350 sachê|oral|sache|1||1,1x','Óleo mineral|oral|ml|0||15,noi','Picossulfato de sódio 7,5 mg/mL gotas|oral|gota|0||10,noi','Senna (sene) 15 mg|oral|comprimido|0||1,noi','Glicerina supositório|ret|supositorio|0||1,sn,se constipação','Bisacodil 10 mg supositório|ret|supositorio|0||1,sn,se constipação','Enema de fosfato de sódio|ret||0||,du','Psílio 3,5 g sachê|oral|sache|1||1,1x','Loperamida 2 mg|oral|comprimido|0||1,sn,após cada evacuação líquida','Racecadotrila 100 mg|oral|capsula|0||1,8,antes das refeições,5','Saccharomyces boulardii 200 mg|oral|capsula|0||1,12,,5','Nitazoxanida 500 mg|oral|comprimido|0||1,12,,3','Albendazol 400 mg|oral|comprimido|0||1,du','Ivermectina 6 mg|oral|comprimido|0||2,du','Mebendazol 100 mg|oral|comprimido|0||1,12,,3','Secnidazol 1 g|oral|comprimido|0||2,du','Ursodesoxicólico (ácido) 300 mg|oral|comprimido|1||1,12','Butilbrometo de escopolamina 10 mg + dipirona gotas|oral|gota|0||20,8,se dor abdominal','Salbutamol 2 mg/5 mL xarope|oral|ml|0||5,8','Fenoterol 5 mg/mL gotas (nebulização)|inal|gota|0||5,6,se falta de ar','Ipratrópio 0,25 mg/mL gotas (nebulização)|inal|gota|0||20,6,se falta de ar','Beclometasona 250 mcg spray|inal|jato|1||1,12,com espaçador','Budesonida 200 mcg (cápsula inalatória)|inal|jato|1||1,12','Budesonida + formoterol 6/200 mcg|inal|jato|1||1,12','Formoterol 12 mcg (cápsula inalatória)|inal|jato|1||1,12','Tiotrópio 2,5 mcg spray|inal|jato|1||2,1x','Prednisolona 20 mg|oral|comprimido|0||1,man,,5','Acetilcisteína 600 mg sachê|oral|sache|0||1,1x,,7','Ambroxol 30 mg/5 mL xarope|oral|ml|0||5,8,,7','Dropropizina 30 mg/5 mL xarope|oral|ml|0||10,8,se tosse,5','Loratadina 10 mg|oral|comprimido|0||1,1x,,7','Desloratadina 5 mg|oral|comprimido|0||1,1x,,7','Cetirizina 10 mg|oral|comprimido|0||1,1x,,7','Fexofenadina 180 mg|oral|comprimido|0||1,1x,,7','Dexclorfeniramina 2 mg|oral|comprimido|0||1,8,,5','Hidroxizina 25 mg|oral|comprimido|0||1,8,se coceira','Prometazina 25 mg|oral|comprimido|0||1,noi','Prometazina 50 mg/2 mL injetável|im|ampola|0||1,du','Budesonida 64 mcg spray nasal|nas|jato|1||2,1x,em cada narina','Mometasona 50 mcg spray nasal|nas|jato|1||2,1x,em cada narina','Cloreto de sódio 0,9% nasal|nas|gota|0||3,6,em cada narina','Amoxicilina 875 mg|oral|comprimido|0||1,12,,7','Amoxicilina 250 mg/5 mL suspensão|oral|ml|0||10,8,,7','Claritromicina 500 mg|oral|comprimido|0||1,12,,7','Cefalexina 250 mg/5 mL suspensão|oral|ml|0||10,6,,7','Cefuroxima 500 mg|oral|comprimido|0||1,12,,7','Cefadroxila 500 mg|oral|capsula|0||1,12,,7','Ceftriaxona 1 g injetável|im|ampola|0||1,1x,,7','Penicilina G benzatina 1.200.000 UI|im|ampola|0||1,du','Doxiciclina 100 mg|oral|comprimido|0||1,12,,7','Levofloxacino 750 mg|oral|comprimido|0||1,1x,,7','Moxifloxacino 400 mg|oral|comprimido|0||1,1x,,7','Ciprofloxacino 250 mg|oral|comprimido|0||1,12,,3','Sulfametoxazol + trimetoprima 400 + 80 mg|oral|comprimido|0||2,12,,7','Fosfomicina 3 g sachê|oral|sache|0||1,du,à noite com a bexiga vazia','Nitrofurantoína 100 mg (liberação prolongada)|oral|capsula|0||1,12,,5','Metronidazol 250 mg|oral|comprimido|0||2,8,,7','Metronidazol gel vaginal 100 mg/g|vag|aplicador|0||1,noi,,7','Tinidazol 500 mg|oral|comprimido|0||4,du','Clindamicina 150 mg|oral|capsula|0||2,6,,7','Fluconazol 50 mg|oral|capsula|0||1,1x,,7','Itraconazol 100 mg|oral|capsula|0||1,12,,7','Terbinafina 250 mg|oral|comprimido|0||1,1x,,14','Miconazol gel oral|oral||0||,4,,7,na boca','Aciclovir 400 mg|oral|comprimido|0||1,8,,7','Aciclovir 200 mg|oral|comprimido|0||1,4,,5','Valaciclovir 500 mg|oral|comprimido|0||2,12,,7','Oseltamivir 75 mg|oral|capsula|0||1,12,,5','Permetrina 5% loção|top||0||,du,,,no corpo todo do pescoço para baixo','Hidrogel|top||1||,1x,,,na lesão','Alginato de cálcio (curativo)|top||1||,1x,,,na lesão','Hidrocoloide (placa)|top||1||,sem,,,na lesão','Carvão ativado com prata (curativo)|top||1||,sem,,,na lesão','Espuma de poliuretano (curativo)|top||1||,sem,,,na lesão','Papaína 10% gel|top||1||,1x,,,na lesão','Polihexanida (PHMB) solução|top||1||,1x,,,na limpeza da lesão','Clorexidina 2% degermante|top||0||,1x,,,no local','Clorexidina 0,12% solução bucal|oral|ml|0||15,12,bochechar por 1 minuto e cuspir','Mupirocina 2% pomada|top||0||,3x,,7,na lesão','Neomicina + bacitracina pomada|top||0||,3x,,7,na lesão','Ácido fusídico 2% creme|top||0||,3x,,7,na lesão','Dexametasona 0,1% creme|top||0||,2x,,7,na lesão','Hidrocortisona 1% creme|top||0||,2x,,7,na lesão','Betametasona 0,1% creme|top||0||,2x,,7,na lesão','Mometasona 0,1% creme|top||0||,1x,,7,na lesão','Clotrimazol 1% creme|top||0||,2x,,14,na lesão','Miconazol 2% creme|top||0||,2x,,14,na lesão','Miconazol 2% creme vaginal|vag|aplicador|0||1,noi,,14','Cetoconazol 2% xampu|top||0||,2x,,,no couro cabeludo','Terbinafina 1% creme|top||0||,1x,,14,na lesão','Aciclovir 5% creme|top||0||,4,,5,na lesão','Calamina loção|top||0||,3x,,,na pele','Dexpantenol pomada|top||0||,2x,,,na pele','Vaselina líquida|top||1||,2x,,,na pele','Creme barreira (óxido de zinco + vitaminas A e D)|top||1||,troca,,,na região perianal','Diclofenaco gel|top||0||,3x,,7,no local','Sertralina 25 mg|oral|comprimido|1||1,1x','Sertralina 100 mg|oral|comprimido|1||1,1x','Paroxetina 20 mg|oral|comprimido|1||1,man','Venlafaxina 75 mg|oral|capsula|1||1,1x','Desvenlafaxina 50 mg|oral|comprimido|1||1,1x','Duloxetina 30 mg|oral|capsula|1||1,1x','Duloxetina 60 mg|oral|capsula|1||1,1x','Bupropiona 150 mg|oral|comprimido|1||1,man','Amitriptilina 10 mg|oral|comprimido|1||1,noi','Quetiapina 100 mg|oral|comprimido|1||1,noi','Risperidona 2 mg|oral|comprimido|1||1,12','Risperidona 1 mg/mL solução oral|oral|ml|1||0.5,12','Olanzapina 5 mg|oral|comprimido|1||1,noi','Olanzapina 10 mg|oral|comprimido|1||1,noi','Haloperidol 5 mg/mL injetável|im|ampola|0||1,du','Clorpromazina 25 mg|oral|comprimido|1||1,noi','Levomepromazina 4% gotas|oral|gota|1||5,noi','Lítio (carbonato) 300 mg|oral|comprimido|1||1,12','Clonazepam 0,5 mg|oral|comprimido|1|B|1,noi','Diazepam 5 mg|oral|comprimido|1|B|1,noi','Alprazolam 0,5 mg|oral|comprimido|1|B|1,noi','Lorazepam 2 mg|oral|comprimido|1|B|1,noi','Bromazepam 3 mg|oral|comprimido|1|B|1,noi','Midazolam 15 mg|oral|comprimido|0|B|1,noi','Midazolam 5 mg/mL injetável|sc|ampola|0|B|1,sn','Zolpidem 10 mg|oral|comprimido|0|B|1,noi','Melatonina 3 mg|oral|comprimido|1||1,noi','Carbamazepina 400 mg|oral|comprimido|1||1,12','Divalproato de sódio 500 mg|oral|comprimido|1||1,12','Fenobarbital 40 mg/mL gotas|oral|gota|1||20,noi','Lamotrigina 50 mg|oral|comprimido|1||1,12','Lamotrigina 100 mg|oral|comprimido|1||1,12','Topiramato 50 mg|oral|comprimido|1||1,12','Oxcarbazepina 300 mg|oral|comprimido|1||1,12','Galantamina 8 mg|oral|capsula|1||1,1x','Pramipexol 0,25 mg|oral|comprimido|1||1,8','Biperideno 2 mg|oral|comprimido|1||1,12','Amantadina 100 mg|oral|comprimido|1||1,12','Betaistina 24 mg|oral|comprimido|0||1,12','Cinarizina 25 mg|oral|comprimido|0||1,8','Flunarizina 10 mg|oral|capsula|1||1,noi','Timolol 0,5% colírio|oft|gota|1||1,12,,,em cada olho','Latanoprosta 0,005% colírio|oft|gota|1||1,noi,,,em cada olho','Dexametasona + neomicina colírio|oft|gota|0||1,6,,7,no olho afetado','Ciprofloxacino colírio|oft|gota|0||1,4,,7,no olho afetado','Moxifloxacino colírio|oft|gota|0||1,8,,7,no olho afetado','Polimixina B + neomicina + hidrocortisona gotas otológicas|oto|gota|0||4,8,,7,no ouvido afetado','Ciprofloxacino + hidrocortisona gotas otológicas|oto|gota|0||3,12,,7,no ouvido afetado'];
 var REM_LIB=null;
 function remLib(){ if(REM_LIB) return REM_LIB;
   REM_LIB=REM_LIB_TXT.map(function(s){ var a=s.split('|');
     return {n:a[0], v:a[1], u:a[2]||'', c:a[3]!=='0', av:a[4]||'', k:nomeChave(a[0]), p:(a[5]||'').split(';').filter(Boolean).map(function(x){ var b=x.split(','), t={ds:b[0]? +b[0] : 1, qd:b[1]||'', cp:b[2]? b[2].split('+').map(function(c){ return c.replace(/\//g, ','); }) : []};
       if(b[3]) t.du=+b[3]; if(b[4]) t.on=b[4]; return t; })}; });
   return REM_LIB; }
-function libDe(nome){ var k=nomeChave(nome); if(!k) return null; return remLib().filter(function(L){ return L.k===k; })[0]||null; }
+function libDe(nome){ var k=nomeChave(nome); if(!k) return null; var kd=nomeChaveD(nome); return remLib().filter(function(L){ return nomeChaveD(L.n)===kd; })[0] || remLib().filter(function(L){ return L.k===k; })[0] || null; }
+// a mesma chave, mas com os números (para separar 25 mg de 50 mg nas sugestões)
+function nomeChaveD(n){ return String(n||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase().replace(/[^A-Z0-9 ]/g,' ').replace(/\s+/g,' ').trim(); }
 // um padrão da lista, pronto para a via do paciente
 function libMt(L, pp, v){ var t=mtPadrao(L.v); if(L.u) t.un=L.u; Object.keys(pp||{}).forEach(function(k){ t[k]=JSON.parse(JSON.stringify(pp[k])); });
   if(t.du==null || t.du==='') t.du= L.c? 'cont' : 'sp'; t.cp=(t.cp||[]).filter(Boolean);
@@ -8752,10 +8770,10 @@ function medSheet(p, m0, d){ var novo=!m0, m=m0? JSON.parse(JSON.stringify(m0)) 
   function tudo(){ pintaVia(); pintaPad(); pintaFrase(); pintaOp(); pintaDur(); pintaNa(); pintaAv(); }
   // sugestões de nome: a lista do app e os remédios que você já cadastrou
   var ni=$('#mNome',dlg), sg=$('#mSug',dlg), escondeT=0;
-  function sugestoes(){ var q=nomeChave(ni.value); if(false){ sg.hidden=true; return; }
-    var vistos={}, l=[]; S.pacientes.forEach(function(q2){ (q2.meds||[]).forEach(function(x){ var k=nomeChave(x.nome); if(!vistos[k] && k.indexOf(q)>=0 && x.id!==m.id){ vistos[k]=1; l.push({n:x.nome, x:x}); } }); });
-    remLib().forEach(function(L){ if(!vistos[L.k] && L.k.indexOf(q)>=0){ vistos[L.k]=1; l.push({n:L.n, L:L}); } });
-    l.sort(function(a,b){ var ai=nomeChave(a.n).indexOf(q)===0? 0 : 1, bi=nomeChave(b.n).indexOf(q)===0? 0 : 1; return ai-bi || a.n.localeCompare(b.n,'pt'); }); if(!q){ var fq={}; S.pacientes.forEach(function(z){ (z.meds||[]).forEach(function(x){ var k=nomeChave(x.nome); fq[k]=(fq[k]||0)+1; }); }); l.sort(function(a,b){ return (fq[nomeChave(b.n)]||0)-(fq[nomeChave(a.n)]||0) || a.n.localeCompare(b.n,'pt'); }); } l=l.slice(0,6);
+  function sugestoes(){ var q=nomeChave(ni.value), qd=nomeChaveD(ni.value); if(false){ sg.hidden=true; return; }
+    var vistos={}, l=[]; S.pacientes.forEach(function(q2){ (q2.meds||[]).forEach(function(x){ var k=nomeChaveD(x.nome); if(!vistos[k] && k.indexOf(qd)>=0 && x.id!==m.id){ vistos[k]=1; l.push({n:x.nome, x:x}); } }); });
+    remLib().forEach(function(L){ var kd=nomeChaveD(L.n); if(!vistos[kd] && kd.indexOf(qd)>=0){ vistos[kd]=1; l.push({n:L.n, L:L}); } });
+    l.sort(function(a,b){ var ai=nomeChave(a.n).indexOf(q)===0? 0 : 1, bi=nomeChave(b.n).indexOf(q)===0? 0 : 1; return ai-bi || a.n.localeCompare(b.n,'pt',{numeric:true}); }); if(!q){ var fq={}; S.pacientes.forEach(function(z){ (z.meds||[]).forEach(function(x){ var k=nomeChave(x.nome); fq[k]=(fq[k]||0)+1; }); }); l.sort(function(a,b){ return (fq[nomeChave(b.n)]||0)-(fq[nomeChave(a.n)]||0) || a.n.localeCompare(b.n,'pt',{numeric:true}); }); } l=l.slice(0,6);
     if(!l.length || (l.length===1 && nomeChave(l[0].n)===q)){ sg.hidden=true; return; }
     sg.innerHTML=l.map(function(o, i){ var sub= o.L? viaDef(libVia(o.L, p))[1]+(o.L.p.length? ' · '+posMonta(libVia(o.L, p), libMt(o.L, o.L.p[0], libVia(o.L, p))) : '') : viaDef(o.x.via||viaChuta(o.x))[1]+(o.x.pos? ' · '+o.x.pos : '');
       return '<button type="button" data-sg="'+i+'"><b>'+esc(o.n)+'</b><small>'+esc(sub)+'</small></button>'; }).join(''); sg.hidden=false;
@@ -9123,9 +9141,7 @@ function rAjRec(){
     return '<div class="ir rcr"><span class="ii" style="--c:'+r[3]+'">'+RIC_AJ[r[4]]+'</span><span class="il">'+r[1]+'<small>'+(dep? 'Precisa de “Agendar próxima visita”' : r[2])+'</small></span>'+lsw(o.rec[r[0]]!==false, 'data-rec="'+r[0]+'"', dep)+'</div>'; }
   REC_GRUPOS.forEach(function(g, i){ h+=grupo(g[0], g[1].map(function(k){ return RECS.filter(function(r){ return r[0]===k; })[0]; }).filter(Boolean).map(lin).join(''),
     i===REC_GRUPOS.length-1? 'Cada recurso aparece no sistema só quando está ligado. Desligar não apaga nada: ao ligar de novo, está tudo lá.' : '', 'rcg'); });
-  h+=grupo('Saíram do SAD', linha({id:'dVer', icon:RIC_AJ.dem, cor:'#a2845e', rot:'Ver quem saiu', val:String(S.pacientes.filter(function(p){ return !ativo(p); }).length)})+linha({id:'dMes', icon:gl('calendario'), cor:'#ff9500', rot:'Guardar os dados', val:o.demMeses+' meses'})+
-    linha({id:'dDep', icon:gl('info'), cor:'#8e8e93', rot:'Depois disso', val:o.demDepois==='apagar'?'apagar tudo':'só nome e CPF'})+linha({id:'dArq', icon:RIC_AJ.dem, cor:'#8e8e93', rot:'Arquivados', val:String(S.arquivo.length)})+linha({id:'dMem', icon:I.fInfo, cor:'#636366', rot:'Memória', val:String((S.memoria||[]).length)}),
-    'Quem tem alta, vai a óbito ou não é elegível sai da lista de Pacientes e fica em Saíram do SAD por '+o.demMeses+' meses, com tudo. '+(o.demDepois==='apagar'? 'Depois, o sistema apaga o cadastro.' : 'Depois, fica só o nome, o CPF ou CNS, a data e o desfecho; se o CPF for cadastrado de novo, o sistema avisa.'));
+  // (0.9.9: a parte "Saíram do SAD" mudou para Ajustes › Histórico)
   if(typeof fotoAjHtml==='function') h+=fotoAjHtml();
   $('#main').innerHTML=h; ligarNav(); if(typeof fotoAjLiga==='function') fotoAjLiga();
   lswLiga($('#main'), function(sw, on){ var k=sw.dataset.rec; if(!k) return; o.rec[k]=on; if(k==='turno') o.evTurno=on; save();
@@ -11062,9 +11078,7 @@ function rAjRec(){
     linha({id:'dFOnde', icon:RIC_AJ.pasta, cor:'#30a46c', rot:'Onde guardar as fotos', val:ondeNome()})+
     '<div class="ir"><span class="ii" style="--c:#8e8e93">'+gl('nuvem')+'</span><span class="il">Fotos no backup<small>O arquivo de backup fica bem maior</small></span>'+lsw(!!o.fotoBkp,'id="oFBk"')+'</div>',
     'Vale para as fotos da evolução e da lesão.'+(drv? ' No Google Drive, cada paciente tem uma pasta com as iniciais e a data de nascimento.' : ''))+'</div></div>';
-  h+=grupo('Saíram do SAD', linha({id:'dVer', icon:RIC_AJ.dem, cor:'#a2845e', rot:'Ver quem saiu', val:String(S.pacientes.filter(function(p){ return !ativo(p); }).length)})+linha({id:'dMes', icon:gl('calendario'), cor:'#ff9500', rot:'Guardar os dados', val:o.demMeses+' meses'})+
-    linha({id:'dDep', icon:gl('info'), cor:'#8e8e93', rot:'Depois disso', val:o.demDepois==='apagar'?'apagar tudo':'só nome e CPF'})+linha({id:'dArq', icon:RIC_AJ.dem, cor:'#8e8e93', rot:'Arquivados', val:String(S.arquivo.length)})+linha({id:'dMem', icon:I.fInfo, cor:'#636366', rot:'Memória', val:String((S.memoria||[]).length)}),
-    'Quem tem alta, vai a óbito ou não é elegível sai da lista de Pacientes e fica em Saíram do SAD por '+o.demMeses+' meses, com tudo. '+(o.demDepois==='apagar'? 'Depois, o sistema apaga o cadastro.' : 'Depois, fica só o nome, o CPF ou CNS, a data e o desfecho; se o CPF for cadastrado de novo, o sistema avisa.'));
+  // (0.9.10: a parte "Saíram do SAD" mudou para Ajustes › Histórico)
   $('#main').innerHTML=h; ligarNav();
   lswLiga($('#main'), function(sw, on){
     if(sw.id==='oFEvo'){ o.fotoEvo=on; save(); abreSub($('#sbEvo'), on); abreSub($('#sbFot'), fotoEvoOn()||fotoLesOn()); return; }
@@ -12218,14 +12232,12 @@ function resCalc(P, leve){ var V=[], pac={}, dias={}, X= P.fim<hoje()? P.fim : h
   C.eg={n:E.length, hosp:0, upa:0, dom:0, el:0, nel:0, crit:{}, proc:{}};
   E.forEach(function(a){ if(a.local==='11') C.eg.hosp++; else if(a.local==='12') C.eg.upa++; else C.eg.dom++; if(a.eleg==='el') C.eg.el++; else { C.eg.nel++; (a.crit||[]).forEach(function(c){ C.eg.crit[c]=(C.eg.crit[c]||0)+1; }); }
     if(a.proc) C.eg.proc[a.proc]=(C.eg.proc[a.proc]||0)+1; });
-  // saídas no período: a visita com desfecho ou a alta com data (uma por paciente: a mais nova)
-  var sai={};
-  V.forEach(function(a){ if(a.eleg==='nel' || !(a.conduta>=1 && a.conduta<=6)) return; var d=dataV(a); if(!sai[a.pacId] || d>=sai[a.pacId].d) sai[a.pacId]={c:a.conduta, d:d}; });
-  S.pacientes.forEach(function(p){ var al=p.alta; if(al && al.d && !al.nel && al.d>=P.ini && al.d<=P.fim && (!sai[p.id] || al.d>=sai[p.id].d)) sai[p.id]={c:al.c, d:al.d}; });
-  C.sai=Object.keys(sai).map(function(id){ return {p:pacById(id), c:sai[id].c, d:sai[id].d}; }).filter(function(x){ return x.p; });
+  // saídas no período (0.9.9): a mesma regra de "Saíram do SAD": quem saiu de fato, com a data de saída no período,
+  // incluindo quem já foi para Arquivados ou In memoriam; não elegíveis ficam de fora (não chegaram a entrar)
+  C.sai=saidasPeriodo(P.ini, P.fim);
   C.saiT={}; C.sai.forEach(function(x){ C.saiT[x.c]=(C.saiT[x.c]||0)+1; });
   C.semData=S.pacientes.filter(function(p){ return p.alta && !p.alta.d && !p.alta.nel; });
-  var dur=C.sai.filter(function(x){ return x.p.adm && x.p.adm<=x.d; }).map(function(x){ return diasDesde(x.p.adm, x.d); }); C.tmp= dur.length? {m:dur.reduce(function(a,b){ return a+b; },0)/dur.length, n:dur.length} : null;
+  var dur=C.sai.filter(function(x){ return x.p && x.p.adm && x.p.adm<=x.d; }).map(function(x){ return diasDesde(x.p.adm, x.d); }); C.tmp= dur.length? {m:dur.reduce(function(a,b){ return a+b; },0)/dur.length, n:dur.length} : null;
   C.ent=S.pacientes.filter(function(p){ return (p.adm && p.adm>=P.ini && p.adm<=P.fim) || (p.readm && p.readm>=P.ini && p.readm<=P.fim); }).length;
   C.X=X; C.acomp=S.pacientes.filter(function(p){ return resAtivoEm(p, X); });
   C.sv=C.acomp.filter(function(p){ return !pac[p.id]; });
@@ -12273,7 +12285,8 @@ function resQuadro(id, C, o){ var P=C.P, x;
   if(id==='ele') return rsGh('Elegíveis × não elegíveis', C.eg.n)+rsCard(rsDiv([['Elegíveis', C.eg.el, '#34c759'], ['Não elegíveis', C.eg.nel, '#ff6b5e']]));
   if(id==='mot'){ x=resOrdena(C.eg.crit); return rsGh('Motivos de não elegibilidade', C.eg.nel)+rsCard(x.length? rsBarras(x.map(function(c){ return [esc(resCritNome(c[0])), c[1], '#ff6b5e']; }), 'rsnm') : '<div class="rsvz">Nenhum não elegível no período.</div>'); }
   if(id==='pro'){ x=resOrdena(C.eg.proc); return rsGh('Procedência', C.eg.n)+rsCard(x.length? rsBarras(x.map(function(c){ return [esc(EG_PROC_CURTO[c[0]]||'Outros'), c[1], '#5aa9e6']; }), 'rsnm') : '<div class="rsvz">Nenhuma elegibilidade no período.</div>'); }
-  if(id==='sai'){ var rows=[2,1,3,4,5,6].filter(function(c){ return C.saiT[c]; }).map(function(c){ var s=RES_SAI[c]; return '<div class="rsr2" style="--c:'+COND_COR[c]+'"><i>'+s[2]+'</i><span>'+s[0]+'</span><b>'+C.saiT[c]+'</b></div>'; }).join('');
+  if(id==='sai'){ var rows=[2,1,3,4,5,6].filter(function(c){ return C.saiT[c]; }).map(function(c){ var s=RES_SAI[c], nm=C.sai.filter(function(x){ return x.c===c; }).sort(function(a,b){ return (b.d||'').localeCompare(a.d||''); }).map(function(x){ return (x.p? x.p.id : '')+'~'+(x.nome||'')+'~'+(x.d||''); }).join('|');
+      return '<div class="rsr2 rssai" role="button" tabindex="0" data-saic="'+c+'" data-saim="'+esc(nm)+'" style="--c:'+COND_COR[c]+'"><i>'+(c===3 && typeof I_CRUZ!=='undefined'? I_CRUZ : s[2])+'</i><span>'+s[0]+'</span><b>'+C.saiT[c]+'</b></div>'; }).join('');
     return rsGh('Saídas do programa', C.sai.length)+rsCard((rows || '<div class="rsvz">Nenhuma saída no período.</div>')+
       (C.semData.length? '<button type="button" class="rssd" id="rsSd">'+sz(I.info,15)+'<span><b>'+C.semData.length+' alta'+(C.semData.length>1?'s':'')+' sem data</b> não entra'+(C.semData.length>1?'m':'')+' na conta. Toque para ver quem '+(C.semData.length>1?'são':'é')+' e pôr a data, se souber.</span></button>' : '')); }
   if(id==='tmp') return rsGh('Tempo médio no programa')+rsCard(C.tmp? '<div class="rsbig"><b>'+Math.round(C.tmp.m)+'</b> dias<small>média de '+C.tmp.n+' paciente'+(C.tmp.n>1?'s':'')+' que saíram no período, da admissão à saída</small></div>' : '<div class="rsvz">Ninguém com admissão registrada saiu no período.</div>');
@@ -12419,8 +12432,8 @@ var _pgFichaAba=fichaAba; fichaAba=function(){ _pgFichaAba(); var on=!!ABA_PG[ta
   pgCheia(); };
 function pgCheia(){ var on=document.body.classList.contains('pgaba') && window.scrollY>24; document.body.classList.toggle('pgcheia', on); }
 window.addEventListener('scroll', function(){ if(document.body.classList.contains('pgaba')) pgCheia(); }, {passive:true});
-var _pgIrPara=irPara; irPara=function(t){ if(ABA_PG[t] && !wideMQ.matches && t!==tab){ closeMenu(); transicao('sobe', function(){ pilha.push(tab); tab=t; render(); window.scrollTo(0,0); }); return; } return _pgIrPara(t); };
-var _pgVoltar=voltarPag; voltarPag=function(semAnim){ if(ABA_PG[tab] && !semAnim && !wideMQ.matches && window.scrollY<=24){ transicao('desce', function(){ tab=pilha.pop()||'cal'; render(); window.scrollTo(0,0); }); return; } return _pgVoltar(semAnim); };
+var _pgIrPara=irPara; irPara=function(t){ if(ABA_PG[t] && !wideMQ.matches && t!==tab){ closeMenu(); transicao('sobe', function(){ pilhaPoe(); tab=t; render(); window.scrollTo(0,0); }); return; } return _pgIrPara(t); };
+var _pgVoltar=voltarPag; voltarPag=function(semAnim){ if(ABA_PG[tab] && !semAnim && !wideMQ.matches && window.scrollY<=24){ transicao('desce', function(){ tab=pilha.pop()||'cal'; render(); window.scrollTo(0,yVolta(tab)); }); return; } return _pgVoltar(semAnim); };
 // puxar para baixo (no alto da página) fecha, como a ficha
 (function(){ var g=null;
   document.addEventListener('touchstart', function(e){ g=null;
@@ -13044,7 +13057,7 @@ var _egVisTags=visTags; visTags=function(a){ if(a && a.eleg==='el' && +a.dest===
 // 14 dias depois da visita: o cadastro sai (do óbito ficam o nome e a data em In memoriam)
 function egPurga(){ var lim=addDays(hoje(), -EG_DIAS), fora={}, n=0;
   S.pacientes.forEach(function(p){ var x=egSaidaPac(p); if(!x || !x.d || x.d>lim) return; fora[p.id]=1; n++;
-    if(x.s==='obito' && !(S.memoria||[]).some(function(m){ return m.id===p.id; })){ S.memoria=S.memoria||[]; S.memoria.push({id:p.id, nome:p.nome||'', d:x.d}); } });
+    if(x.s==='obito' && !(S.memoria||[]).some(function(m){ return m.id===p.id; })){ S.memoria=S.memoria||[]; S.memoria.push({id:p.id, nome:p.nome||'', d:x.d, nel:true}); } });
   if(!n) return 0;
   S.pacientes=S.pacientes.filter(function(p){ return !fora[p.id]; }); S.agenda=(S.agenda||[]).filter(function(x){ return !fora[x.pacId]; });
   return n; }
@@ -13416,7 +13429,7 @@ function remAbrir(p, d){ remNorm(p); d=d||docNovo('receita', p); remSel(p, d); R
   var fonte= tab==='pront' && !wideMQ.matches && !reduce? remFonte() : null;
   if(!fonte){ irPara('rem'); return; }
   closeMenu(); var f=fotografar(false), c=f.firstChild;
-  pilha.push(tab); tab='rem'; render(); window.scrollTo(0,0); var m=$('#main'); m.classList.add('frente');
+  pilhaPoe(); tab='rem'; render(); window.scrollTo(0,0); var m=$('#main'); m.classList.add('frente');
   c.animate([{opacity:1},{opacity:0}],{duration:230,easing:'ease-out',fill:'forwards'});
   remAnima(fonte, function(){ soltarFoto(f); }); }
 function remFonte(){ var o={chips:{}, mais:null, tit:null, cb:null};
@@ -14723,6 +14736,53 @@ pgMorphMede=function(){ document.body.classList.remove('pgmorf'); };
 window.addEventListener('click', function(e){ var b=e.target && e.target.closest && e.target.closest('[data-dfch]'); if(!b) return;
   e.stopPropagation(); e.preventDefault(); var pr=b.dataset.dfch.split(':'), f=S.fichas.filter(function(x){ return x.id===pr[0]; })[0], a=f && f.atend.filter(function(x){ return x.id===pr[1]; })[0]; if(!a) return;
   pop(b); if(!lpOrigem(a)){ toast('Escreva a evolução primeiro.'); return; } lpAbre(a); }, true);
+
+// ===================== 0.9.10 =====================
+// teclado do iPhone: a barra presa só se reposiciona depois de a folha voltar ao lugar; e de novo depois que o teclado assenta
+function shReajusta(){ if(!dlg.open) return; try{ sheetTeclado(); }catch(e){} var ft=$('.ft.pino',dlg); if(ft) pinoPoe(ft); }
+var SHRJ=0;
+pinoTeclado=function(){ cancelAnimationFrame(SHRJ); SHRJ=requestAnimationFrame(shReajusta); };
+dlg.addEventListener('focusout', function(){ [120, 450, 900].forEach(function(t){ setTimeout(shReajusta, t); }); });
+if(window.visualViewport) window.visualViewport.addEventListener('scroll', function(){ if(dlg.open) pinoTeclado(); });
+// voltar: a página de antes abre onde estava
+var YPOS={};
+function pilhaPoe(){ YPOS[tab]=window.scrollY; pilha.push(tab); }
+function yVolta(t){ return YPOS[t]||0; }
+// ícones
+var I_CRUZ='<svg viewBox="0 0 24 24" class="gli"><path d="M10.2 2.5h3.6v5.2H19v3.6h-5.2v10.2h-3.6V11.3H5V7.7h5.2z" fill="currentColor"/></svg>';
+var I_ARQUIVO='<svg viewBox="0 0 24 24" class="gli"><rect x="2.5" y="3.8" width="19" height="5" rx="1.6" fill="currentColor"/><path d="M4 10h16v8.7a1.8 1.8 0 0 1-1.8 1.8H5.8A1.8 1.8 0 0 1 4 18.7z" fill="currentColor"/><path d="M9.5 13.5h5" stroke-width="2.2" stroke-linecap="round" class="inv"/></svg>';
+var I_SAIDA=I.alta.replace('stroke-width="2"', 'stroke-width="2.4"');
+// todos os óbitos: os recentes (cadastro completo, em Saíram do SAD) e os que já ficaram só com nome e data
+function obitosTodos(){ var l=[], ids={};
+  S.pacientes.forEach(function(p){ if(ativo(p)) return; var x=desfecho(p); if(!x || x.c!==3) return; ids[p.id]=1; l.push({id:p.id, nome:p.nome||'', d:x.d||'', p:p}); });
+  (S.memoria||[]).forEach(function(m){ if(!ids[m.id]) l.push({id:m.id, nome:m.nome||'', d:m.d||''}); });
+  return l.sort(function(a,b){ return (b.d||'').localeCompare(a.d||''); }); }
+// saídas do programa num período: a mesma regra da lista "Saíram do SAD"
+function saidasPeriodo(ini, fim){ var out=[], ids={}; function dentro(d){ return d && d>=ini && d<=fim; }
+  S.pacientes.forEach(function(p){ if(ativo(p) || naoEleg(p)) return; var x=desfecho(p); if(!x || x.eg || !RES_SAI[x.c] || !dentro(x.d)) return; ids[p.id]=1; out.push({p:p, nome:p.nome||'', c:x.c, d:x.d}); });
+  (S.arquivo||[]).forEach(function(a){ var x=a.desf; if(!x || x.nel || !RES_SAI[x.c] || !dentro(x.d) || ids[a.id]) return; ids[a.id]=1; out.push({nome:a.nome||'', c:x.c, d:x.d}); });
+  (S.memoria||[]).forEach(function(m){ if(m.nel || !dentro(m.d) || ids[m.id]) return; ids[m.id]=1; out.push({nome:m.nome||'', c:3, d:m.d}); });
+  return out; }
+// Resumo › Saídas: tocar numa linha mostra quem foi contado
+document.addEventListener('click', function(e){ var b=e.target && e.target.closest && e.target.closest('[data-saic]'); if(!b) return;
+  var l=String(b.dataset.saim||'').split('|').filter(Boolean).map(function(s){ var a=s.split('~'); return {id:a[0], nome:a[1], d:a[2]}; }); if(!l.length) return;
+  openMenu(b, l.map(function(x){ return '<button class="mo"'+(x.id? ' data-sap="'+esc(x.id)+'"' : ' disabled')+'><span><b>'+esc(x.nome||'(sem nome)')+'</b><small>'+(x.d? brDate(x.d) : '')+(x.id? '' : ' · arquivado')+'</small></span></button>'; }).join(''));
+  $$('#menu [data-sap]').forEach(function(m){ m.onclick=function(){ closeMenu(); abrirPront(m.dataset.sap); }; }); });
+// Ajustes › Histórico (o que estava em Recursos › Saíram do SAD)
+function rAjHist(){ var o=S.opc, h=navbar('Histórico'), ns=S.pacientes.filter(function(p){ return !ativo(p); }).length;
+  h+=grupo('Saíram do SAD', linha({id:'dVer', icon:I_SAIDA, cor:'#ff9500', rot:'Ver quem saiu', val:String(ns)})+linha({id:'dMes', icon:gl('calendario'), cor:'#ff9500', rot:'Guardar os dados', val:o.demMeses+' meses'})+
+    linha({id:'dDep', icon:gl('info'), cor:'#8e8e93', rot:'Depois disso', val:o.demDepois==='apagar'?'apagar tudo':'só nome e CPF'})+linha({id:'dArq', icon:I_ARQUIVO, cor:'#8e8e93', rot:'Arquivados', val:String(S.arquivo.length)})+linha({id:'dMem', icon:I_CRUZ, cor:'#c7c7cc', rot:'In memoriam', val:String(obitosTodos().length)}),
+    'Quem tem alta, vai a óbito ou não é elegível sai da lista de Pacientes e fica em Saíram do SAD por '+o.demMeses+' meses, com tudo. '+(o.demDepois==='apagar'? 'Depois, o sistema apaga o cadastro.' : 'Depois, fica só o nome, o CPF ou CNS, a data e o desfecho; se o CPF for cadastrado de novo, o sistema avisa.'));
+  $('#main').innerHTML=h; ligarNav(); var b;
+  function de(){ var y=scrollY; rAjHist(); scrollTo(0,y); }
+  if((b=$('#dMes'))) b.onclick=function(){ menuEscolha(this, [[3,'3 meses'],[6,'6 meses'],[12,'12 meses']], o.demMeses, function(v){ o.demMeses=+v; save(); de(); }); };
+  if((b=$('#dDep'))) b.onclick=function(){ menuEscolha(this, [['nome','Guardar só nome e CPF'],['apagar','Apagar tudo']], o.demDepois, function(v){ o.demDepois=v; save(); de(); }); };
+  if((b=$('#dArq'))) b.onclick=function(){ irPara('ajArq'); };
+  if((b=$('#dMem'))) b.onclick=function(){ irPara('memoria'); };
+  if((b=$('#dVer'))) b.onclick=function(){ irPara('saidos'); }; }
+var _histAj=rAj; rAj=function(){ _histAj(); var g=$('#goRec'); if(!g || $('#goHist')) return;
+  g.insertAdjacentHTML('afterend', linha({id:'goHist', icon:I_SAIDA, cor:'#ff9500', rot:'Histórico', val:String(S.pacientes.filter(function(p){ return !ativo(p); }).length)}));
+  $('#goHist').onclick=function(){ irPara('ajHist'); }; };
 save(); aplicarTema(); montarNav(); render();
 
 // ---------- app instalado (site) ----------
