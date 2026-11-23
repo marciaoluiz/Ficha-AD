@@ -81,7 +81,7 @@ svg{flex:none}
 
 /* ---------- layout ---------- */
 #left{min-height:100vh;padding-bottom:120px;overflow-x:clip}
-html,body{overflow-x:clip;overscroll-behavior-y:none}
+html,body{overflow-x:clip;overscroll-behavior-y:contain}
 #side,#topbar,#dbar{display:none}
 body.wide #app{display:grid;grid-template-columns:560px 1fr;min-height:100vh}
 body.wide #left{padding:0 0 100px;border-right:1px solid var(--line);position:relative}
@@ -3220,6 +3220,24 @@ html body.semabas.tab-saidos[class] #main,html body.semabas.tab-memoria[class] #
 .rssai{cursor:pointer}
 .rssai:active{opacity:.6}
 .rsr2 i svg{width:15px;height:15px;display:block}
+
+/* ===================== 0.9.11 ===================== */
+/* Resumo e Feitos: o tracinho fica por baixo da faixa escura do topo (não flutua por cima do "Calendário") e some logo que a folha sobe */
+body.pgaba:not(.wide) #main::before{z-index:4}
+body.pgaba.rolou0:not(.wide) #main::before{opacity:0}
+/* Resumo: a barra do período é de vidro, como a barra de baixo; a faixa escura fica só no vão acima dela */
+.rsper.glass{background:var(--gl-bg)!important;border:.5px solid var(--gl-bd)}
+.rsperw,.rsperw.preso{background:linear-gradient(var(--bg) 0 3px,transparent 3px)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;box-shadow:none!important}
+.rsperw.preso .rsper.glass{box-shadow:var(--gl-sh)!important}
+/* Resumo: o fim da página só com o espaço da barra de baixo */
+body.pgaba.tab-resumo:not(.wide) #main{padding-bottom:0!important}
+.rsw{padding-bottom:calc(64px + env(safe-area-inset-bottom))!important}
+/* Novo paciente e Ficha para digitação: folha e página inteira com margens em número (margem "auto" não anima, e a folha pulava) */
+body:not(.wide) dialog.sheet.exp{width:calc(100% - 16px);margin:calc(8dvh - 8px) 8px 8px;transition:height .36s cubic-bezier(.2,.9,.3,1),max-height .36s cubic-bezier(.2,.9,.3,1),width .36s cubic-bezier(.2,.9,.3,1),margin .36s cubic-bezier(.2,.9,.3,1),border-radius .36s cubic-bezier(.2,.9,.3,1)}
+body:not(.wide) dialog.sheet.exp.cheia{width:100%;margin:0}
+body:not(.wide) dialog.sheet.exp.kb{margin-top:auto}
+dialog.sheet.exp .sh{transition:padding-top .36s cubic-bezier(.2,.9,.3,1)}
+dialog.sheet.exp .shvolta{transition:width .36s cubic-bezier(.2,.9,.3,1),margin-right .36s cubic-bezier(.2,.9,.3,1),opacity .24s ease,transform .36s cubic-bezier(.2,.9,.3,1)}
 </style>
 </head>
 <body>
@@ -12344,7 +12362,7 @@ function rResumo(){ var o=resOpc(), M=resModo(); if(!RES_PER || RES_PER.m!==M) R
   var P=RES_PER, C=resCalc(P), hj=hoje(), atual= hj>=P.ini && hj<=P.fim;
   var nav=navbar('Resumo').replace('<div class="nav">', '<div class="nav rsnav">');
   if(mesIniDia()>1){ var k=nav.lastIndexOf('<span></span>'); nav=nav.slice(0,k)+'<span class="rsmw">'+segHtml('rsMod', [['p','16–15'],['m','Mês']], M, 'mini')+'</span>'+nav.slice(k+13); }
-  var h=nav+'<div class="rsw"><div class="rsper"><button class="ib glass" id="rsAnt" aria-label="Período anterior">'+I.left+'</button><div><b>'+esc(P.rot)+'</b><small>'+ddmm(P.ini)+' a '+ddmm(P.fim)+(atual? (M==='p'? ' · ficha atual' : ' · mês atual') : '')+'</small></div><button class="ib glass" id="rsProx" aria-label="Próximo período">'+I.right+'</button></div>';
+  var h=nav+'<div class="rsw"><div class="rsper glass"><button class="ib glass" id="rsAnt" aria-label="Período anterior">'+I.left+'</button><div><b>'+esc(P.rot)+'</b><small>'+ddmm(P.ini)+' a '+ddmm(P.fim)+(atual? (M==='p'? ' · ficha atual' : ' · mês atual') : '')+'</small></div><button class="ib glass" id="rsProx" aria-label="Próximo período">'+I.right+'</button></div>';
   if(!C.v && !C.ent && !C.sai.length) h+='<div class="empty rsempty">'+sz(I.resumo,34)+'<b>Nenhuma visita neste período</b>Use as setas para ver outro '+(M==='p'? 'período' : 'mês')+'.</div>';
   else h+=o.ord.map(function(id){ return resQuadro(id, C, o); }).join('');
   h+='<button type="button" class="rsedit" id="rsEd">'+sz(I.ajusta,15)+'Escolher o que aparece</button>';
@@ -12430,7 +12448,7 @@ var _pgFichaAba=fichaAba; fichaAba=function(){ _pgFichaAba(); var on=!!ABA_PG[ta
   var t=TIT_ABA[pilha[pilha.length-1]] || 'Início';
   fa.innerHTML='<div class="fat"><div class="pagehd"><h1>'+esc(t)+'</h1></div></div>'; fa.setAttribute('aria-label','Voltar para '+t); fa.setAttribute('role','button');
   pgCheia(); };
-function pgCheia(){ var on=document.body.classList.contains('pgaba') && window.scrollY>24; document.body.classList.toggle('pgcheia', on); }
+function pgCheia(){ var on=document.body.classList.contains('pgaba') && window.scrollY>24; document.body.classList.toggle('pgcheia', on); document.body.classList.toggle('rolou0', document.body.classList.contains('pgaba') && window.scrollY>2); }
 window.addEventListener('scroll', function(){ if(document.body.classList.contains('pgaba')) pgCheia(); }, {passive:true});
 var _pgIrPara=irPara; irPara=function(t){ if(ABA_PG[t] && !wideMQ.matches && t!==tab){ closeMenu(); transicao('sobe', function(){ pilhaPoe(); tab=t; render(); window.scrollTo(0,0); }); return; } return _pgIrPara(t); };
 var _pgVoltar=voltarPag; voltarPag=function(semAnim){ if(ABA_PG[tab] && !semAnim && !wideMQ.matches && window.scrollY<=24){ transicao('desce', function(){ tab=pilha.pop()||'cal'; render(); window.scrollTo(0,yVolta(tab)); }); return; } return _pgVoltar(semAnim); };
