@@ -194,14 +194,15 @@ body.wide .cgrid{grid-template-columns:1fr 1fr 1fr}
 body.wide .cgrid .chip:last-child{grid-column:span 2}
 .cgrid .chip{justify-content:center;text-align:center;white-space:nowrap;min-height:42px;padding:8px 12px;border-radius:999px}
 .cgrid .chip .ico{margin-left:-4px}
-.svg{row-gap:10px}
-.svw{display:flex;flex-direction:column;gap:4px;min-width:0}
-.svl{font-size:12.5px;font-weight:700;color:var(--mut);padding-left:14px}
-.svg .svp{justify-content:flex-start;gap:6px;padding:0 14px;cursor:text}
-.svg .svp b{font-weight:700;color:var(--mut);font-size:14px;flex:none}
-.svg .svp input{flex:1;min-width:0;width:100%;min-height:0;height:38px;border:0!important;background:transparent!important;box-shadow:none!important;padding:0;text-align:right;font-weight:700;font-size:15px;color:var(--ink)}
+.svg .svp{justify-content:flex-start;gap:5px;padding:0 12px;cursor:text;min-width:0}
+.svg .svp b{font-weight:700;color:var(--mut);font-size:12.5px;flex:none}
+.svg .svp input{flex:1;min-width:0;width:100%;min-height:0;height:38px;border:0!important;background:transparent!important;box-shadow:none!important;padding:0;text-align:right;font-weight:700;font-size:14px;color:var(--ink)}
 .svg .svp input::placeholder{color:var(--field);font-weight:500}
-.svg .svp small{flex:none;color:var(--mut);font-size:12px;font-weight:500}
+.svg .svp small{flex:none;color:var(--mut);font-size:11px;font-weight:500}
+.svg .svp .ls{display:none}
+.svg .svp input{min-width:24px}
+@media (max-width:340px){.cgrid,.svg{grid-template-columns:1fr}.svg .svp .lg{display:inline!important}.svg .svp .ls{display:none!important}}
+@media (max-width:389px){.svg .svp{padding:0 9px;gap:4px}.svg .svp .lg{display:none}.svg .svp .ls{display:inline}.svg .svp input{font-size:13.5px}}
 .svg .svp.f{border-color:var(--acc);background:var(--acc-soft)}
 .svg .svp.f input{color:var(--acc-ink)}
 .svg .svp:focus-within{border-color:var(--acc);box-shadow:0 0 0 3px var(--acc-soft)}
@@ -1141,9 +1142,9 @@ function abrirAt(id, pre) {
     var sv = f.sv;
     var outros = ['fc', 'fr', 'tax', 'spo2', 'dor', 'peso'], nOut = outros.filter(function (k) { return sv[k]; }).length;
     if (svAberto == null) svAberto = nOut > 0;
-    var svP = function (k, l, un, ph, im) { return '<label class="svw"><span class="svl">' + l + '</span><span class="chip svp' + (sv[k] ? ' f' : '') + '"><input data-sv="' + k + '" inputmode="' + im + '" placeholder="' + esc(ph) + '" value="' + esc(sv[k] || '') + '" autocomplete="off">' + (un ? '<small>' + un + '</small>' : '') + '</span></label>'; };
+    var svP = function (k, l, un, ph, im) { return '<label class="chip svp' + (sv[k] ? ' f' : '') + '"><b>' + l + '</b><input data-sv="' + k + '" inputmode="' + im + '" placeholder="' + esc(ph) + '" value="' + esc(sv[k] || '') + '" autocomplete="off">' + (un ? '<small>' + un + '</small>' : '') + '</label>'; };
     h += '<div class="ig"><div class="igh">Sinais vitais <span class="sp"></span><span style="font-weight:500">opcional</span></div><div class="igb"><div class="ipad"><div class="cgrid svg">' +
-      svP('pa', 'PA', 'mmHg', '—', 'text') + svP('hgt', 'Glicemia', 'mg/dL', '—', 'decimal') +
+      svP('pa', 'PA', 'mmHg', '—', 'text') + svP('hgt', '<span class="lg">Glicemia</span><span class="ls">Glic.</span>', 'mg/dL', '—', 'decimal') +
       (svAberto ? svP('fc', 'FC', 'bpm', '—', 'decimal') + svP('fr', 'FR', 'irpm', '—', 'decimal') + svP('tax', 'Temp.', '°C', '—', 'decimal') + svP('spo2', 'SpO₂', '%', '—', 'decimal') + svP('dor', 'Dor', '0–10', '—', 'decimal') + svP('peso', 'Peso', 'kg', '—', 'decimal') : '') +
       '<button type="button" class="chip svmais" data-k="svtg">' + (svAberto ? ic('minus') + 'Menos' : ic('plus') + 'Mais' + (nOut ? ' · ' + nOut + ' preenchido' + (nOut > 1 ? 's' : '') : '')) + '</button></div></div></div></div>';
     h += '<div class="ig"><div class="igh">Diagnóstico (CID-10)</div><div class="igb"><div class="ipad"><div class="chips">' +
