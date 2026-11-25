@@ -37,6 +37,8 @@ self.addEventListener('fetch', function (e) {
   var r = e.request;
   if (r.method !== 'GET') return;
   var u = new URL(r.url);
+  // a Enfermaria (pasta enfermaria/) tem o próprio modo offline
+  if (u.origin === self.location.origin && u.pathname.indexOf('/enfermaria/') >= 0) return;
 
   if (u.origin === self.location.origin) {
     // abrir o app: sempre a cópia guardada (rápido e sem internet); a versão nova chega pelo sw.js
