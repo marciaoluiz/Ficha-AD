@@ -252,6 +252,7 @@ button.ir:active,label.ir:active{background:rgba(127,127,127,.13)}
 .mrw .t{font-weight:700;font-size:15px;line-height:1.2}
 .mrw .s{font-size:12.5px;color:var(--mut)}
 .mrw .s.bad{color:var(--bad);font-weight:700}
+.mrw select.via{width:auto;min-height:0;padding:2px 22px 2px 8px;margin-top:5px;font-size:13px;font-weight:700;border-radius:8px;border:1px solid transparent;color:var(--acc-ink);background:var(--acc-soft) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='3'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 6px center/10px;-webkit-appearance:none;appearance:none}
 .mrw .del{border:0;background:transparent;color:var(--mut);width:30px;height:30px;border-radius:50%;display:grid;place-items:center;padding:0}
 .mrw .del .ico{width:17px;height:17px}
 .cidc{display:inline-flex;align-items:center;gap:8px;max-width:100%;border-radius:12px;background:var(--acc-soft);color:var(--acc-ink);padding:6px 6px 6px 10px;font-size:14px;font-weight:600;border:0;text-align:left}
@@ -360,9 +361,26 @@ body.wide #toast{bottom:24px;left:240px}
   #print .res{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:6px 0}
   #print .res div{border:1px solid #888;padding:5px 7px}
   #print .res b{display:block;font-size:14pt}
-  #print .ass{margin-top:46px;display:flex;justify-content:space-around;gap:30px;page-break-inside:avoid}
+  #print .ass{margin-top:46px;display:flex;justify-content:space-around;gap:30px;page-break-inside:avoid;text-transform:uppercase}
   #print .ass div{flex:1;max-width:280px;border-top:1px solid #000;text-align:center;padding-top:4px;font-size:10pt}
   #print .nota{font-size:8.5pt;color:#444;margin-top:12px}
+  #print .of{text-align:center;font-weight:700;font-size:11pt;line-height:1.35;margin-bottom:12px}
+  #print .of .tt{margin-top:10px}
+  #print .pj{text-align:justify;text-indent:2em;margin:6px 0}
+  #print .sec{font-weight:700;margin:14px 0 6px}
+  #print .ln{margin:2px 0 2px 1em}
+  #print table.ab{margin:0 0 6px;font-size:10pt;text-transform:uppercase}
+  #print table.ab td{border:1px solid #000;padding:2px 6px}
+  #print table.ab .n1{width:7%;text-align:center}#print table.ab .n2{width:15%;text-align:center}#print table.ab .n3{width:11%;text-align:center}
+  #print table.ab .lb{font-weight:700;text-align:center}
+  #print table.rl th,#print table.rl td{border:1px solid #000}
+  #print table.rl th{background:#fff}
+  #print table.rl{font-size:9pt}#print table.rl td{padding:1.5px 5px}
+  #print .ass.one{margin-top:34px}
+  #print .g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px;align-items:start}
+  #print .dt{text-align:center;margin-top:22px}
+  #print .ass div b{font-weight:700}
+  #print .ass.one{justify-content:center}
 }
 </style>
 </head>
@@ -452,15 +470,18 @@ var ALIAS = { 'ten brig ar': 'Ten Brig Ar', 'ten brig': 'Ten Brig Ar', 'tb': 'Te
   'ten cel': 'Ten Cel', 'tc': 'Ten Cel', 'tcel': 'Ten Cel', 'maj': 'Maj', 'major': 'Maj', 'cap': 'Cap', 'capitao': 'Cap', '1 ten': '1º Ten', '1ten': '1º Ten', '1t': '1º Ten',
   '2 ten': '2º Ten', '2ten': '2º Ten', '2t': '2º Ten', 'ten': '2º Ten', 'asp': 'Asp', 'so': 'SO', 'subof': 'SO', '1s': '1S', '1 sgt': '1S', '1sgt': '1S', '2s': '2S', '2 sgt': '2S', '2sgt': '2S',
   '3s': '3S', '3 sgt': '3S', '3sgt': '3S', 'sgt': '3S', 'cb': 'CB', 'cabo': 'CB', 's1': 'S1', 's2': 'S2', 'sd': 'S2', 'soldado': 'S2', 'tm': 'TM', 't1': 'T1', 't2': 'T2',
-  'civil': 'Civil', 'civ': 'Civil' };
+  'civil': 'Civil', 'civ': 'Civil', 'sptf': 'Civil:SPTF', 'terceirizado': 'Civil:Terceirizado' };
 var CONDUTAS = [
   ['orient', 'Orientado(a)', 'Orientado'], ['medic', 'Medicado(a) na enfermaria', 'Medicado'], ['curat', 'Curativo / procedimento', 'Curativo / procedimento'], ['obs', 'Em observação na enfermaria', 'Em observação'],
   ['lib', 'Liberado(a) ao serviço', 'Liberado ao serviço'], ['afast', 'Afastado(a) / repouso', 'Afastado / repouso'], ['retorno', 'Retorno agendado', 'Retorno agendado'],
-  ['hosp', 'Encaminhado(a) ao hospital', 'Hospital'], ['espec', 'Encaminhado(a) a especialista / UBS', 'Especialista / UBS'], ['outro', 'Outra conduta', 'Outra']
+  ['hosp', 'Encaminhado(a) ao hospital', 'Hospital'], ['espec', 'Encaminhado(a) a especialista / UBS', 'Especialista / UBS'], ['evam', 'Evacuação aeromédica (EVAM)', 'EVAM'], ['outro', 'Outra conduta', 'Outra']
 ];
 var COND_LBL = {}; CONDUTAS.forEach(function (c) { COND_LBL[c[0]] = c[1]; });
 var TRANSP = ['Viatura da obra', 'Ambulância / SAMU', 'Meios próprios', 'Outro'];
-var UNIDADES = ['comprimido', 'cápsula', 'drágea', 'ampola', 'frasco', 'frasco-ampola', 'bisnaga', 'sachê', 'envelope', 'unidade', 'pacote', 'caixa', 'rolo', 'par', 'kit', 'ml', 'outro'];
+var UNIDADES = ['comprimido', 'cápsula', 'drágea', 'ampola', 'frasco', 'frasco-ampola', 'tubo', 'bisnaga', 'sachê', 'envelope', 'unidade', 'pacote', 'caixa', 'rolo', 'par', 'kit', 'litro', 'ml', 'outro'];
+var UN_AB = { 'comprimido': 'COMP', 'cápsula': 'CAPS', 'drágea': 'DRG', 'ampola': 'AMP', 'frasco': 'FRA', 'frasco-ampola': 'FA', 'tubo': 'TB', 'bisnaga': 'TB', 'sachê': 'SACHÊ', 'envelope': 'ENV', 'unidade': 'UND', 'pacote': 'PCT', 'caixa': 'CX', 'rolo': 'ROL', 'par': 'PAR', 'kit': 'KIT', 'litro': 'LT', 'ml': 'ML' };
+var VIAS = ['VO', 'EV', 'IM', 'SC', 'SL', 'Tópico', 'Oftálmico', 'Inalatório', 'Retal', 'Outra'];
+function viaPadrao(it) { if (!it || it.tipo === 'mat') return ''; if (it.via) return it.via; var u = it.un, n = norm(it.nome + ' ' + (it.apres || '')); if (/comprimido|capsula|dragea|envelope|sache/.test(norm(u))) return 'VO'; if (u === 'tubo' || u === 'bisnaga' || /pomada|creme|gel/.test(n)) return 'Tópico'; if (/xarope|gotas|gts|suspensao|floratil|repoflor/.test(n)) return 'VO'; if (/soro|agua destilada|sf /.test(n + ' ')) return ''; if (u === 'ampola' || u === 'frasco-ampola' || u === 'frasco') return 'EV'; return ''; }
 var MOTIVOS = ['Vencido', 'Avaria / perda', 'Uso sem registro de paciente', 'Ajuste de contagem', 'Transferência / devolução', 'Outro'];
 var MESES = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
 var DSEM = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
@@ -469,7 +490,7 @@ var CAPS = [["I","A00","B99","Algumas doenças infecciosas e parasitárias"],["I
 var SIN = [
   ['gripe, resfriado, coriza, nariz entupido', ['J00', 'J11.1']], ['dor de cabeça, cefaleia', ['R51', 'G44.2', 'G43.9']], ['enxaqueca', ['G43.9']],
   ['febre', ['R50.9']], ['diarreia, desarranjo, caganeira', ['A09', 'K52.9']], ['vômito, enjoo, náusea', ['R11']], ['intoxicação alimentar', ['A05.9']],
-  ['dor de barriga, dor abdominal, cólica', ['R10.4']], ['azia, gastrite, queimação no estômago, refluxo', ['K29.7', 'K30', 'K21.9']], ['prisão de ventre, constipação', ['K59.0']],
+  ['dor de barriga, dor abdominal, cólica', ['R10.4']], ['gastrite, queimação no estômago, refluxo', ['K29.7', 'K30', 'K21.9']], ['prisão de ventre, constipação', ['K59.0']],
   ['dor nas costas, lombalgia, dor lombar, dor na coluna', ['M54.5']], ['dor no pescoço, torcicolo, cervicalgia', ['M54.2']], ['dor muscular, mialgia', ['M79.1']],
   ['dor no ombro, dor no joelho, dor articular', ['M25.5']], ['tendinite, tenossinovite', ['M65.9']], ['bursite', ['M71.9']], ['cãibra', ['R25.2']],
   ['torção no tornozelo, entorse de tornozelo, pé virado', ['S93.4']], ['torção no joelho, entorse de joelho', ['S83.6']], ['luxação, entorse, distensão', ['T14.3']],
@@ -488,23 +509,90 @@ var SIN = [
   ['infecção urinária', ['N39.0']], ['pedra no rim, cálculo renal, cólica renal', ['N23']], ['hemorroida', ['I84.9']], ['sangramento no nariz, epistaxe', ['R04.0']],
   ['hipoglicemia', ['E16.2']], ['diabetes', ['E14.9']], ['dor', ['R52.9']], ['inchaço, edema', ['R60.0']],
   ['consulta, exame geral', ['Z00.0']], ['atestado', ['Z02.7']], ['curativo, retirada de pontos', ['Z48.0']], ['aferir pressão, verificar pressão', ['Z01.3']],
-  ['acidente de trabalho', ['Y96']], ['orientação, aconselhamento', ['Z71.9']]
+  ['acidente de trabalho', ['Y96']], ['orientação, aconselhamento', ['Z71.9']],
+  ['gonalgia, dor no joelho', ['M25.5']], ['assadura, assadura na virilha, intertrigo', ['L30.4']], ['disenteria', ['A09']], ['febril, estado febril', ['R50.9']],
+  ['imunidade baixa, baixa imunidade, fraqueza, cansaço', ['R53', 'D84.9']], ['alergia nasal, inflamação nasal alérgica', ['J30.4']], ['dermatomicose, micose de pele', ['B36.9', 'B35.9']],
+  ['entorse no dedo, dedo torcido', ['S63.6']], ['trauma no dedo, pancada no dedo, contusão no dedo', ['S60.0']], ['dor nos olhos, dor ocular, incômodo nos olhos', ['H57.1']],
+  ['inflamação muscular, inflamação no músculo, dor na musculatura', ['M60.9', 'M79.1']], ['inflamação no ombro, dor no ombro', ['M75.9', 'M25.5']], ['inflamação no joelho', ['M25.5']],
+  ['desconforto abdominal, cólica abdominal', ['R10.4']], ['desconforto estomacal, má digestão, indigestão', ['K30']], ['azia, pirose, queimação', ['R12', 'K30']],
+  ['tosse seca, tosse produtiva, tosse com catarro', ['R05']], ['furúnculo na axila, furúnculo no braço, furúnculo na perna', ['L02.4']], ['verificação de pressão, verificação de rotina, glicemia de rotina', ['Z01.3', 'Z00.0']],
+  ['dor no braço, dor na perna', ['M79.6']], ['alergia cutânea, alergia na pele, alergia pelo corpo, manchas alérgicas', ['L50.9', 'T78.4', 'L23.9']],
+  ['dermatite alérgica, inflamação alérgica de pele', ['L23.9', 'L30.9']], ['dor ao urinar, ardência ao urinar', ['N39.0', 'R30.0']], ['gases, flatulência, barriga inchada', ['R14']], ['distensão muscular, estiramento', ['M62.6']]
 ];
 
 /* ---------- dados ---------- */
 var KEY = 'enfermaria-dados-v1';
 var D = carrega();
-function vazio() { return { v: 1, itens: [], pac: [], at: [], movs: [], cfg: { unidade: '', obra: '', resp: '', tema: 'azul', modo: 'auto', ultBackup: '' } }; }
+var ATIV_PADRAO = 'ENFERMAGEM:\n- Relação atualizada de medicamentos e material penso;\n- Pedido mensal de medicamentos/Relatório de Enfermagem;\n- Limpeza e higienização das caixas d’água para consumo humano;\n- Limpeza dos elementos filtrantes dos filtros do bebedouro e máquina de gelo;';
+function vazio() {
+  return { v: 1, itens: [], pac: [], at: [], movs: [], ped: {}, mesTxt: {}, cfg: {
+    obra: '', tema: 'azul', modo: 'auto', ultBackup: '', semeado: false,
+    cab: 'COMANDO DA AERONÁUTICA\nCOMISSÃO DE AEROPORTOS DA REGIÃO AMAZÔNICA - COMARA\nDESTACAMENTO DE ENGENHARIA DA COMARA EM COARI - AM\nPOSTO DE ENFERMAGEM',
+    cabMed: 'MINISTÉRIO DA DEFESA\nCOMANDO DA AERONÁUTICA\nCOMISSÃO DE AEROPORTOS DA REGIÃO AMAZÔNICA',
+    sigla: 'DECO-KO', cidade: 'Coari-AM',
+    intro: 'O Serviço de Enfermagem e Médico no Destacamento de Engenharia de Coari (DECO-KO) funciona 24h atendendo militares e funcionários civis da COMARA e outros casos que se fizerem necessários.',
+    obsAgua: 'O efetivo deste canteiro serve-se da água proveniente de poço artesiano existente no canteiro, com água de boa qualidade, com uso de hipoclorito 2,5% passando ainda assim pelo filtro INDUSTRIAL para o preparo de alimentação e respectivamente pelo filtro SUPER 1500 HOKEN E MULTI 1500 HOKEN para consumo direto humano.',
+    encNome: '', encFunc: 'Enc. da Enfermaria do DECO-KO', chefeNome: '', chefeFunc: 'Chefe do DECO-KO', resumo: true
+  } };
+}
 function carrega() {
   try { var j = JSON.parse(localStorage.getItem(KEY)); if (j && j.v) return migra(j); } catch (e) { }
   return vazio();
 }
-function migra(j) { var b = vazio(); ['itens', 'pac', 'at', 'movs'].forEach(function (k) { if (!Array.isArray(j[k])) j[k] = []; }); j.cfg = Object.assign(b.cfg, j.cfg || {}); return j; }
+function migra(j) { var b = vazio(); ['itens', 'pac', 'at', 'movs'].forEach(function (k) { if (!Array.isArray(j[k])) j[k] = []; }); ['ped', 'mesTxt'].forEach(function (k) { if (!j[k] || typeof j[k] !== 'object') j[k] = {}; }); j.cfg = Object.assign(b.cfg, j.cfg || {}); if (j.cfg.resp && !j.cfg.encNome) j.cfg.encNome = j.cfg.resp; return j; }
+function txtMes(mes) {
+  if (D.mesTxt[mes]) return D.mesTxt[mes];
+  var ks = Object.keys(D.mesTxt).filter(function (k) { return k < mes; }).sort(), ult = ks.length ? D.mesTxt[ks[ks.length - 1]] : null;
+  return { ativ: ult ? ult.ativ : ATIV_PADRAO, prop: ult ? ult.prop : '', ocor: '' };
+}
+function pedido(mes, id) { return (D.ped[mes] || {})[id] || 0; }
 function salva() {
   try { localStorage.setItem(KEY, JSON.stringify(D)); }
   catch (e) { toast('Não foi possível salvar: memória do navegador cheia.'); }
 }
 if (navigator.storage && navigator.storage.persist) { try { navigator.storage.persist(); } catch (e) { } }
+
+/* ---------- relação inicial (DECO-KO, novembro de 2026) ---------- */
+/* [tipo, nome, apresentação, unidade, existente, validade MM/AA, pedido, via] */
+var SEMENTE = [
+  ['med', 'AAS', '100 mg', 'comprimido', 29, '01/27', 0], ['med', 'Água destilada', '', 'ampola', 12, '05/27', 0, ''], ['med', 'Ambroxol xarope', '', 'frasco', 2, '04/27', 5, 'VO'],
+  ['med', 'Azitromicina', '', 'comprimido', 11, '11/26', 0], ['med', 'Benzetacil', '1.200.000 UI', 'frasco', 5, '09/27', 0, 'IM'], ['med', 'Bromoprida', '', 'ampola', 18, '08/27', 0, 'EV'],
+  ['med', 'Buscopan composto', '', 'comprimido', 23, '04/27', 0], ['med', 'Captopril', '25 mg', 'comprimido', 30, '02/27', 0], ['med', 'Cetoconazol', '', 'tubo', 0, '', 5, 'Tópico'],
+  ['med', 'Cetoprofeno', '100 mg', 'frasco', 26, '04/28', 0, 'EV'], ['med', 'Ciprofloxacino', '500 mg', 'comprimido', 30, '05/27', 0], ['med', 'Coltrax', '', 'ampola', 12, '08/27', 0, 'IM'],
+  ['med', 'Complexo B', '', 'ampola', 20, '08/28', 10, 'EV'], ['med', 'Dexametasona (acetato) pomada', '', 'tubo', 1, '04/27', 5, 'Tópico'], ['med', 'Dexametasona', 'injetável', 'ampola', 32, '09/27', 0, 'EV'],
+  ['med', 'Diclofenaco sódico', '75 mg', 'ampola', 14, '12/26', 0, 'IM'], ['med', 'Dipirona', '500 mg', 'comprimido', 30, '07/27', 15], ['med', 'Dipirona', 'injetável', 'ampola', 20, '04/27', 0, 'EV'],
+  ['med', 'Floratil (Repoflor)', '200 mg', 'frasco', 19, '05/28', 15, 'VO'], ['med', 'Glicose 50%', '', 'ampola', 22, '04/28', 0, 'EV'], ['med', 'Hidrocortisona', '500 mg', 'frasco', 10, '05/27', 0, 'EV'],
+  ['med', 'Kollagenase (colagenase)', '', 'tubo', 4, '12/26', 0, 'Tópico'], ['med', 'Lactulona (lactulose)', '', 'frasco', 0, '', 0, 'VO'], ['med', 'Losartana', '50 mg', 'comprimido', 30, '11/26', 0],
+  ['med', 'Neomicina pomada', '', 'tubo', 3, '09/27', 5, 'Tópico'], ['med', 'Nimesulida', '100 mg', 'comprimido', 20, '02/27', 30], ['med', 'Omeprazol', '40 mg', 'ampola', 2, '06/27', 0, 'EV'],
+  ['med', 'Omeprazol', '20 mg', 'comprimido', 26, '05/27', 0], ['med', 'Ondansetrona', '', 'ampola', 13, '07/27', 0, 'EV'], ['med', 'Paracetamol', '500 mg', 'comprimido', 28, '12/26', 30],
+  ['med', 'Prometazina', '', 'ampola', 11, '04/27', 0, 'IM'], ['med', 'Simeticona gotas', '', 'frasco', 4, '02/27', 0, 'VO'], ['med', 'Soro fisiológico (SF) 0,9%', '100 ml', 'frasco', 10, '05/28', 0, ''],
+  ['med', 'Soro fisiológico (SF) 0,9%', '500 ml', 'frasco', 6, '12/27', 0, 'EV'], ['med', 'Soro glicosado 5%', '500 ml', 'frasco', 4, '12/26', 0, 'EV'], ['med', 'Vitamina C', '', 'ampola', 25, '03/27', 0, 'EV'],
+  ['med', 'Buscopan simples', '', 'ampola', 17, '02/28', 0, 'EV'], ['med', 'Betametasona', '', 'ampola', 0, '', 5, 'IM'], ['med', 'Amoxicilina', '500 mg', 'comprimido', 0, '', 0],
+  ['med', 'Acetilcisteína', '600 mg', 'envelope', 19, '10/27', 20, 'VO'], ['med', 'Hidróxido de alumínio', '', 'frasco', 0, '', 5, 'VO'], ['med', 'Tenoxicam', '', 'frasco', 12, '02/28', 0, 'IM'],
+  ['med', 'Captopril', '', 'comprimido', 35, '02/27', 0], ['med', 'Cefalexina', '500 mg', 'comprimido', 10, '11/26', 30], ['med', 'Prednisona', '20 mg', 'comprimido', 13, '09/27', 15],
+  ['mat', 'Agulha', '30x7', 'unidade', 0, '', 0], ['mat', 'Agulha', '30x8', 'unidade', 20, '05/29', 0], ['mat', 'Agulha', '40x12', 'unidade', 30, '06/30', 0],
+  ['mat', 'Álcool 70%', '', 'litro', 1, '06/28', 0], ['mat', 'Algodão', '', 'pacote', 1, '', 0], ['mat', 'Clorexidina degermante', '100 ml', 'frasco', 4, '08/28', 0],
+  ['mat', 'Equipo macrogotas', '', 'unidade', 28, '07/30', 0], ['mat', 'Esparadrapo', 'grande', 'unidade', 1, '', 0], ['mat', 'Gaze estéril', '', 'pacote', 45, '04/30', 0],
+  ['mat', 'Gaze não estéril', '', 'pacote', 1, '', 0], ['mat', 'Jelco', 'nº 20', 'unidade', 12, '01/29', 0], ['mat', 'Jelco', 'nº 22', 'unidade', 7, '11/29', 0],
+  ['mat', 'Jelco', 'nº 24', 'unidade', 11, '09/29', 0], ['mat', 'Luva de procedimento', 'M', 'caixa', 3, '07/30', 0], ['mat', 'Luva de procedimento', 'P', 'caixa', 2, '', 0],
+  ['mat', 'Luva estéril', '7,5', 'unidade', 10, '06/30', 0], ['mat', 'Máscara descartável', '', 'unidade', 40, '', 0], ['mat', 'Micropore', '', 'rolo', 2, '07/27', 0],
+  ['mat', 'Scalp', 'nº 23', 'unidade', 34, '08/29', 0], ['mat', 'Scalp', 'nº 21', 'unidade', 48, '07/29', 0], ['mat', 'Seringa', '20 ml', 'unidade', 20, '03/31', 0],
+  ['mat', 'Seringa', '10 ml', 'unidade', 20, '03/31', 0], ['mat', 'Seringa', '5 ml', 'unidade', 24, '03/31', 0], ['mat', 'Seringa', '3 ml', 'unidade', 20, '08/30', 0],
+  ['mat', 'Torneirinha', '', 'unidade', 9, '04/29', 0], ['mat', 'Luva estéril', '7,0', 'unidade', 0, '', 0], ['mat', 'Compressa estéril', '', 'unidade', 0, '', 0]
+];
+function semeia() {
+  if (D.cfg.semeado || D.itens.length) return;
+  var mes = '2026-11', dt = hoje() < '2026-11-30' && hoje() >= '2026-11-01' ? hoje() : '2026-11-30';
+  D.ped[mes] = D.ped[mes] || {};
+  SEMENTE.forEach(function (s, i) {
+    var it = { id: uid() + i, tipo: s[0], nome: s[1], apres: s[2], un: s[3], via: s[7] || '', min: 0, local: '', obs: '', lotes: [], criado: new Date().toISOString() };
+    var v = lerVal(s[5]);
+    if (s[4] > 0) { var l = { id: uid() + 'l' + i, lote: '', val: v ? v.val : '', vm: true, qtd: s[4], ent: dt }; it.lotes.push(l); D.movs.push({ id: uid() + 'm' + i, data: dt, item: it.id, tipo: 'ini', qtd: s[4], lote: l.id, ln: '', val: l.val, vm: true, obs: 'Relação de novembro de 2026' }); }
+    if (s[6]) D.ped[mes][it.id] = s[6];
+    D.itens.push(it);
+  });
+  D.cfg.semeado = true; salva();
+}
 
 /* ---------- datas ---------- */
 function iso(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
@@ -543,7 +631,7 @@ function info(it) {
   return { tot: tot, venc: venc, util: tot - venc, prox: prox, st: prox ? stVal(prox) : (tot ? 'nd' : ''), est: est, lotes: ls.sort(fefo) };
 }
 function itNome(it) { return it.nome + (it.apres ? ' ' + it.apres : ''); }
-function unLbl(it, q) { var u = it.un || 'unidade'; if (q === 1) return u; var pl = { 'comprimido': 'comprimidos', 'cápsula': 'cápsulas', 'drágea': 'drágeas', 'ampola': 'ampolas', 'frasco': 'frascos', 'frasco-ampola': 'frascos-ampola', 'bisnaga': 'bisnagas', 'sachê': 'sachês', 'envelope': 'envelopes', 'unidade': 'unidades', 'pacote': 'pacotes', 'caixa': 'caixas', 'rolo': 'rolos', 'par': 'pares', 'kit': 'kits', 'ml': 'ml' }; return pl[u] || u; }
+function unLbl(it, q) { var u = it.un || 'unidade'; if (q === 1) return u; var pl = { 'comprimido': 'comprimidos', 'cápsula': 'cápsulas', 'drágea': 'drágeas', 'ampola': 'ampolas', 'frasco': 'frascos', 'frasco-ampola': 'frascos-ampola', 'bisnaga': 'bisnagas', 'sachê': 'sachês', 'envelope': 'envelopes', 'unidade': 'unidades', 'pacote': 'pacotes', 'caixa': 'caixas', 'rolo': 'rolos', 'par': 'pares', 'kit': 'kits', 'ml': 'ml', 'tubo': 'tubos', 'litro': 'litros' }; return pl[u] || u; }
 function limpaLotes(it) { it.lotes = it.lotes.filter(function (l) { return l.qtd > 0.0001; }); }
 function aplicaUso(at) {
   (at.meds || []).forEach(function (m) {
@@ -572,14 +660,15 @@ function desfazUso(atId) {
 /* ---------- pacientes ---------- */
 function pac(id) { for (var i = 0; i < D.pac.length; i++) if (D.pac[i].id === id) return D.pac[i]; return null; }
 function grupo(p) { if (!p) return 'out'; if (p.tipo === 'civil') return 'civ'; var i = POSTO_IDX[p.posto]; return i == null ? 'out' : POSTOS[i][2]; }
-function postoAb(p) { if (!p) return ''; if (p.tipo === 'civil') return 'Civil'; if (p.posto === 'Outro') return p.postoOutro || 'Militar'; return p.posto || 'Militar'; }
-function postoLongo(p) { if (!p) return ''; if (p.tipo === 'civil') return 'Civil' + (p.empresa ? ' · ' + p.empresa : '') + (p.funcao ? ' · ' + p.funcao : ''); var i = POSTO_IDX[p.posto]; var s = i != null ? POSTOS[i][0] + ' · ' + POSTOS[i][1] : (p.postoOutro || 'Militar'); return s + (p.om ? ' · ' + p.om : ''); }
-function pNome(p) { if (!p) return 'Paciente removido'; return (p.tipo === 'civil' ? '' : postoAb(p) + ' ') + p.nome; }
+function postoAb(p) { if (!p) return ''; if (p.tipo === 'civil') return p.cat || 'Civil'; if (p.posto === 'Outro') return p.postoOutro || 'Militar'; return p.posto || 'Militar'; }
+function postoLongo(p) { if (!p) return ''; if (p.tipo === 'civil') return (p.cat || 'Civil') + (p.empresa ? ' · ' + p.empresa : '') + (p.funcao ? ' · ' + p.funcao : ''); var i = POSTO_IDX[p.posto]; var s = i != null ? POSTOS[i][0] + ' · ' + POSTOS[i][1] : (p.postoOutro || 'Militar'); return s + (p.om ? ' · ' + p.om : ''); }
+function pNome(p) { if (!p) return 'Paciente removido'; return (p.tipo === 'civil' ? (p.cat ? p.cat + ' ' : '') : postoAb(p) + ' ') + p.nome; }
 function corG(g) { return 'var(--c-' + g + ')'; }
 function iniciais(n) { var w = String(n || '?').trim().split(/\s+/).filter(function (x) { return x.length > 2 || /^[A-Z]/.test(x); }); if (!w.length) return '?'; return (w[0][0] + (w.length > 1 ? w[w.length - 1][0] : '')).toUpperCase(); }
 function avatar(p, sm) { return '<div class="av' + (sm ? ' sm' : '') + '" style="--c:' + corG(grupo(p)) + '">' + esc(iniciais(p ? p.nome : '?')) + '</div>'; }
-function atPac(a) { var p = pac(a.pac); if (p) return p; return a.ps ? { nome: a.ps.nome, tipo: a.ps.tipo, posto: a.ps.posto, postoOutro: a.ps.postoOutro, empresa: a.ps.empresa } : null; }
-function snapPac(p) { return p ? { nome: p.nome, tipo: p.tipo, posto: p.posto || '', postoOutro: p.postoOutro || '', empresa: p.empresa || '' } : null; }
+function atPac(a) { var p = pac(a.pac); if (p) return p; return a.ps ? { nome: a.ps.nome, tipo: a.ps.tipo, posto: a.ps.posto, postoOutro: a.ps.postoOutro, empresa: a.ps.empresa, cat: a.ps.cat } : null; }
+function snapPac(p) { return p ? { nome: p.nome, tipo: p.tipo, posto: p.posto || '', postoOutro: p.postoOutro || '', empresa: p.empresa || '', cat: p.cat || '' } : null; }
+function tituloNome(s) { s = String(s || '').trim().replace(/\s+/g, ' '); if (s !== s.toUpperCase()) return s; return s.toLowerCase().split(' ').map(function (w, i) { return i > 0 && /^(da|de|do|das|dos|e)$/.test(w) ? w : w.charAt(0).toUpperCase() + w.slice(1); }).join(' '); }
 function alergias(p) { return p && p.alergias && !/^\s*(nega|nao|não|nenhuma|-)\s*\.?$/i.test(p.alergias) ? p.alergias : ''; }
 
 /* ---------- CID-10 ---------- */
@@ -602,7 +691,9 @@ function carregaCid() {
 }
 function cidDesc(c) { return CIDMAP[c] || ''; }
 function capDe(code) { var k = String(code || '').slice(0, 3).toUpperCase(); for (var i = 0; i < CAPS.length; i++) if (k >= CAPS[i][1] && k <= CAPS[i][2]) return CAPS[i]; return null; }
-var STOP = { de: 1, da: 1, do: 1, das: 1, dos: 1, e: 1, a: 1, o: 1, com: 1, sem: 1, por: 1, em: 1, na: 1, no: 1, nas: 1, nos: 1, ou: 1, um: 1, uma: 1, para: 1 };
+var STOP = { de: 1, da: 1, do: 1, das: 1, dos: 1, e: 1, a: 1, o: 1, as: 1, os: 1, com: 1, sem: 1, por: 1, em: 1, na: 1, no: 1, nas: 1, nos: 1, ou: 1, um: 1, uma: 1, para: 1, pelo: 1, pela: 1, pelos: 1, pelas: 1, ao: 1, aos: 1, muito: 1, forte: 1, leve: 1 };
+/* plural simples: náuseas → nausea, lesões → lesao */
+function raiz(w) { if (w.length > 4 && /oes$/.test(w)) return w.slice(0, -3) + 'ao'; if (w.length > 4 && /[aeiou]s$/.test(w)) return w.slice(0, -1); return w; }
 function buscaCid(q) {
   if (!CID) return [];
   var n = norm(q).trim(); if (!n) return [];
@@ -613,7 +704,7 @@ function buscaCid(q) {
     for (var i = 0; i < CID.c.length; i++) { var cc = CID.c[i].replace('.', ''); if (cc.indexOf(cq) === 0) add(i, 2000 - cc.length * 10 - i / 1e5); }
     if (cq.length >= 2 && res.length) return res.sort(function (a, b) { return b.sc - a.sc; }).slice(0, 120);
   }
-  var ws = n.replace(/[^a-z0-9]+/g, ' ').split(' ').filter(function (w) { return w && !STOP[w]; });
+  var ws = n.replace(/[^a-z0-9]+/g, ' ').split(' ').filter(function (w) { return w && !STOP[w]; }).map(raiz);
   if (!ws.length) return res;
   var idx = {}; CID.c.forEach(function (c, i) { idx[c] = i; });
   SIN.forEach(function (s) {
@@ -628,10 +719,23 @@ function buscaCid(q) {
     if (ok2) { sc -= h.length / 6; if (CID.c[j].indexOf('.') < 0) sc += 8; add(j, sc); }
   }
   if (!res.length) { for (var m = 0; m < CID.h.length; m++) { if (ws.every(function (w) { return w.length > 2 && CID.h[m].indexOf(w) >= 0; })) add(m, 500 - CID.h[m].length / 6); } }
+  /* poucas respostas: aceita quem tem quase todas as palavras (ex.: “dedo médio com entorse”) */
+  if (res.length < 5 && ws.length > 1) {
+    var need = Math.max(1, ws.length - 1);
+    SIN.forEach(function (s) {
+      var hit = ws.filter(function (w) { return s[2].indexOf(' ' + w) >= 0; }).length;
+      if (hit >= need) { var via = s[3].filter(function (f) { return ws.some(function (w) { return f[1].indexOf(' ' + w) >= 0; }); })[0] || s[3][0]; s[1].forEach(function (c, k) { if (idx[c] != null) add(idx[c], 800 + hit * 40 - k, via[0]); }); }
+    });
+    for (var q = 0; q < CID.h.length; q++) {
+      var hh = CID.h[q], hit2 = 0;
+      for (var z = 0; z < ws.length; z++) if (hh.indexOf(' ' + ws[z]) >= 0) hit2++;
+      if (hit2 >= need) add(q, 300 + hit2 * 40 - hh.length / 6);
+    }
+  }
   return res.sort(function (a, b) { return b.sc - a.sc; }).slice(0, 120);
 }
 function realca(txt, q) {
-  var ws = norm(q).replace(/[^a-z0-9]+/g, ' ').split(' ').filter(function (w) { return w.length > 1 && !STOP[w]; });
+  var ws = norm(q).replace(/[^a-z0-9]+/g, ' ').split(' ').filter(function (w) { return w.length > 1 && !STOP[w]; }).map(raiz);
   if (!ws.length) return esc(txt);
   var nt = norm(txt), marks = [];
   ws.forEach(function (w) { var re = new RegExp('(^|[^a-z0-9])(' + w.replace(/[^a-z0-9]/g, '') + ')', 'g'), m; while ((m = re.exec(nt))) { marks.push([m.index + m[1].length, m.index + m[1].length + w.length]); } });
@@ -720,7 +824,7 @@ function alertasEst() {
 }
 function navs() {
   var al = alertasEst(), nAl = al.venc.length + al.falta.length;
-  var msb = '<div class="mbrand">' + LOGO + '<div><b>Enfermaria</b><small>' + esc(D.cfg.obra || D.cfg.unidade || 'Obra') + '</small></div></div><div class="msh">Enfermaria</div>';
+  var msb = '<div class="mbrand">' + LOGO + '<div><b>Enfermaria</b><small>' + esc(D.cfg.obra || D.cfg.sigla || 'Obra') + '</small></div></div><div class="msh">Enfermaria</div>';
   TABS.forEach(function (t) {
     var cnt = t[0] === 'pac' ? '<small>' + D.pac.length + '</small>' : t[0] === 'est' && nAl ? '<small class="al">' + nAl + '</small>' : t[0] === 'est' ? '<small>' + D.itens.length + '</small>' : '';
     msb += '<button class="mit' + (ST.tab === t[0] ? ' on' : '') + '" data-tab="' + t[0] + '">' + ic(t[2]) + '<span>' + t[1] + '</span>' + cnt + '</button>';
@@ -786,6 +890,7 @@ function atRow(a, semNome) {
   var c = a.cond || [];
   if (c.indexOf('hosp') >= 0) tags += '<span class="tg s-venc">' + ic('hosp') + 'Hospital</span>';
   if (c.indexOf('espec') >= 0) tags += '<span class="tg s-v90">Especialista/UBS</span>';
+  if (c.indexOf('evam') >= 0) tags += '<span class="tg s-venc">EVAM</span>';
   if (c.indexOf('afast') >= 0) tags += '<span class="tg s-v30">Afastado' + (a.afast ? ' ' + a.afast + 'd' : '') + '</span>';
   if (c.indexOf('obs') >= 0) tags += '<span class="tg">Observação</span>';
   if (c.indexOf('lib') >= 0) tags += '<span class="tg s-ok">Liberado</span>';
@@ -867,6 +972,7 @@ PAGINAS.rel = function () {
   h += mesRow();
   h += '<div class="gseg glass"><span class="lens"></span><button data-a="relT" data-t="at" class="' + (ST.relT === 'at' ? 'on' : '') + '">Atendimentos</button><button data-a="relT" data-t="med" class="' + (ST.relT === 'med' ? 'on' : '') + '">Medicamentos</button></div>';
   h += '<div class="relbtns"><button class="btn" data-a="imprimir">' + ic('printer') + 'Imprimir / PDF</button><button class="btn" data-a="csv">' + ic('table') + 'Planilha (CSV)</button></div>';
+  h += '<div class="relbtns">' + (ST.relT === 'at' ? '<button class="btn sm" data-a="relTextos">' + ic('doc') + 'Textos do relatório</button>' : '<button class="btn sm" data-a="pedidoMes">' + ic('edit') + 'Pedido do mês</button><button class="btn sm" data-a="relTextos">' + ic('doc') + 'Cabeçalho</button>') + '</div>';
   h += ST.relT === 'at' ? relAtTela() : relMedTela();
   return h;
 };
@@ -874,7 +980,7 @@ function dadosRelAt(mes) {
   var L = D.at.filter(function (a) { return mesDe(a.data) === mes; }).sort(function (a, b) { return (a.data + a.hora).localeCompare(b.data + b.hora); });
   var r = { L: L, pacs: {}, mil: 0, civ: 0, porPosto: {}, cids: {}, caps: {}, cond: {}, hosp: [], afastDias: 0, afastN: 0, semCid: 0 };
   L.forEach(function (a) {
-    var p = a.ps || snapPac(pac(a.pac)) || {}; var key = p.tipo === 'civil' ? 'Civil' : (p.posto === 'Outro' ? (p.postoOutro || 'Outro') : (p.posto || 'Não informado'));
+    var p = a.ps || snapPac(pac(a.pac)) || {}; var key = p.tipo === 'civil' ? (p.cat || 'Civil') : (p.posto === 'Outro' ? (p.postoOutro || 'Outro') : (p.posto || 'Não informado'));
     if (p.tipo === 'civil') r.civ++; else r.mil++;
     if (!r.porPosto[key]) r.porPosto[key] = { at: 0, p: {} }; r.porPosto[key].at++; r.porPosto[key].p[a.pac] = 1;
     r.pacs[a.pac] = 1;
@@ -884,7 +990,7 @@ function dadosRelAt(mes) {
     if ((a.cond || []).indexOf('hosp') >= 0) r.hosp.push(a);
     if ((a.cond || []).indexOf('afast') >= 0) { r.afastN++; r.afastDias += num(a.afast); }
   });
-  r.postos = Object.keys(r.porPosto).sort(function (a, b) { var ia = POSTO_IDX[a] != null ? POSTO_IDX[a] : a === 'Civil' ? 99 : 98, ib = POSTO_IDX[b] != null ? POSTO_IDX[b] : b === 'Civil' ? 99 : 98; return ia - ib; });
+  r.postos = Object.keys(r.porPosto).sort(function (a, b) { var ia = POSTO_IDX[a] != null ? POSTO_IDX[a] : 98, ib = POSTO_IDX[b] != null ? POSTO_IDX[b] : 98; return ia - ib || a.localeCompare(b); });
   r.cidL = Object.keys(r.cids).sort(function (a, b) { return r.cids[b] - r.cids[a] || a.localeCompare(b); });
   return r;
 }
@@ -902,46 +1008,92 @@ function relAtTela() {
   h += '<div class="sech">Todos os atendimentos do mês · ' + r.L.length + '</div><div class="rows">' + r.L.slice().reverse().map(function (a) { return atRow(a); }).join('') + '</div>';
   return h;
 }
+function fimMes(mes) { var p = mes.split('-').map(Number); return mes + '-' + pad(ultDia(p[0], p[1])); }
+/* saldo do item no último dia do mês (desfaz o que mudou depois) */
+function saldoFim(it, mes) {
+  var f = fimMes(mes), s = info(it).tot;
+  D.movs.forEach(function (mv) { if (mv.item === it.id && mv.data > f && !mv.falta) s -= mv.qtd; });
+  return Math.max(0, Math.round(s * 1000) / 1000);
+}
+function valCurta(l) { if (!l || !l.val) return '—'; var p = l.val.split('-'); return p[1] + '/' + p[0].slice(2); }
 function dadosRelMed(mes) {
-  var ag = {};
-  function g(id) { if (!ag[id]) { var it = item(id); ag[id] = { id: id, it: it, uso: 0, nAt: 0, ent: 0, bx: 0, aj: 0, mot: {} }; } return ag[id]; }
+  var ag = {}, ord = [];
+  D.itens.forEach(function (it) { ag[it.id] = { id: it.id, it: it, uso: 0, nAt: 0, ent: 0, bx: 0, aj: 0, mot: {} }; ord.push(it.id); });
+  function g(id, snap) { if (!ag[id]) { ag[id] = { id: id, it: null, snap: snap, uso: 0, nAt: 0, ent: 0, bx: 0, aj: 0, mot: {} }; ord.push(id); } return ag[id]; }
   D.at.forEach(function (a) {
     if (mesDe(a.data) !== mes) return;
     var vis = {};
-    (a.meds || []).forEach(function (m) { var x = g(m.item); if (!x.it) x.snap = m; x.uso += num(m.qtd); if (!vis[m.item]) { x.nAt++; vis[m.item] = 1; } });
+    (a.meds || []).forEach(function (m) { var x = g(m.item, m); x.uso += num(m.qtd); if (!vis[m.item]) { x.nAt++; vis[m.item] = 1; } });
   });
   D.movs.forEach(function (mv) {
-    if (mesDe(mv.data) !== mes) return;
-    if (mv.tipo === 'ent') g(mv.item).ent += mv.qtd;
-    else if (mv.tipo === 'bx') { var x = g(mv.item); x.bx += -mv.qtd; x.mot[mv.mot || 'Outro'] = (x.mot[mv.mot || 'Outro'] || 0) - mv.qtd; }
-    else if (mv.tipo === 'aj') g(mv.item).aj += mv.qtd;
+    if (mesDe(mv.data) !== mes || !ag[mv.item]) return;
+    var x = ag[mv.item];
+    if (mv.tipo === 'ent') x.ent += mv.qtd;
+    else if (mv.tipo === 'bx') { x.bx += -mv.qtd; x.mot[mv.mot || 'Outro'] = (x.mot[mv.mot || 'Outro'] || 0) - mv.qtd; }
+    else if (mv.tipo === 'aj') x.aj += mv.qtd;
   });
-  var L = Object.keys(ag).map(function (k) { return ag[k]; }).filter(function (x) { return x.it || x.snap; });
-  L.forEach(function (x) { x.nome = x.it ? x.it.nome : x.snap.nome; x.apres = x.it ? x.it.apres || '' : x.snap.apres || ''; x.un = x.it ? x.it : { un: x.snap.un }; x.tipo = x.it ? x.it.tipo : x.snap.tipo; x.inf = x.it ? info(x.it) : null; });
-  L.sort(function (a, b) { return b.uso - a.uso || a.nome.localeCompare(b.nome, 'pt'); });
+  var L = ord.map(function (k) { return ag[k]; });
+  L.forEach(function (x) {
+    var s = x.it || x.snap;
+    x.nome = s.nome; x.apres = s.apres || ''; x.un = s.un || ''; x.tipo = s.tipo; x.inf = x.it ? info(x.it) : null;
+    x.exist = x.it ? saldoFim(x.it, mes) : 0; x.ped = pedido(mes, x.id);
+    x.val = x.inf ? (x.inf.lotes.filter(function (l) { return l.val; }).sort(function (a, b) { return a.val.localeCompare(b.val); })[0] || null) : null;
+  });
   return { med: L.filter(function (x) { return x.tipo !== 'mat'; }), mat: L.filter(function (x) { return x.tipo === 'mat'; }) };
 }
 function relMedTela() {
-  var r = dadosRelMed(ST.mes), h = '';
-  var tot = r.med.concat(r.mat);
-  var usados = tot.filter(function (x) { return x.uso > 0; });
-  var al = alertasEst();
-  h += '<div class="stats"><div class="stat"><b>' + r.med.filter(function (x) { return x.uso > 0; }).length + '</b><span>Medicamentos usados</span></div><div class="stat"><b>' + r.mat.filter(function (x) { return x.uso > 0; }).length + '</b><span>Materiais usados</span></div><div class="stat' + (al.venc.length ? ' bad' : '') + '"><b>' + al.venc.length + '</b><span>Itens com lote vencido (hoje)</span></div><div class="stat"><b>' + (al.falta.length + al.baixo.length) + '</b><span>Itens em falta ou baixos (hoje)</span></div></div>';
-  if (!tot.length) return h + '<div class="card empty">' + ic('pill') + '<b>Nenhuma movimentação em ' + MESES[+ST.mes.slice(5) - 1] + '</b>O que for usado nos atendimentos, as entradas e as baixas aparecem aqui.</div>';
-  [['med', 'Medicamentos'], ['mat', 'Materiais']].forEach(function (t) {
-    var l = r[t[0]]; if (!l.length) return;
-    h += '<div class="sech">' + t[1] + ' movimentados no mês · ' + l.length + '</div><div class="rows">' + l.map(function (x) {
+  var r = dadosRelMed(ST.mes), h = '', tot = r.med.concat(r.mat), al = alertasEst();
+  var nPed = tot.filter(function (x) { return x.ped > 0; }).length;
+  h += '<div class="stats"><div class="stat"><b>' + r.med.filter(function (x) { return x.uso > 0; }).length + '</b><span>Medicamentos usados no mês</span></div><div class="stat"><b>' + r.mat.filter(function (x) { return x.uso > 0; }).length + '</b><span>Materiais usados no mês</span></div><div class="stat' + (al.venc.length ? ' bad' : '') + '"><b>' + al.venc.length + '</b><span>Itens com lote vencido (hoje)</span></div><div class="stat"><b>' + nPed + '</b><span>Itens no pedido do mês</span></div></div>';
+  if (!tot.length) return h + '<div class="card empty">' + ic('pill') + '<b>Estoque vazio</b>Cadastre os itens na aba Estoque.</div>';
+  var F = ST.relF || 'todos';
+  h += '<div class="fchips">' + [['todos', 'Todos'], ['uso', 'Usados no mês'], ['ped', 'No pedido'], ['zero', 'Zerados']].map(function (f) { return '<button class="chip' + (F === f[0] ? ' on' : '') + '" data-a="relF" data-f="' + f[0] + '">' + f[1] + '</button>'; }).join('') + '</div>';
+  [['med', 'Medicamentos'], ['mat', 'Material penso']].forEach(function (t) {
+    var l = r[t[0]].filter(function (x) { return F === 'uso' ? x.uso > 0 : F === 'ped' ? x.ped > 0 : F === 'zero' ? x.exist <= 0 : true; });
+    if (!l.length) return;
+    h += '<div class="sech">' + t[1] + ' · ' + l.length + '</div><div class="rows">' + l.map(function (x) {
       var sub = [];
-      sub.push(x.nAt ? x.nAt + (x.nAt > 1 ? ' atendimentos' : ' atendimento') : 'sem uso em atendimento');
+      if (x.nAt) sub.push(x.nAt + (x.nAt > 1 ? ' atendimentos' : ' atendimento'));
       if (x.ent) sub.push('entrou ' + fmtN(x.ent));
       if (x.bx) sub.push('baixa ' + fmtN(x.bx) + ' (' + Object.keys(x.mot).map(function (m) { return m.toLowerCase(); }).join(', ') + ')');
       if (x.aj) sub.push('ajuste ' + (x.aj > 0 ? '+' : '') + fmtN(x.aj));
-      var tags = x.inf ? '<span class="tg">saldo hoje ' + fmtN(x.inf.tot) + '</span>' + (x.inf.prox ? '<span class="tg s-' + stVal(x.inf.prox) + '">' + stCurto(x.inf.prox) + '</span>' : '') + (x.inf.est === 'falta' ? '<span class="tg s-falta">Em falta</span>' : x.inf.est === 'baixo' ? '<span class="tg s-baixo">Estoque baixo</span>' : '') : '<span class="tg">item excluído</span>';
-      return '<button class="r"' + (x.it ? ' data-a="item" data-id="' + x.id + '"' : '') + '><div class="ti s-info">' + ic(x.tipo === 'mat' ? 'box' : 'pill') + '</div><div class="sp"><div class="t">' + esc(x.nome) + '</div><div class="s w">' + esc((x.apres ? x.apres + ' · ' : '') + sub.join(' · ')) + '</div><div class="m">' + tags + '</div></div><div class="qv' + (x.uso ? '' : ' z0') + '"><b>' + (x.uso ? fmtN(x.uso) : '0') + '</b><small>usado' + (x.uso === 1 ? '' : 's') + '</small></div></button>';
+      var tags = '<span class="tg' + (x.exist ? '' : ' s-falta') + '">existente ' + fmtN(x.exist) + ' ' + esc(UN_AB[x.un] || x.un) + '</span>' + (x.val ? '<span class="tg s-' + stVal(x.val) + '">val. ' + valCurta(x.val) + '</span>' : '') + (x.ped ? '<span class="tg s-info">pedido ' + fmtN(x.ped) + '</span>' : '') + (x.it ? '' : '<span class="tg">item excluído</span>');
+      return '<button class="r"' + (x.it ? ' data-a="item" data-id="' + x.id + '"' : '') + '><div class="ti s-info">' + ic(x.tipo === 'mat' ? 'box' : 'pill') + '</div><div class="sp"><div class="t">' + esc(x.nome + (x.apres ? ' ' + x.apres : '')) + '</div>' + (sub.length ? '<div class="s w">' + esc(sub.join(' · ')) + '</div>' : '') + '<div class="m">' + tags + '</div></div><div class="qv' + (x.uso ? '' : ' z0') + '"><b>' + fmtN(x.uso) + '</b><small>usado' + (x.uso === 1 ? '' : 's') + '</small></div></button>';
     }).join('') + '</div>';
   });
-  h += '<div class="k" style="margin:4px 26px 0">Quantidades na unidade de cada item (comprimido, ampola, frasco…). Toque num item para ver lotes e movimentações.</div>';
+  h += '<div class="k" style="margin:4px 26px 0">“Existente” é o saldo no fim do mês escolhido. Toque num item para ver lotes e movimentações.</div>';
   return h;
+}
+function editaPedido() {
+  var r = dadosRelMed(ST.mes), ped = Object.assign({}, D.ped[ST.mes] || {});
+  var linha = function (x) { return '<div class="mrw"><span class="sp"><div class="t">' + esc(x.nome + (x.apres ? ' ' + x.apres : '')) + '</div><div class="s">existente ' + fmtN(x.exist) + ' ' + esc(UN_AB[x.un] || x.un) + (x.val ? ' · val. ' + valCurta(x.val) : '') + (x.uso ? ' · usado ' + fmtN(x.uso) + ' no mês' : '') + '</div></span><div class="stp"><button data-k="p-" data-id="' + x.id + '" aria-label="Menos">' + ic('minus') + '</button><input inputmode="decimal" data-k="pv" data-id="' + x.id + '" value="' + (ped[x.id] ? fmtN(ped[x.id]) : '') + '" placeholder="0"><button data-k="p+" data-id="' + x.id + '" aria-label="Mais">' + ic('plus') + '</button></div></div>'; };
+  var h = topo('Pedido · ' + mesLbl(ST.mes), 'Salvar') + '<div class="bd"><p class="lede">Quantidade a pedir de cada item. Sai na coluna PEDIDO da relação do mês.</p>' +
+    '<div class="igh">Medicamentos</div><div class="igb" style="margin-bottom:20px">' + r.med.filter(function (x) { return x.it; }).map(linha).join('') + '</div>' +
+    '<div class="igh">Material penso</div><div class="igb">' + r.mat.filter(function (x) { return x.it; }).map(linha).join('') + '</div></div>';
+  var d = folha(h, { tall: true }), bd = $('.bd', d);
+  bd.addEventListener('input', function (e) { if (e.target.dataset.k === 'pv') ped[e.target.dataset.id] = num(e.target.value); });
+  bd.addEventListener('click', function (e) { var b = e.target.closest('[data-k]'); if (!b || b.tagName === 'INPUT') return; var id = b.dataset.id, v = num(ped[id]) + (b.dataset.k === 'p+' ? 1 : -1); ped[id] = Math.max(0, v); $('[data-k=pv][data-id="' + id + '"]', d).value = ped[id] ? fmtN(ped[id]) : ''; });
+  $('[data-ok]', d).onclick = function () { Object.keys(ped).forEach(function (k) { if (!(ped[k] > 0)) delete ped[k]; }); D.ped[ST.mes] = ped; salva(); fecha(d); render(); toast('Pedido salvo'); };
+}
+function textosRel() {
+  var c = D.cfg, m = txtMes(ST.mes);
+  var ta = function (k, l, v, rows, ph, mes) { return '<div class="ig"><label class="fl"><span>' + l + '</span><textarea data-' + (mes ? 'm' : 'c') + '="' + k + '" rows="' + rows + '" placeholder="' + esc(ph || '') + '">' + esc(v || '') + '</textarea></label></div>'; };
+  var inp = function (k, l, v, ph) { return '<label class="fl"><span>' + l + '</span><input data-c="' + k + '" value="' + esc(v || '') + '" placeholder="' + esc(ph || '') + '"></label>'; };
+  var h = topo('Textos do relatório', 'Salvar') + '<div class="bd">' +
+    '<div class="igh">Deste mês (' + esc(mesLbl(ST.mes)) + ')</div>' +
+    ta('ativ', 'III – Atividades desempenhadas', m.ativ, 5, '', 1) + ta('prop', 'IV – Propostas para melhoria da enfermaria', m.prop, 3, '- Aquisição de …', 1) + ta('ocor', 'V – Ocorrências (além das EVAM, opcional)', m.ocor, 2, '', 1) +
+    '<div class="igh" style="margin-top:6px">Fixos (valem para todos os meses)</div>' +
+    ta('cab', 'Cabeçalho do relatório de atendimentos (uma linha por linha)', c.cab, 4) + ta('cabMed', 'Cabeçalho da relação de medicamentos', c.cabMed, 3) +
+    '<div class="ig"><div class="grid2">' + inp('sigla', 'Sigla da unidade', c.sigla, 'DECO-KO') + inp('cidade', 'Cidade (data do fim)', c.cidade, 'Coari-AM') + '</div></div>' +
+    ta('intro', 'I – Texto de abertura', c.intro, 3) + ta('obsAgua', 'Observação (água/consumo)', c.obsAgua, 3, 'Deixe vazio para não sair') +
+    '<div class="ig"><div class="grid2">' + inp('encNome', 'Encarregado da enfermaria', c.encNome, 'Ex.: 1S SEF Nome Completo') + inp('encFunc', 'Função', c.encFunc) + inp('chefeNome', 'Chefe', c.chefeNome, 'Ex.: Maj Nome Completo') + inp('chefeFunc', 'Função', c.chefeFunc) + '</div></div>' +
+    '<div class="ig"><div class="igb"><label class="ir"><span class="il">Incluir resumo (CID, posto, condutas)<small>Sai como item VI no fim do relatório</small></span><input type="checkbox" data-c="resumo"' + (c.resumo ? ' checked' : '') + ' style="width:24px;height:24px;min-height:0;accent-color:var(--acc)"></label></div></div></div>';
+  var d = folha(h, { tall: true });
+  $('[data-ok]', d).onclick = function () {
+    $$('[data-c]', d).forEach(function (e) { D.cfg[e.dataset.c] = e.type === 'checkbox' ? e.checked : e.value; });
+    var nm = {}; $$('[data-m]', d).forEach(function (e) { nm[e.dataset.m] = e.value; }); D.mesTxt[ST.mes] = nm;
+    salva(); fecha(d); render(); toast('Textos salvos');
+  };
 }
 
 /* ---------- ações ---------- */
@@ -980,6 +1132,9 @@ A.ajustes = function () { ajustes(); };
 A.backup = function () { exportar(); };
 A.imprimir = function () { imprimir(); };
 A.csv = function () { csv(); };
+A.relF = function (b) { ST.relF = b.dataset.f; render(); };
+A.pedidoMes = function () { editaPedido(); };
+A.relTextos = function () { textosRel(); };
 
 /* ===== Atendimento ===== */
 function abrirAt(id, pre) {
@@ -1006,7 +1161,7 @@ function abrirAt(id, pre) {
     h += '<div class="ig"><div class="igh">Medicamentos e materiais usados</div><div class="igb">' + f.meds.map(function (m, i) {
       var it = item(m.item), disp = it ? info(it).tot + (antes[m.item] || 0) : 0, falta = it && num(m.qtd) > disp + 1e-9;
       var usados = 0; f.meds.forEach(function (x) { if (x.item === m.item) usados += num(x.qtd); });
-      return '<div class="mrw"><span class="sp"><div class="t">' + esc(it ? it.nome : m.nome) + '</div><div class="s' + (falta ? ' bad' : '') + '">' + esc(it ? (it.apres || '') : (m.apres || '')) + (it ? ' · ' + (falta ? 'só há ' + fmtN(disp) : 'há ' + fmtN(disp)) + ' ' + esc(unLbl(it, disp)) : ' · item removido') + '</div></span><div class="stp"><button data-k="q-" data-i="' + i + '" aria-label="Menos">' + ic('minus') + '</button><input inputmode="decimal" data-k="qv" data-i="' + i + '" value="' + esc(fmtN(num(m.qtd))) + '"><button data-k="q+" data-i="' + i + '" aria-label="Mais">' + ic('plus') + '</button></div><button class="del" data-k="mx" data-i="' + i + '" aria-label="Remover">' + ic('trash') + '</button></div>';
+      return '<div class="mrw"><span class="sp"><div class="t">' + esc(it ? it.nome : m.nome) + '</div><div class="s' + (falta ? ' bad' : '') + '">' + esc(it ? (it.apres || '') : (m.apres || '')) + (it ? ' · ' + (falta ? 'só há ' + fmtN(disp) : 'há ' + fmtN(disp)) + ' ' + esc(unLbl(it, disp)) : ' · item removido') + '</div>' + ((it ? it.tipo : m.tipo) !== 'mat' ? '<select class="via" data-k="via" data-i="' + i + '" aria-label="Via">' + ['<option value="">via</option>'].concat(VIAS.map(function (v) { return '<option' + (m.via === v ? ' selected' : '') + '>' + v + '</option>'; })).join('') + '</select>' : '') + '</span><div class="stp"><button data-k="q-" data-i="' + i + '" aria-label="Menos">' + ic('minus') + '</button><input inputmode="decimal" data-k="qv" data-i="' + i + '" value="' + esc(fmtN(num(m.qtd))) + '"><button data-k="q+" data-i="' + i + '" aria-label="Mais">' + ic('plus') + '</button></div><button class="del" data-k="mx" data-i="' + i + '" aria-label="Remover">' + ic('trash') + '</button></div>';
     }).join('') + '<div class="ipad"><button class="addb" data-k="med">' + ic('plus') + 'Adicionar do estoque</button></div></div>' + (f.meds.length ? '<div class="igf">Ao salvar, sai do estoque o lote que vence primeiro.</div>' : '') + '</div>';
     h += '<div class="ig"><div class="igh">Conduta</div><div class="igb"><div class="ipad"><div class="chips">' + CONDUTAS.map(function (c) { return '<button class="chip' + (f.cond.indexOf(c[0]) >= 0 ? ' on' : '') + '" data-k="cond" data-c="' + c[0] + '">' + (f.cond.indexOf(c[0]) >= 0 ? ic('check') : '') + c[2] + '</button>'; }).join('') + '</div></div>';
     if (f.cond.indexOf('hosp') >= 0 || f.cond.indexOf('espec') >= 0) h += '<div class="ipad"><label class="fl"><span>' + (f.cond.indexOf('hosp') >= 0 ? 'Hospital de destino' : 'Para onde') + '</span><input data-f="destino" placeholder="Nome do hospital / unidade" value="' + esc(f.destino) + '"></label></div>';
@@ -1024,6 +1179,7 @@ function abrirAt(id, pre) {
     if (t.dataset.f) f[t.dataset.f] = t.value;
     if (t.dataset.sv) f.sv[t.dataset.sv] = t.value;
     if (t.dataset.k === 'qv') f.meds[+t.dataset.i].qtd = num(t.value);
+    if (t.dataset.k === 'via') f.meds[+t.dataset.i].via = t.value;
   });
   bd.addEventListener('change', function (e) { if (e.target.dataset.k === 'qv') desenha(); if (e.target.dataset.f === 'transp') f.transp = e.target.value; });
   bd.addEventListener('click', function (e) {
@@ -1031,7 +1187,7 @@ function abrirAt(id, pre) {
     if (k === 'pac') escolhePac(function (id) { f.pac = id; desenha(); });
     else if (k === 'cid') escolheCid(f.cids, function (c) { if (f.cids.indexOf(c) < 0) f.cids.push(c); desenha(); });
     else if (k === 'cidx') { f.cids.splice(i, 1); desenha(); }
-    else if (k === 'med') escolheItem(function (id) { var it = item(id); var ja = f.meds.filter(function (m) { return m.item === id; })[0]; if (ja) ja.qtd = num(ja.qtd) + 1; else f.meds.push({ item: id, qtd: 1, nome: it.nome, apres: it.apres || '', un: it.un || '', tipo: it.tipo }); desenha(); });
+    else if (k === 'med') escolheItem(function (id) { var it = item(id); var ja = f.meds.filter(function (m) { return m.item === id; })[0]; if (ja) ja.qtd = num(ja.qtd) + 1; else f.meds.push({ item: id, qtd: 1, nome: it.nome, apres: it.apres || '', un: it.un || '', tipo: it.tipo, via: viaPadrao(it) }); desenha(); });
     else if (k === 'q-') { f.meds[i].qtd = Math.max(0, num(f.meds[i].qtd) - 1); if (f.meds[i].qtd === 0) f.meds.splice(i, 1); desenha(); }
     else if (k === 'q+') { f.meds[i].qtd = num(f.meds[i].qtd) + 1; desenha(); }
     else if (k === 'mx') { f.meds.splice(i, 1); desenha(); }
@@ -1168,6 +1324,7 @@ function formPac(p, pre, cb) {
       h += '<label class="ir"><span class="il">SARAM</span><input class="ri" data-f="saram" inputmode="numeric" placeholder="opcional" value="' + esc(f.saram) + '"></label>';
       h += '<label class="ir"><span class="il">OM / setor</span><input class="ri" data-f="om" placeholder="opcional" value="' + esc(f.om) + '"></label>';
     } else {
+      h += '<label class="ir"><span class="il">Categoria / vínculo</span><input class="ri" data-f="cat" list="catL" placeholder="Ex.: SPTF, terceirizado" value="' + esc(f.cat || '') + '"><datalist id="catL"><option value="SPTF"><option value="Terceirizado"><option value="Prestador de serviço"><option value="Visitante"></datalist></label>';
       h += '<label class="ir"><span class="il">Empresa</span><input class="ri" data-f="empresa" placeholder="Construtora, terceirizada…" value="' + esc(f.empresa) + '"></label>';
       h += '<label class="ir"><span class="il">Função</span><input class="ri" data-f="funcao" placeholder="Pedreiro, eletricista…" value="' + esc(f.funcao) + '"></label>';
       h += '<label class="ir"><span class="il">CPF / documento</span><input class="ri" data-f="saram" placeholder="opcional" value="' + esc(f.saram) + '"></label>';
@@ -1192,7 +1349,7 @@ function formPac(p, pre, cb) {
     if (f.tipo !== 'civil' && !f.posto) { toast('Escolha o posto / graduação (ou marque Civil)'); return; }
     var dup = D.pac.filter(function (x) { return x.id !== f.id && norm(x.nome) === norm(f.nome); })[0];
     var go = function () {
-      if (f.tipo === 'civil') { f.posto = ''; f.postoOutro = ''; f.guerra = ''; f.om = ''; } else { f.empresa = ''; f.funcao = ''; }
+      if (f.tipo === 'civil') { f.posto = ''; f.postoOutro = ''; f.guerra = ''; f.om = ''; f.cat = String(f.cat || '').trim(); } else { f.empresa = ''; f.funcao = ''; f.cat = ''; }
       if (p) { D.pac = D.pac.map(function (x) { return x.id === p.id ? f : x; }); } else { f.id = uid(); f.criado = new Date().toISOString(); D.pac.push(f); }
       salva(); fecha(d); render(); toast(p ? 'Cadastro atualizado' : 'Paciente cadastrado'); cb && cb(f.id);
     };
@@ -1200,12 +1357,12 @@ function formPac(p, pre, cb) {
   });
 }
 function colarPac() {
-  var d = folha(topo('Colar lista de pacientes', 'Importar') + '<div class="bd"><p class="lede">Um paciente por linha. Comece pelo posto/graduação (ou “Civil”). Para civis, a empresa pode vir depois de ponto e vírgula. Dá para colar direto do Excel.</p><div class="infobox">3S João Carlos da Silva<br>Cap Maria Souza Lima<br>Civil; José Pereira; Construtora Alfa; Pedreiro</div><textarea id="cpT" rows="10" placeholder="Cole aqui"></textarea><p class="lede" id="cpR" style="margin-top:10px"></p></div>', { tall: true });
+  var d = folha(topo('Colar lista de pacientes', 'Importar') + '<div class="bd"><p class="lede">Um paciente por linha. Comece pelo posto/graduação, “SPTF” ou “Civil”. Nomes em MAIÚSCULAS são arrumados. Para civis, a empresa pode vir depois de ponto e vírgula. Dá para colar direto do Excel.</p><div class="infobox">3S João Carlos da Silva<br>MAJ KAULIN AUGUSTO LIMA<br>SPTF Rogério Alves da Silva<br>Civil; José Pereira; Construtora Alfa; Pedreiro</div><textarea id="cpT" rows="10" placeholder="Cole aqui"></textarea><p class="lede" id="cpR" style="margin-top:10px"></p></div>', { tall: true });
   var T = $('#cpT', d), R = $('#cpR', d), lst = [];
   function analisa() {
     lst = T.value.split(/\r?\n/).map(function (l) { return l.trim(); }).filter(Boolean).map(lerLinhaPac).filter(Boolean);
     var sem = lst.filter(function (x) { return x.tipo !== 'civil' && !x.posto; }).length;
-    R.innerHTML = lst.length ? '<b>' + lst.length + '</b> pessoa(s) reconhecida(s)' + (sem ? ' · ' + sem + ' sem posto (ficarão como “Outro”, dá para editar depois)' : '') + '<br>' + lst.slice(0, 6).map(function (x) { return esc((x.tipo === 'civil' ? 'Civil' : (x.posto || '?')) + ' · ' + x.nome + (x.empresa ? ' · ' + x.empresa : '')); }).join('<br>') + (lst.length > 6 ? '<br>…' : '') : '';
+    R.innerHTML = lst.length ? '<b>' + lst.length + '</b> pessoa(s) reconhecida(s)' + (sem ? ' · ' + sem + ' sem posto (ficarão como “Outro”, dá para editar depois)' : '') + '<br>' + lst.slice(0, 6).map(function (x) { return esc((x.tipo === 'civil' ? (x.cat || 'Civil') : (x.posto || '?')) + ' · ' + x.nome + (x.empresa ? ' · ' + x.empresa : '')); }).join('<br>') + (lst.length > 6 ? '<br>…' : '') : '';
   }
   T.addEventListener('input', analisa);
   $('[data-ok]', d).addEventListener('click', function () {
@@ -1226,9 +1383,9 @@ function lerLinhaPac(l) {
     var w = rest[0].split(/\s+/);
     for (var k = 3; k >= 1; k--) { if (w.length > k) { var ps2 = posto(w.slice(0, k).join(' ')); if (ps2) { p._ps = ps2; rest[0] = w.slice(k).join(' '); break; } } }
   }
-  p.nome = (rest.shift() || '').replace(/\s+/g, ' ');
+  p.nome = tituloNome(rest.shift() || '');
   if (!p.nome) return null;
-  if (p._ps === 'Civil') { p.tipo = 'civil'; p.empresa = rest[0] || ''; p.funcao = rest[1] || ''; }
+  if (p._ps && p._ps.indexOf('Civil') === 0) { p.tipo = 'civil'; p.cat = p._ps.split(':')[1] || ''; p.empresa = rest[0] || ''; p.funcao = rest[1] || ''; }
   else if (p._ps) { p.posto = p._ps; if (rest[0]) p.om = rest[0]; }
   delete p._ps;
   return p;
@@ -1246,7 +1403,7 @@ function verItem(id) {
   if (mv.length) {
     h += '<div class="igh">Movimentações</div><div class="cidres" style="margin-bottom:22px">' + mv.map(function (m) {
       var a = m.at ? D.at.filter(function (x) { return x.id === m.at; })[0] : null;
-      var t = m.tipo === 'ent' ? 'Entrada' : m.tipo === 'uso' ? 'Uso · ' + (a ? esc(pNome(atPac(a))) : 'atendimento') : m.tipo === 'bx' ? 'Baixa · ' + esc(m.mot || '') : 'Ajuste de contagem';
+      var t = m.tipo === 'ini' ? 'Saldo inicial' : m.tipo === 'ent' ? 'Entrada' : m.tipo === 'uso' ? 'Uso · ' + (a ? esc(pNome(atPac(a))) : 'atendimento') : m.tipo === 'bx' ? 'Baixa · ' + esc(m.mot || '') : 'Ajuste de contagem';
       return '<div class="ir"><span class="il"><b style="font-weight:600">' + t + '</b><small>' + fmtD(m.data) + (m.ln ? ' · lote ' + esc(m.ln) : '') + (m.val ? ' · val. ' + fmtVal(m) : '') + (m.obs ? ' · ' + esc(m.obs) : '') + (m.falta ? ' · sem estoque' : '') + '</small></span><span class="iv" style="font-weight:800;color:' + (m.qtd > 0 ? 'var(--ok)' : 'var(--ink)') + '">' + (m.qtd > 0 ? '+' : '') + fmtN(m.qtd) + '</span></div>';
     }).join('') + '</div>';
   }
@@ -1268,23 +1425,24 @@ function formItem(it, pre, cb) {
   var h = topo(novo ? 'Novo item' : 'Editar item', 'Salvar') + '<div class="bd">' +
     '<div class="ig"><div class="seg"><button data-tp="med" class="' + (f.tipo !== 'mat' ? 'on' : '') + '">Medicamento</button><button data-tp="mat" class="' + (f.tipo === 'mat' ? 'on' : '') + '">Material</button></div></div>' +
     '<div class="ig"><div class="grid2" style="grid-template-columns:1fr"><label class="fl"><span>Nome</span><input data-f="nome" placeholder="Ex.: Dipirona, Gaze estéril" value="' + esc(f.nome) + '" autocomplete="off"></label><label class="fl"><span>Apresentação / concentração</span><input data-f="apres" placeholder="Ex.: 500 mg comprimido · 7,5 cm x 7,5 cm" value="' + esc(f.apres) + '" autocomplete="off"></label></div></div>' +
-    '<div class="ig"><div class="grid2"><label class="fl"><span>Contar em</span><select data-f="un">' + UNIDADES.map(function (u) { return '<option' + (f.un === u ? ' selected' : '') + '>' + u + '</option>'; }).join('') + '</select></label><label class="fl"><span>Estoque mínimo</span><input data-f="min" inputmode="decimal" placeholder="opcional" value="' + esc(f.min) + '"></label></div></div>' +
+    '<div class="ig"><div class="grid2"><label class="fl"><span>Contar em</span><select data-f="un">' + UNIDADES.map(function (u) { return '<option' + (f.un === u ? ' selected' : '') + '>' + u + '</option>'; }).join('') + '</select></label><label class="fl"><span>Estoque mínimo</span><input data-f="min" inputmode="decimal" placeholder="opcional" value="' + esc(f.min) + '"></label>' +
+    '<label class="fl" id="fiVia"' + (f.tipo === 'mat' ? ' hidden' : '') + '><span>Via de costume</span><select data-f="via"><option value="">Automática</option>' + VIAS.map(function (v) { return '<option' + (f.via === v ? ' selected' : '') + '>' + v + '</option>'; }).join('') + '</select></label></div></div>' +
     (novo ? '<div class="ig"><div class="igh" style="margin-left:4px">Quantidade em estoque agora</div><div class="grid3" style="grid-template-columns:1fr 1.5fr 1fr"><label class="fl"><span>Quantidade</span><input data-f="qtd" inputmode="decimal" placeholder="0"></label><label class="fl"><span>Validade</span>' + campoVal('') + '</label><label class="fl"><span>Lote</span><input data-f="lote" placeholder="opcional" autocomplete="off"></label></div><div class="igf" style="margin-left:4px">Se houver mais de um lote, lance os outros depois em “Entrada”.</div></div>' : '') +
     '<div class="ig"><div class="grid2" style="grid-template-columns:1fr"><label class="fl"><span>Local de guarda</span><input data-f="local" placeholder="Ex.: armário 1, gaveta 2" value="' + esc(f.local) + '"></label><label class="fl"><span>Observações</span><input data-f="obs" value="' + esc(f.obs) + '"></label></div></div>' +
     '</div>';
   var d = folha(h, { tall: true }), bd = $('.bd', d);
   var vi = $('[data-f=val]', d); if (vi) mascaraVal(vi);
-  bd.addEventListener('click', function (e) { var b = e.target.closest('[data-tp]'); if (!b) return; f.tipo = b.dataset.tp; $$('[data-tp]', d).forEach(function (x) { x.classList.toggle('on', x === b); }); var u = $('[data-f=un]', d); if (novo && f.tipo === 'mat' && u.value === 'comprimido') u.value = 'unidade'; if (novo && f.tipo === 'med' && u.value === 'unidade') u.value = 'comprimido'; });
+  bd.addEventListener('click', function (e) { var b = e.target.closest('[data-tp]'); if (!b) return; f.tipo = b.dataset.tp; $$('[data-tp]', d).forEach(function (x) { x.classList.toggle('on', x === b); }); $('#fiVia', d).hidden = f.tipo === 'mat'; var u = $('[data-f=un]', d); if (novo && f.tipo === 'mat' && u.value === 'comprimido') u.value = 'unidade'; if (novo && f.tipo === 'med' && u.value === 'unidade') u.value = 'comprimido'; });
   if (novo && innerWidth >= 900) setTimeout(function () { $('[data-f=nome]', d).focus(); }, 60);
   $('[data-ok]', d).addEventListener('click', function () {
     var g = function (k) { var e = $('[data-f=' + k + ']', d); return e ? e.value.trim() : ''; };
-    f.nome = g('nome'); f.apres = g('apres'); f.un = g('un'); f.min = num(g('min')) || 0; f.local = g('local'); f.obs = g('obs');
+    f.nome = g('nome'); f.apres = g('apres'); f.un = g('un'); f.via = f.tipo === 'mat' ? '' : g('via'); f.min = num(g('min')) || 0; f.local = g('local'); f.obs = g('obs');
     if (!f.nome) { toast('Informe o nome'); $('[data-f=nome]', d).classList.add('bad'); return; }
     if (novo) {
       var q = num(g('qtd')), v = lerVal(g('val'));
       if (v === false) { toast('Validade inválida. Use MM/AAAA ou DD/MM/AAAA'); $('[data-f=val]', d).classList.add('bad'); return; }
       f.id = uid(); f.criado = new Date().toISOString();
-      if (q > 0) { var l = { id: uid(), lote: g('lote'), val: v ? v.val : '', vm: v ? v.vm : false, qtd: q, ent: hoje() }; f.lotes.push(l); D.movs.push({ id: uid(), data: hoje(), item: f.id, tipo: 'ent', qtd: q, lote: l.id, ln: l.lote, val: l.val, vm: l.vm, obs: 'Estoque inicial' }); }
+      if (q > 0) { var l = { id: uid(), lote: g('lote'), val: v ? v.val : '', vm: v ? v.vm : false, qtd: q, ent: hoje() }; f.lotes.push(l); D.movs.push({ id: uid(), data: hoje(), item: f.id, tipo: 'ini', qtd: q, lote: l.id, ln: l.lote, val: l.val, vm: l.vm, obs: 'Saldo inicial' }); }
       D.itens.push(f);
     } else { D.itens = D.itens.map(function (x) { return x.id === f.id ? f : x; }); }
     ST.estTipo = f.tipo === 'mat' ? 'mat' : 'med';
@@ -1359,7 +1517,7 @@ function colarItens() {
     lst.forEach(function (x) {
       var it = D.itens.filter(function (i) { return norm(i.nome) === norm(x.nome) && norm(i.apres) === norm(x.apres); })[0];
       if (!it) { it = { id: uid(), tipo: tipo, nome: x.nome, apres: x.apres, un: x.un || (tipo === 'mat' ? 'unidade' : 'comprimido'), min: 0, local: '', obs: '', lotes: [], criado: new Date().toISOString() }; D.itens.push(it); n++; } else m++;
-      if (x.qtd > 0) { var l = { id: uid(), lote: x.lote || '', val: x.v ? x.v.val : '', vm: x.v ? x.v.vm : false, qtd: x.qtd, ent: hoje() }; it.lotes.push(l); D.movs.push({ id: uid(), data: hoje(), item: it.id, tipo: 'ent', qtd: x.qtd, lote: l.id, ln: l.lote, val: l.val, vm: l.vm, obs: 'Importado da lista' }); }
+      if (x.qtd > 0) { var l = { id: uid(), lote: x.lote || '', val: x.v ? x.v.val : '', vm: x.v ? x.v.vm : false, qtd: x.qtd, ent: hoje() }; it.lotes.push(l); D.movs.push({ id: uid(), data: hoje(), item: it.id, tipo: 'ini', qtd: x.qtd, lote: l.id, ln: l.lote, val: l.val, vm: l.vm, obs: 'Saldo inicial (lista colada)' }); }
     });
     ST.estTipo = tipo; ST.tab = 'est'; salva(); fecha(d); render(); toast(n + ' item(ns) novo(s)' + (m ? ' · ' + m + ' já existia(m) (lote somado)' : ''));
   });
@@ -1395,7 +1553,7 @@ function adivinhaUn(s) {
 function ajustes() {
   var c = D.cfg;
   var h = topo('Ajustes', 'Pronto', 'Fechar') + '<div class="bd">' +
-    '<div class="ig"><div class="igh">Enfermaria (sai no cabeçalho dos relatórios)</div><div class="igb"><label class="ir"><span class="il">Obra / local</span><input class="ri" data-c="obra" placeholder="Ex.: Obra do hangar" value="' + esc(c.obra) + '"></label><label class="ir"><span class="il">Unidade / OM</span><input class="ri" data-c="unidade" placeholder="Ex.: GAP-XX" value="' + esc(c.unidade) + '"></label><label class="ir"><span class="il">Responsável</span><input class="ri" data-c="resp" placeholder="Posto e nome" value="' + esc(c.resp) + '"></label></div></div>' +
+    '<div class="ig"><div class="igh">Enfermaria</div><div class="igb"><label class="ir"><span class="il">Obra / local</span><input class="ri" data-c="obra" placeholder="Ex.: DECO-KO · Coari" value="' + esc(c.obra) + '"></label><button class="ir" id="ajTx"><span class="ii" style="--c:#5e5ce6">' + ic('doc') + '</span><span class="il">Cabeçalho, textos e assinaturas<small>Usados no relatório de atendimentos e na relação</small></span>' + ic('chevR', 'chev') + '</button></div></div>' +
     '<div class="ig"><div class="igh">Aparência</div><div class="igb"><div class="ipad"><div class="k" style="margin-bottom:8px">Cor</div><div class="chips">' + [['azul', 'Azul', '#2f6fd6'], ['celeste', 'Celeste', '#2d8fc4'], ['verde', 'Verde', '#2e9a62'], ['laranja', 'Laranja', '#ef8f1c']].map(function (t) { return '<button class="chip' + (c.tema === t[0] ? ' on' : '') + '" data-tema="' + t[0] + '"><i style="width:12px;height:12px;border-radius:50%;background:' + t[2] + ';display:inline-block;box-shadow:0 0 0 1.5px #fff"></i>' + t[1] + '</button>'; }).join('') + '</div></div><div class="ipad"><div class="seg">' + [['auto', 'Automático'], ['claro', 'Claro'], ['escuro', 'Escuro']].map(function (m) { return '<button data-modo="' + m[0] + '" class="' + (c.modo === m[0] ? 'on' : '') + '">' + m[1] + '</button>'; }).join('') + '</div></div></div></div>' +
     '<div class="ig"><div class="igh">Dados</div><div class="igb"><button class="ir" id="ajEx"><span class="ii" style="--c:#34c759">' + ic('down') + '</span><span class="il">Fazer backup<small>' + (c.ultBackup ? 'Último: ' + fmtD(c.ultBackup.slice(0, 10)) : 'Nenhum backup ainda') + '</small></span>' + ic('chevR', 'chev') + '</button><button class="ir" id="ajIm"><span class="ii" style="--c:#0a84ff">' + ic('up') + '</span><span class="il">Restaurar backup<small>Abre um arquivo .json salvo antes</small></span>' + ic('chevR', 'chev') + '</button></div><div class="igf">Tudo fica guardado só neste aparelho, sem internet. Faça backup toda semana e guarde o arquivo (e-mail, pendrive, nuvem). Para usar em outro aparelho, restaure o backup nele.</div></div>' +
     '<div class="ig"><div class="igb ni"><div class="ir"><span class="il">Pacientes</span><span class="iv">' + D.pac.length + '</span></div><div class="ir"><span class="il">Atendimentos</span><span class="iv">' + D.at.length + '</span></div><div class="ir"><span class="il">Itens no estoque</span><span class="iv">' + D.itens.length + '</span></div></div></div>' +
@@ -1408,6 +1566,7 @@ function ajustes() {
   $('[data-ok]', d).onclick = function () { fecha(d); render(); };
   d._onClose = render;
   $('#ajEx', d).onclick = function () { exportar(); };
+  $('#ajTx', d).onclick = function () { textosRel(); };
   $('#ajIm', d).onclick = function () { $('#fileIn').click(); };
   $('#ajDel', d).onclick = function () { confirma('Apagar tudo?', 'Pacientes, atendimentos e estoque serão apagados deste aparelho. Faça um backup antes. Não dá para desfazer.', 'Apagar tudo', function () { var cfg = D.cfg; D = vazio(); D.cfg = cfg; D.cfg.ultBackup = ''; salva(); fecha(d); render(); toast('Dados apagados'); }, true); };
 }
@@ -1432,58 +1591,77 @@ $('#fileIn').addEventListener('change', function (e) {
   r.readAsText(f);
 });
 
-/* ===== Impressão e planilha ===== */
-function cabec(titulo) {
-  var c = D.cfg;
-  return '<div class="ph"><div><h1>' + esc(titulo) + '</h1><small>' + esc([c.unidade, c.obra].filter(Boolean).join(' · ') || 'Enfermaria') + '</small></div><div style="text-align:right"><b>' + esc(mesLbl(ST.mes)) + '</b><small>Emitido em ' + fmtD(hoje()) + ' ' + agoraH() + '</small></div></div>';
+/* ===== Impressão e planilha (modelo do DECO-KO) ===== */
+var EXT = ['zero', 'uma', 'duas', 'três', 'quatro', 'cinco', 'seis', 'sete', 'oito', 'nove', 'dez', 'onze', 'doze', 'treze', 'quatorze', 'quinze', 'dezesseis', 'dezessete', 'dezoito', 'dezenove', 'vinte'];
+function linhas(s) { return String(s || '').split(/\r?\n/).map(function (l) { return l.trim(); }).filter(Boolean); }
+function assin2() {
+  var c = D.cfg, a = function (n, f) { return '<div><b>' + esc(n || '') + '</b><br>' + esc(f || '') + '</div>'; };
+  return '<div class="ass">' + a(c.encNome, c.encFunc) + (c.chefeNome || c.chefeFunc ? a(c.chefeNome, c.chefeFunc) : '') + '</div>';
 }
-function assin() { return '<div class="ass"><div>' + (D.cfg.resp ? esc(D.cfg.resp) + '<br><small>Responsável pela enfermaria</small>' : 'Responsável pela enfermaria') + '</div><div>Visto do chefe / encarregado</div></div>'; }
+function dataFim() { var p = ST.mes.split('-').map(Number); return (D.cfg.cidade ? D.cfg.cidade + ', ' : '') + pad(ultDia(p[0], p[1])) + ' de ' + cap(MESES[p[1] - 1]) + ' de ' + p[0]; }
+function diagRel(a) { var c = (a.cids || []).map(function (x) { return cidDesc(x) + ' (' + x + ')'; }); return c.length ? c.join(' + ') : (a.queixa || '—'); }
+function medRel(m) { var ap = m.apres && !/injet/i.test(m.apres) ? ' ' + m.apres : ''; return m.nome + ap + (m.via ? ' ' + m.via : ''); }
+function condRel(a) {
+  var meds = (a.meds || []).filter(function (m) { return m.tipo !== 'mat'; }), p = meds.map(medRel);
+  (a.cond || []).forEach(function (c) {
+    if (c === 'medic' && meds.length) return;
+    var t = { orient: 'Orientado', medic: 'Medicado', curat: 'Curativo', obs: 'Observação na enfermaria', lib: 'Liberado ao serviço', afast: 'Afastado' + (a.afast ? ' ' + a.afast + (num(a.afast) === 1 ? ' dia' : ' dias') : ''), retorno: 'Retorno' + (a.condOutro ? ': ' + a.condOutro : ''), hosp: 'Encaminhado ao hospital' + (a.destino ? ' (' + a.destino + ')' : ''), espec: 'Encaminhado a especialista/UBS' + (a.destino ? ' (' + a.destino + ')' : ''), evam: 'EVAM', outro: a.condOutro || 'Outra conduta' }[c];
+    if (t) p.push(t);
+  });
+  return p.length ? p.join(' + ') : 'S/A';
+}
+function condTxt(a) { return condRel(a); }
+function printAt() {
+  var r = dadosRelAt(ST.mes), c = D.cfg, m = txtMes(ST.mes), pm = ST.mes.split('-').map(Number), sig = c.sigla || 'enfermaria';
+  var h = '<div class="of">' + linhas(c.cab).map(function (l) { return '<div>' + esc(l) + '</div>'; }).join('') + '<div class="tt">RELATÓRIO DE ATENDIMENTOS</div><div>PERÍODO DE 01 A ' + pad(ultDia(pm[0], pm[1])) + ' DE ' + MESES[pm[1] - 1].toUpperCase() + ' DE ' + pm[0] + '</div></div>';
+  var casos = r.cidL.slice(0, 12).map(function (x) { var d = cidDesc(x); return d.charAt(0).toLowerCase() + d.slice(1); });
+  h += '<p class="pj">I – ' + esc(c.intro || '') + '</p>';
+  h += '<p class="pj">Foram realizados ' + r.L.length + ' atendimentos' + (casos.length ? ' envolvendo casos de: ' + esc(casos.join(', ')) + (r.cidL.length > 12 ? ', dentre outros' : '') : '') + ', todos registrados no livro de ordens e ocorrências desta Enfermaria.</p>';
+  if (c.obsAgua) h += '<p class="pj"><b>Observação:</b> ' + esc(c.obsAgua) + '</p>';
+  h += '<p class="sec">II – ATENDIMENTOS NA ENFERMARIA DESTE ' + esc(sig) + ':</p>';
+  h += r.L.length ? r.L.map(function (a, i) { var p = atPac(a) || {}; return '<table class="ab"><tr><td class="n1">' + pad(i + 1) + '</td><td class="n2">' + fmtD(a.data) + '</td><td class="n3">' + esc(postoAb(p)) + '</td><td>' + esc(p.nome || '') + '</td></tr><tr><td colspan="2" class="lb">DIAGNÓSTICA</td><td colspan="2">' + esc(diagRel(a)) + '</td></tr><tr><td colspan="2" class="lb">CONDUTA</td><td colspan="2">' + esc(condRel(a)) + '</td></tr></table>'; }).join('') : '<p>Nenhum atendimento no período.</p>';
+  h += '<p class="sec">III – ATIVIDADES DESEMPENHADAS:</p>' + (linhas(m.ativ).map(function (l) { return '<div class="ln">' + esc(l) + '</div>'; }).join('') || '<div class="ln">—</div>');
+  h += '<p class="sec">IV – PROPOSTAS PARA MELHORIA DA ENFERMARIA DESTE ' + esc(sig) + ':</p>' + (linhas(m.prop).map(function (l) { return '<div class="ln">' + esc(l) + '</div>'; }).join('') || '<div class="ln">- Sem propostas no período.</div>');
+  var ev = r.cond.evam || 0;
+  h += '<p class="sec">V – OCORRÊNCIAS: <span style="font-weight:400">' + ev + ' (' + (EXT[ev] || ev) + ') ' + (ev === 1 ? 'ocorrência' : 'ocorrências') + ' de EVAM' + (m.ocor ? '. ' + esc(m.ocor) : '') + '</span></p>';
+  if (c.resumo && r.L.length) {
+    h += '<p class="sec">VI – RESUMO DOS ATENDIMENTOS:</p><div class="res"><div>Atendimentos<b>' + r.L.length + '</b></div><div>Pacientes diferentes<b>' + Object.keys(r.pacs).length + '</b></div><div>Militares / civis<b>' + r.mil + ' / ' + r.civ + '</b></div><div>Encaminhados ao hospital<b>' + r.hosp.length + '</b></div></div>';
+    if (r.cidL.length) h += '<table><tr><th>CID-10</th><th>Diagnóstico</th><th class="n">Nº</th></tr>' + r.cidL.map(function (x) { return '<tr><td>' + esc(x) + '</td><td>' + esc(cidDesc(x)) + '</td><td class="n">' + r.cids[x] + '</td></tr>'; }).join('') + (r.semCid ? '<tr><td>—</td><td>Sem CID informado</td><td class="n">' + r.semCid + '</td></tr>' : '') + '</table>';
+    h += '<div class="g2"><table><tr><th>Posto / graduação</th><th class="n">Atend.</th></tr>' + r.postos.map(function (k) { return '<tr><td>' + esc(k) + '</td><td class="n">' + r.porPosto[k].at + '</td></tr>'; }).join('') + '</table>';
+    h += '<table><tr><th>Conduta</th><th class="n">Nº</th></tr>' + CONDUTAS.filter(function (x) { return r.cond[x[0]]; }).map(function (x) { return '<tr><td>' + x[1] + '</td><td class="n">' + r.cond[x[0]] + '</td></tr>'; }).join('') + (r.afastN ? '<tr><td>Dias de afastamento (total)</td><td class="n">' + fmtN(r.afastDias) + '</td></tr>' : '') + '</table></div>';
+  }
+  h += '<p class="dt">' + esc(dataFim()) + '</p>' + assin2();
+  return h;
+}
+function printMed() {
+  var r = dadosRelMed(ST.mes), c = D.cfg, pm = ST.mes.split('-').map(Number);
+  var h = '<div class="of">' + linhas(c.cabMed).map(function (l) { return '<div>' + esc(l) + '</div>'; }).join('') + '<div class="tt">RELAÇÃO DE MEDICAMENTOS E MATERIAL PENSO' + (c.sigla ? ' DO ' + esc(c.sigla) : '') + ' ' + MESES[pm[1] - 1].toUpperCase() + ' ' + pm[0] + '</div></div>';
+  var tab = function (l, tit) { return '<table class="rl"><tr><th>' + tit + '</th><th>UND</th><th class="n">USADO NO MÊS</th><th class="n">EXISTENTE</th><th>VALIDADE</th><th class="n">PEDIDO</th></tr>' + l.map(function (x) { return '<tr><td>' + esc((x.nome + (x.apres ? ' ' + x.apres : '')).toUpperCase()) + '</td><td>' + esc(UN_AB[x.un] || String(x.un).toUpperCase()) + '</td><td class="n">' + (x.uso ? fmtN(x.uso) : '') + '</td><td class="n">' + (x.exist < 10 ? '0' : '') + fmtN(x.exist) + '</td><td>' + (x.exist > 0 && x.val ? valCurta(x.val) : (x.exist > 0 ? '-' : '')) + '</td><td class="n">' + (x.ped ? (x.ped < 10 ? '0' : '') + fmtN(x.ped) : '') + '</td></tr>'; }).join('') + '</table>'; };
+  var med = r.med.filter(function (x) { return x.it || x.uso; }), mat = r.mat.filter(function (x) { return x.it || x.uso; });
+  if (med.length) h += tab(med, 'MEDICAÇÃO');
+  if (mat.length) h += '<p class="sec" style="text-align:center">MATERIAL PENSO</p>' + tab(mat, 'MATERIAL PENSO');
+  var mv = r.med.concat(r.mat).filter(function (x) { return x.ent || x.bx || x.aj; });
+  if (mv.length) h += '<p class="sec">MOVIMENTAÇÕES DO MÊS (ALÉM DO USO NOS ATENDIMENTOS)</p><table><tr><th>Item</th><th class="n">Entradas</th><th class="n">Baixas</th><th>Motivo da baixa</th><th class="n">Ajustes</th></tr>' + mv.map(function (x) { return '<tr><td>' + esc(x.nome + (x.apres ? ' ' + x.apres : '')) + '</td><td class="n">' + (x.ent ? fmtN(x.ent) : '') + '</td><td class="n">' + (x.bx ? fmtN(x.bx) : '') + '</td><td>' + esc(Object.keys(x.mot).map(function (m) { return m + ' (' + fmtN(x.mot[m]) + ')'; }).join('; ')) + '</td><td class="n">' + (x.aj ? (x.aj > 0 ? '+' : '') + fmtN(x.aj) : '') + '</td></tr>'; }).join('') + '</table>';
+  h += '<div class="ass one"><div><b>' + esc(c.encNome || '') + '</b>' + (c.encFunc ? '<br>' + esc(c.encFunc) : '') + '</div></div>';
+  return h;
+}
 function imprimir() {
   carregaCid().then(function () {
-    var h = ST.relT === 'at' ? printAt() : printMed();
-    $('#print').innerHTML = h; setTimeout(function () { window.print(); }, 60);
+    $('#print').innerHTML = ST.relT === 'at' ? printAt() : printMed();
+    setTimeout(function () { window.print(); }, 60);
   });
-}
-function printAt() {
-  var r = dadosRelAt(ST.mes);
-  var h = cabec('Relatório mensal de atendimentos da enfermaria');
-  h += '<div class="res"><div>Atendimentos<b>' + r.L.length + '</b></div><div>Pacientes diferentes<b>' + Object.keys(r.pacs).length + '</b></div><div>Militares / civis<b>' + r.mil + ' / ' + r.civ + '</b></div><div>Encaminhados ao hospital<b>' + r.hosp.length + '</b></div></div>';
-  h += '<h2>Diagnósticos (CID-10)</h2>' + (r.cidL.length ? '<table><tr><th>CID</th><th>Descrição</th><th class="n">Nº</th></tr>' + r.cidL.map(function (c) { return '<tr><td>' + esc(c) + '</td><td>' + esc(cidDesc(c)) + '</td><td class="n">' + r.cids[c] + '</td></tr>'; }).join('') + (r.semCid ? '<tr><td>—</td><td>Sem CID informado</td><td class="n">' + r.semCid + '</td></tr>' : '') + '</table>' : '<p>Nenhum CID informado.</p>');
-  var caps = Object.keys(r.caps).sort(function (a, b) { return r.caps[b] - r.caps[a]; });
-  if (caps.length) h += '<h2>Por capítulo da CID-10</h2><table><tr><th>Cap.</th><th>Descrição</th><th class="n">Nº</th></tr>' + caps.map(function (k) { var cp = CAPS.filter(function (c) { return c[0] === k; })[0]; return '<tr><td>' + k + '</td><td>' + esc(cp ? cp[3] : '') + '</td><td class="n">' + r.caps[k] + '</td></tr>'; }).join('') + '</table>';
-  h += '<h2>Por posto / graduação</h2><table><tr><th>Posto / graduação</th><th class="n">Atendimentos</th><th class="n">Pacientes</th></tr>' + r.postos.map(function (k) { return '<tr><td>' + esc(k) + '</td><td class="n">' + r.porPosto[k].at + '</td><td class="n">' + Object.keys(r.porPosto[k].p).length + '</td></tr>'; }).join('') + '</table>';
-  h += '<h2>Condutas</h2><table><tr><th>Conduta</th><th class="n">Nº</th></tr>' + CONDUTAS.filter(function (c) { return r.cond[c[0]]; }).map(function (c) { return '<tr><td>' + c[1] + '</td><td class="n">' + r.cond[c[0]] + '</td></tr>'; }).join('') + (r.afastN ? '<tr><td>Total de dias de afastamento</td><td class="n">' + fmtN(r.afastDias) + '</td></tr>' : '') + '</table>';
-  if (r.hosp.length) h += '<h2>Encaminhamentos ao hospital</h2><table><tr><th>Data</th><th>Paciente</th><th>CID</th><th>Destino / transporte</th></tr>' + r.hosp.map(function (a) { return '<tr><td>' + fmtD(a.data) + ' ' + esc(a.hora) + '</td><td>' + esc(pNome(atPac(a))) + '</td><td>' + esc((a.cids || []).join(', ')) + '</td><td>' + esc([a.destino, a.transp].filter(Boolean).join(' · ')) + '</td></tr>'; }).join('') + '</table>';
-  h += '<h2>Relação de atendimentos</h2><table><tr><th>Data</th><th>Paciente</th><th>Posto/Grad.</th><th>CID</th><th>Medicamentos / materiais</th><th>Conduta</th></tr>' + r.L.map(function (a) { var p = atPac(a); return '<tr><td>' + fmtDc(a.data) + ' ' + esc(a.hora) + '</td><td>' + esc(p ? p.nome : '') + '</td><td>' + esc(postoAb(p)) + '</td><td>' + esc((a.cids || []).join(', ')) + '</td><td>' + esc((a.meds || []).map(function (m) { return m.nome + (m.apres ? ' ' + m.apres : '') + ' (' + fmtN(m.qtd) + ')'; }).join('; ')) + '</td><td>' + esc(condTxt(a)) + '</td></tr>'; }).join('') + '</table>';
-  h += assin() + '<p class="nota">Documento com dados de saúde: uso restrito.</p>';
-  return h;
-}
-function condTxt(a) { return (a.cond || []).map(function (c) { var t = COND_LBL[c] || c; if (c === 'afast' && a.afast) t += ' (' + a.afast + ' d)'; if ((c === 'hosp' || c === 'espec') && a.destino) t += ': ' + a.destino; if ((c === 'outro' || c === 'retorno') && a.condOutro) t += ': ' + a.condOutro; return t; }).join('; '); }
-function printMed() {
-  var r = dadosRelMed(ST.mes);
-  var h = cabec('Relação mensal de medicamentos e materiais');
-  [['med', 'Medicamentos'], ['mat', 'Materiais']].forEach(function (t) {
-    var l = r[t[0]]; if (!l.length) return;
-    h += '<h2>' + t[1] + ' movimentados no mês</h2><table><tr><th>Item</th><th>Apresentação</th><th class="n">Usado</th><th class="n">Nº atend.</th><th class="n">Entradas</th><th class="n">Baixas</th><th>Motivo da baixa</th><th class="n">Saldo atual</th><th>Próx. validade</th></tr>' +
-      l.map(function (x) { return '<tr><td>' + esc(x.nome) + '</td><td>' + esc(x.apres) + '</td><td class="n">' + fmtN(x.uso) + '</td><td class="n">' + x.nAt + '</td><td class="n">' + fmtN(x.ent) + '</td><td class="n">' + fmtN(x.bx) + '</td><td>' + esc(Object.keys(x.mot).map(function (m) { return m + ' (' + fmtN(x.mot[m]) + ')'; }).join('; ')) + '</td><td class="n">' + (x.inf ? fmtN(x.inf.tot) + ' ' + esc(unLbl(x.un, x.inf.tot)) : '—') + '</td><td>' + (x.inf && x.inf.prox ? fmtVal(x.inf.prox) : '—') + '</td></tr>'; }).join('') + '</table>';
-  });
-  if (!r.med.length && !r.mat.length) h += '<p>Nenhuma movimentação no mês.</p>';
-  var crit = D.itens.map(function (it) { return { it: it, i: info(it) }; }).filter(function (x) { return x.i.venc > 0 || x.i.st === 'v30' || x.i.st === 'v90' || x.i.est; }).sort(function (a, b) { return a.it.nome.localeCompare(b.it.nome, 'pt'); });
-  if (crit.length) h += '<h2>Situação do estoque em ' + fmtD(hoje()) + ' (atenção)</h2><table><tr><th>Item</th><th class="n">Saldo</th><th class="n">Vencidos</th><th>Próx. validade</th><th>Situação</th></tr>' + crit.map(function (x) { var s = []; if (x.i.venc) s.push('lote vencido'); if (x.i.st === 'v30') s.push('vence em até 30 dias'); else if (x.i.st === 'v90') s.push('vence em até 90 dias'); if (x.i.est === 'falta') s.push('em falta'); else if (x.i.est === 'baixo') s.push('abaixo do mínimo (' + fmtN(x.it.min) + ')'); return '<tr><td>' + esc(itNome(x.it)) + '</td><td class="n">' + fmtN(x.i.tot) + '</td><td class="n">' + fmtN(x.i.venc) + '</td><td>' + (x.i.prox ? fmtVal(x.i.prox) : '—') + '</td><td>' + s.join(', ') + '</td></tr>'; }).join('') + '</table>';
-  h += assin();
-  return h;
 }
 function csv() {
   carregaCid().then(function () {
-    var linhas = [], s = function (v) { v = String(v == null ? '' : v); return /[;"\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; };
+    var L = [], s = function (v) { v = String(v == null ? '' : v); return /[;"\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; };
     if (ST.relT === 'at') {
-      linhas.push(['Data', 'Hora', 'Paciente', 'Posto/Graduação', 'Militar/Civil', 'Empresa', 'CID', 'Descrição CID', 'Queixa', 'PA', 'FC', 'Temp', 'SpO2', 'Medicamentos/materiais', 'Conduta', 'Destino', 'Transporte', 'Dias afastamento', 'Observações']);
-      dadosRelAt(ST.mes).L.forEach(function (a) { var p = atPac(a) || {}, sv = a.sv || {}; linhas.push([fmtD(a.data), a.hora, p.nome, postoAb(p), p.tipo === 'civil' ? 'Civil' : 'Militar', p.empresa || '', (a.cids || []).join(', '), (a.cids || []).map(cidDesc).join(' / '), a.queixa, sv.pa, sv.fc, sv.tax, sv.spo2, (a.meds || []).map(function (m) { return m.nome + (m.apres ? ' ' + m.apres : '') + ' (' + fmtN(m.qtd) + ')'; }).join('; '), condTxt(a), a.destino, a.transp, a.afast, a.obs]); });
+      L.push(['Nº', 'Data', 'Hora', 'Posto/Grad.', 'Nome', 'Militar/Civil', 'Empresa', 'CID', 'Diagnóstica', 'Conduta', 'Queixa', 'PA', 'FC', 'Temp', 'SpO2', 'Medicamentos/materiais (qtd)', 'Destino', 'Transporte', 'Dias afastamento', 'Observações']);
+      dadosRelAt(ST.mes).L.forEach(function (a, i) { var p = atPac(a) || {}, sv = a.sv || {}; L.push([i + 1, fmtD(a.data), a.hora, postoAb(p), p.nome, p.tipo === 'civil' ? 'Civil' : 'Militar', p.empresa || '', (a.cids || []).join(', '), diagRel(a), condRel(a), a.queixa, sv.pa, sv.fc, sv.tax, sv.spo2, (a.meds || []).map(function (m) { return m.nome + (m.apres ? ' ' + m.apres : '') + ' (' + fmtN(m.qtd) + ')'; }).join('; '), a.destino, a.transp, a.afast, a.obs]); });
     } else {
-      linhas.push(['Tipo', 'Item', 'Apresentação', 'Unidade', 'Usado no mês', 'Nº atendimentos', 'Entradas', 'Baixas', 'Motivo das baixas', 'Saldo atual', 'Próxima validade']);
-      var r = dadosRelMed(ST.mes); r.med.concat(r.mat).forEach(function (x) { linhas.push([x.tipo === 'mat' ? 'Material' : 'Medicamento', x.nome, x.apres, x.un.un || '', fmtN(x.uso), x.nAt, fmtN(x.ent), fmtN(x.bx), Object.keys(x.mot).map(function (m) { return m + ' (' + fmtN(x.mot[m]) + ')'; }).join('; '), x.inf ? fmtN(x.inf.tot) : '', x.inf && x.inf.prox ? fmtVal(x.inf.prox) : '']); });
+      L.push(['Tipo', 'Item', 'UND', 'Usado no mês', 'Nº atendimentos', 'Existente (fim do mês)', 'Validade', 'Pedido', 'Entradas', 'Baixas', 'Motivo das baixas']);
+      var r = dadosRelMed(ST.mes); r.med.concat(r.mat).forEach(function (x) { L.push([x.tipo === 'mat' ? 'Material penso' : 'Medicamento', x.nome + (x.apres ? ' ' + x.apres : ''), UN_AB[x.un] || x.un, fmtN(x.uso), x.nAt, fmtN(x.exist), x.val ? valCurta(x.val) : '', x.ped ? fmtN(x.ped) : '', fmtN(x.ent), fmtN(x.bx), Object.keys(x.mot).map(function (m) { return m + ' (' + fmtN(x.mot[m]) + ')'; }).join('; ')]); });
     }
-    baixa((ST.relT === 'at' ? 'atendimentos-' : 'medicamentos-') + ST.mes + '.csv', '﻿' + linhas.map(function (l) { return l.map(s).join(';'); }).join('\r\n'), 'text/csv;charset=utf-8');
+    baixa((ST.relT === 'at' ? 'atendimentos-' : 'medicamentos-') + ST.mes + '.csv', '﻿' + L.map(function (l) { return l.map(s).join(';'); }).join('\r\n'), 'text/csv;charset=utf-8');
     toast('Planilha baixada');
   });
 }
@@ -1494,6 +1672,7 @@ addEventListener('resize', function () { largura(); segLens(document); });
 addEventListener('afterprint', function () { $('#print').innerHTML = ''; });
 
 /* ---------- início ---------- */
+semeia();
 render();
 carregaCid().then(function () { if (ST.tab === 'rel' || ST.tab === 'ini') render(); }).catch(function () { });
 if ('serviceWorker' in navigator && location.protocol.indexOf('http') === 0) { navigator.serviceWorker.register('sw.js').catch(function () { }); }
