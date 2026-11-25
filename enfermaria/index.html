@@ -194,6 +194,11 @@ body.wide .cgrid{grid-template-columns:1fr 1fr 1fr}
 body.wide .cgrid .chip:last-child{grid-column:span 2}
 .cgrid .chip{justify-content:center;text-align:center;white-space:normal;min-height:44px;padding:8px 10px;border-radius:14px}
 .cgrid .chip .ico{margin-left:-4px}
+.cgrid .cout{padding:0 4px 0 14px;gap:4px;cursor:text}
+.cgrid .cout input{flex:1;min-width:0;min-height:42px;border:0!important;background:transparent!important;box-shadow:none!important;color:#fff;font-weight:600;font-size:16px;padding:0;text-align:left}
+.cgrid .cout input::placeholder{color:rgba(255,255,255,.75)}
+.cgrid .cout button{flex:none;width:32px;height:32px;border:0;border-radius:50%;background:rgba(255,255,255,.22);color:#fff;display:grid;place-items:center;padding:0}
+.cgrid .cout button .ico{width:15px;height:15px;margin:0;stroke-width:2.6}
 
 /* segmento de vidro */
 .gseg{display:flex;position:relative;border-radius:999px;padding:4px;margin:0 12px 12px;height:46px}
@@ -1130,11 +1135,13 @@ function abrirAt(id, pre) {
       var usados = 0; f.meds.forEach(function (x) { if (x.item === m.item) usados += num(x.qtd); });
       return '<div class="mrw"><span class="sp"><div class="t">' + esc(it ? it.nome : m.nome) + '</div><div class="s' + (falta ? ' bad' : '') + '">' + esc(it ? (it.apres || '') : (m.apres || '')) + (it ? (it.apres ? ' · ' : '') + (falta ? 'só há ' + fmtN(disp) : 'há ' + fmtN(disp)) + ' ' + esc(unLbl(it, disp)) : ' · item removido') + '</div>' + ((it ? it.tipo : m.tipo) !== 'mat' ? '<select class="via" data-k="via" data-i="' + i + '" aria-label="Via">' + ['<option value="">via</option>'].concat(VIAS.map(function (v) { return '<option' + (m.via === v ? ' selected' : '') + '>' + v + '</option>'; })).join('') + '</select>' : '') + '</span><div class="stp"><button data-k="q-" data-i="' + i + '" aria-label="Menos">' + ic('minus') + '</button><input inputmode="decimal" data-k="qv" data-i="' + i + '" value="' + esc(fmtN(num(m.qtd))) + '"><button data-k="q+" data-i="' + i + '" aria-label="Mais">' + ic('plus') + '</button></div><button class="del" data-k="mx" data-i="' + i + '" aria-label="Remover">' + ic('trash') + '</button></div>';
     }).join('') + '<div class="ipad"><button class="addb" data-k="med">' + ic('plus') + 'Adicionar do estoque</button></div></div>' + (f.meds.length ? '<div class="igf">Ao salvar, sai do estoque o lote que vence primeiro.</div>' : '') + '</div>';
-    h += '<div class="ig"><div class="igh">Conduta</div><div class="igb"><div class="ipad"><div class="cgrid">' + CONDUTAS.map(function (c) { return '<button class="chip' + (f.cond.indexOf(c[0]) >= 0 ? ' on' : '') + '" data-k="cond" data-c="' + c[0] + '">' + (f.cond.indexOf(c[0]) >= 0 ? ic('check') : '') + c[2] + '</button>'; }).join('') + '</div></div>';
+    h += '<div class="ig"><div class="igh">Conduta</div><div class="igb"><div class="ipad"><div class="cgrid">' + CONDUTAS.map(function (c) {
+      if (c[0] === 'outro' && f.cond.indexOf('outro') >= 0) return '<div class="chip on cout"><input data-f="condOutro" placeholder="Qual conduta?" value="' + esc(f.condOutro) + '" autocomplete="off" enterkeyhint="done"><button type="button" data-k="cond" data-c="outro" aria-label="Desmarcar outra conduta">' + ic('x') + '</button></div>';
+      return '<button class="chip' + (f.cond.indexOf(c[0]) >= 0 ? ' on' : '') + '" data-k="cond" data-c="' + c[0] + '">' + (f.cond.indexOf(c[0]) >= 0 ? ic('check') : '') + c[2] + '</button>'; }).join('') + '</div></div>';
     if (f.cond.indexOf('hosp') >= 0 || f.cond.indexOf('espec') >= 0) h += '<div class="ipad"><label class="fl"><span>' + (f.cond.indexOf('hosp') >= 0 ? 'Hospital de destino' : 'Para onde') + '</span><input data-f="destino" placeholder="Nome do hospital / unidade" value="' + esc(f.destino) + '"></label></div>';
     if (f.cond.indexOf('hosp') >= 0) h += '<label class="ir"><span class="il">Transporte</span><select class="ri" data-f="transp"><option value="">—</option>' + TRANSP.map(function (t) { return '<option' + (f.transp === t ? ' selected' : '') + '>' + t + '</option>'; }).join('') + '</select></label>';
     if (f.cond.indexOf('afast') >= 0) h += '<label class="ir"><span class="il">Dias de afastamento</span><input class="ri" inputmode="decimal" data-f="afast" placeholder="0" value="' + esc(f.afast) + '"></label>';
-    if (f.cond.indexOf('outro') >= 0 || f.cond.indexOf('retorno') >= 0) h += '<div class="ipad"><label class="fl"><span>' + (f.cond.indexOf('outro') >= 0 ? 'Qual conduta' : 'Retorno (quando / onde)') + '</span><input data-f="condOutro" placeholder="Descreva" value="' + esc(f.condOutro) + '"></label></div>';
+    if (f.cond.indexOf('retorno') >= 0) h += '<div class="ipad"><label class="fl"><span>Retorno (quando / onde)</span><input data-f="retTxt" placeholder="Ex.: amanhã às 8h na enfermaria" value="' + esc(f.retTxt || (f.cond.indexOf('outro') < 0 ? f.condOutro : '') || '') + '"></label></div>';
     h += '</div></div>';
     h += '<div class="ig"><div class="igh">Observações / evolução</div><div class="igb"><div class="ipad"><textarea data-f="obs" rows="3" placeholder="Exame físico, orientações, evolução…">' + esc(f.obs) + '</textarea></div></div></div>';
     if (ex) h += '<div class="ig"><div class="igb"><button class="ir red" data-k="del">Apagar atendimento</button></div></div>';
@@ -1164,7 +1171,7 @@ function abrirAt(id, pre) {
     else if (k === 'q-') { f.meds[i].qtd = Math.max(0, num(f.meds[i].qtd) - 1); if (f.meds[i].qtd === 0) f.meds.splice(i, 1); autoMedic(); desenha(); }
     else if (k === 'q+') { f.meds[i].qtd = num(f.meds[i].qtd) + 1; desenha(); }
     else if (k === 'mx') { f.meds.splice(i, 1); autoMedic(); desenha(); }
-    else if (k === 'cond') { var c = b.dataset.c, j = f.cond.indexOf(c); if (j >= 0) f.cond.splice(j, 1); else f.cond.push(c); if (c === 'lib' && j < 0) { var x = f.cond.indexOf('afast'); if (x >= 0) f.cond.splice(x, 1); } if (c === 'afast' && j < 0) { var y = f.cond.indexOf('lib'); if (y >= 0) f.cond.splice(y, 1); } desenha(); }
+    else if (k === 'cond') { var c = b.dataset.c, j = f.cond.indexOf(c); if (j >= 0) f.cond.splice(j, 1); else f.cond.push(c); if (c === 'lib' && j < 0) { var x = f.cond.indexOf('afast'); if (x >= 0) f.cond.splice(x, 1); } if (c === 'afast' && j < 0) { var y = f.cond.indexOf('lib'); if (y >= 0) f.cond.splice(y, 1); } desenha(); if (c === 'outro' && j < 0) { var oi = $('.cout input', bd); if (oi) oi.focus(); } }
     else if (k === 'del') confirma('Apagar atendimento?', 'Os medicamentos e materiais deste atendimento voltam para o estoque.', 'Apagar', function () { desfazUso(ex.id); D.at = D.at.filter(function (a) { return a.id !== ex.id; }); salva(); fecha(d); render(); toast('Atendimento apagado'); }, true);
   });
   $('[data-ok]', d).addEventListener('click', function () {
@@ -1660,7 +1667,7 @@ function condRel(a) {
   var meds = (a.meds || []).filter(function (m) { return m.tipo !== 'mat'; }), p = meds.map(medRel);
   (a.cond || []).forEach(function (c) {
     if (c === 'medic' && meds.length) return;
-    var t = { orient: 'Orientado', medic: 'Medicado', curat: 'Curativo', obs: 'Observação na enfermaria', lib: 'Liberado ao serviço', afast: 'Afastado' + (a.afast ? ' ' + a.afast + (num(a.afast) === 1 ? ' dia' : ' dias') : ''), retorno: 'Retorno' + (a.condOutro ? ': ' + a.condOutro : ''), hosp: 'Encaminhado ao hospital' + (a.destino ? ' (' + a.destino + ')' : ''), espec: 'Encaminhado a especialista/UBS' + (a.destino ? ' (' + a.destino + ')' : ''), evam: 'EVAM', outro: a.condOutro || 'Outra conduta' }[c];
+    var t = { orient: 'Orientado', medic: 'Medicado', curat: 'Curativo', obs: 'Observação na enfermaria', lib: 'Liberado ao serviço', afast: 'Afastado' + (a.afast ? ' ' + a.afast + (num(a.afast) === 1 ? ' dia' : ' dias') : ''), retorno: 'Retorno' + ((a.retTxt || ((a.cond || []).indexOf('outro') < 0 && a.condOutro)) ? ': ' + (a.retTxt || a.condOutro) : ''), hosp: 'Encaminhado ao hospital' + (a.destino ? ' (' + a.destino + ')' : ''), espec: 'Encaminhado a especialista/UBS' + (a.destino ? ' (' + a.destino + ')' : ''), evam: 'EVAM', outro: a.condOutro || 'Outra conduta' }[c];
     if (t) p.push(t);
   });
   return p.length ? p.join(' + ') : 'S/A';
