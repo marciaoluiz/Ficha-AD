@@ -194,11 +194,11 @@ body.wide .cgrid{grid-template-columns:1fr 1fr 1fr}
 body.wide .cgrid .chip:last-child{grid-column:span 2}
 .cgrid .chip{justify-content:center;text-align:center;white-space:normal;min-height:44px;padding:8px 10px;border-radius:14px}
 .cgrid .chip .ico{margin-left:-4px}
-.cgrid .cout{padding:0 4px 0 14px;gap:4px;cursor:text}
-.cgrid .cout input{flex:1;min-width:0;min-height:42px;border:0!important;background:transparent!important;box-shadow:none!important;color:#fff;font-weight:600;font-size:16px;padding:0;text-align:left}
-.cgrid .cout input::placeholder{color:rgba(255,255,255,.75)}
-.cgrid .cout button{flex:none;width:32px;height:32px;border:0;border-radius:50%;background:rgba(255,255,255,.22);color:#fff;display:grid;place-items:center;padding:0}
-.cgrid .cout button .ico{width:15px;height:15px;margin:0;stroke-width:2.6}
+.cgrid .cout{background:var(--input);border:2px solid var(--acc);color:var(--ink);padding:0 6px;gap:4px;cursor:text;box-shadow:0 0 0 3px var(--acc-soft)}
+.cgrid .cout input{flex:1;min-width:0;min-height:40px;border:0!important;background:transparent!important;box-shadow:none!important;color:var(--ink);font-weight:600;font-size:15px;padding:0 0 0 30px;text-align:center}
+.cgrid .cout input::placeholder{color:var(--mut);font-weight:500}
+.cgrid .cout button{flex:none;width:26px;height:26px;border:0;border-radius:50%;background:var(--tag-bg);color:var(--mut);display:grid;place-items:center;padding:0}
+.cgrid .cout button .ico{width:13px;height:13px;margin:0;stroke-width:2.8}
 
 /* segmento de vidro */
 .gseg{display:flex;position:relative;border-radius:999px;padding:4px;margin:0 12px 12px;height:46px}
@@ -1136,7 +1136,7 @@ function abrirAt(id, pre) {
       return '<div class="mrw"><span class="sp"><div class="t">' + esc(it ? it.nome : m.nome) + '</div><div class="s' + (falta ? ' bad' : '') + '">' + esc(it ? (it.apres || '') : (m.apres || '')) + (it ? (it.apres ? ' · ' : '') + (falta ? 'só há ' + fmtN(disp) : 'há ' + fmtN(disp)) + ' ' + esc(unLbl(it, disp)) : ' · item removido') + '</div>' + ((it ? it.tipo : m.tipo) !== 'mat' ? '<select class="via" data-k="via" data-i="' + i + '" aria-label="Via">' + ['<option value="">via</option>'].concat(VIAS.map(function (v) { return '<option' + (m.via === v ? ' selected' : '') + '>' + v + '</option>'; })).join('') + '</select>' : '') + '</span><div class="stp"><button data-k="q-" data-i="' + i + '" aria-label="Menos">' + ic('minus') + '</button><input inputmode="decimal" data-k="qv" data-i="' + i + '" value="' + esc(fmtN(num(m.qtd))) + '"><button data-k="q+" data-i="' + i + '" aria-label="Mais">' + ic('plus') + '</button></div><button class="del" data-k="mx" data-i="' + i + '" aria-label="Remover">' + ic('trash') + '</button></div>';
     }).join('') + '<div class="ipad"><button class="addb" data-k="med">' + ic('plus') + 'Adicionar do estoque</button></div></div>' + (f.meds.length ? '<div class="igf">Ao salvar, sai do estoque o lote que vence primeiro.</div>' : '') + '</div>';
     h += '<div class="ig"><div class="igh">Conduta</div><div class="igb"><div class="ipad"><div class="cgrid">' + CONDUTAS.map(function (c) {
-      if (c[0] === 'outro' && f.cond.indexOf('outro') >= 0) return '<div class="chip on cout"><input data-f="condOutro" placeholder="Qual conduta?" value="' + esc(f.condOutro) + '" autocomplete="off" enterkeyhint="done"><button type="button" data-k="cond" data-c="outro" aria-label="Desmarcar outra conduta">' + ic('x') + '</button></div>';
+      if (c[0] === 'outro' && f.cond.indexOf('outro') >= 0) return '<div class="chip on cout"><input data-f="condOutro" placeholder="Escreva a conduta" value="' + esc(f.condOutro) + '" autocomplete="off" enterkeyhint="done"><button type="button" data-k="cond" data-c="outro" aria-label="Desmarcar outra conduta">' + ic('x') + '</button></div>';
       return '<button class="chip' + (f.cond.indexOf(c[0]) >= 0 ? ' on' : '') + '" data-k="cond" data-c="' + c[0] + '">' + (f.cond.indexOf(c[0]) >= 0 ? ic('check') : '') + c[2] + '</button>'; }).join('') + '</div></div>';
     if (f.cond.indexOf('hosp') >= 0 || f.cond.indexOf('espec') >= 0) h += '<div class="ipad"><label class="fl"><span>' + (f.cond.indexOf('hosp') >= 0 ? 'Hospital de destino' : 'Para onde') + '</span><input data-f="destino" placeholder="Nome do hospital / unidade" value="' + esc(f.destino) + '"></label></div>';
     if (f.cond.indexOf('hosp') >= 0) h += '<label class="ir"><span class="il">Transporte</span><select class="ri" data-f="transp"><option value="">—</option>' + TRANSP.map(function (t) { return '<option' + (f.transp === t ? ' selected' : '') + '>' + t + '</option>'; }).join('') + '</select></label>';
