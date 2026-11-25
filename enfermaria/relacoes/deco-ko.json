@@ -1,0 +1,593 @@
+{
+ "formato": "enfermaria-relacao",
+ "versao": 1,
+ "nome": "DECO-KO · Coari-AM",
+ "referencia": "2026-11",
+ "cabecalho": {
+  "sigla": "DECO-KO",
+  "cidade": "Coari-AM",
+  "cab": "COMANDO DA AERONÁUTICA\nCOMISSÃO DE AEROPORTOS DA REGIÃO AMAZÔNICA - COMARA\nDESTACAMENTO DE ENGENHARIA DA COMARA EM COARI - AM\nPOSTO DE ENFERMAGEM",
+  "cabMed": "MINISTÉRIO DA DEFESA\nCOMANDO DA AERONÁUTICA\nCOMISSÃO DE AEROPORTOS DA REGIÃO AMAZÔNICA",
+  "intro": "O Serviço de Enfermagem e Médico no Destacamento de Engenharia de Coari (DECO-KO) funciona 24h atendendo militares e funcionários civis da COMARA e outros casos que se fizerem necessários.",
+  "obsAgua": "O efetivo deste canteiro serve-se da água proveniente de poço artesiano existente no canteiro, com água de boa qualidade, com uso de hipoclorito 2,5% passando ainda assim pelo filtro INDUSTRIAL para o preparo de alimentação e respectivamente pelo filtro SUPER 1500 HOKEN E MULTI 1500 HOKEN para consumo direto humano.",
+  "encFunc": "Enc. da Enfermaria do DECO-KO",
+  "chefeFunc": "Chefe do DECO-KO"
+ },
+ "itens": [
+  {
+   "tipo": "medicamento",
+   "nome": "AAS",
+   "apresentacao": "100 mg",
+   "unidade": "comprimido",
+   "quantidade": 29,
+   "validade": "01/2027"
+  },
+  {
+   "tipo": "medicamento",
+   "nome": "Água destilada",
+   "unidade": "ampola",
+   "quantidade": 12,
+   "validade": "05/2027"
+  },
+  {
+   "tipo": "medicamento",
+   "nome": "Ambroxol xarope",
+   "unidade": "frasco",
+   "quantidade": 2,
+   "validade": "04/2027",
+   "pedido": 5,
+   "via": "VO"
+  },
+  {
+   "tipo": "medicamento",
+   "nome": "Azitromicina",
+   "unidade": "comprimido",
+   "quantidade": 11,
+   "validade": "11/2026"
+  },
+  {
+   "tipo": "medicamento",
+   "nome": "Benzetacil",
+   "apresentacao": "1.200.000 UI",
+   "unidade": "frasco",
+   "quantidade": 5,
+   "validade": "09/2027",
+   "via": "IM"
+  },
+  {
+   "tipo": "medicamento",
+   "nome": "Bromoprida",
+   "unidade": "ampola",
+   "quantidade": 18,
+   "validade": "08/2027",
+   "via": "EV"
+  },
+  {
+   "tipo": "medicamento",
+   "nome": "Buscopan composto",
+   "unidade": "comprimido",
+   "quantidade": 23,
+   "validade": "04/2027"
+  },
+  {
+   "tipo": "medicamento",
+   "nome": "Captopril",
+   "apresentacao": "25 mg",
+   "unidade": "comprimido",
+   "quantidade": 30,
+   "validade": "02/2027"
+  },
+  {
+   "tipo": "medicamento",
+   "nome": "Cetoconazol",
+   "unidade": "tubo",
+   "quantidade": 0,
+   "pedido": 5,
+   "via": "Tópico"
+  },
+  {
+   "tipo": "medicamento",
+   "nome": "Cetoprofeno",
+   "apresentacao": "100 mg",
+   "unidade": "frasco",
+   "quantidade": 26,
+   "validade": "04/2028",
+   "via": "EV"
+  },
+  {
+   "tipo": "medicamento",
+   "nome": "Ciprofloxacino",
+   "apresentacao": "500 mg",
+   "unidade": "comprimido",
+   "quantidade": 30,
+   "validade": "05/2027"
+  },
+  {
+   "tipo": "medicamento",
+   "nome": "Coltrax",
+   "unidade": "ampola",
+   "quantidade": 12,
+   "validade": "08/2027",
+   "via": "IM"
+  },
+  {
+   "tipo": "medicamento",
+   "nome": "Complexo B",
+   "unidade": "ampola",
+   "quantidade": 20,
+   "validade": "08/2028",
+   "pedido": 10,
+   "via": "EV"
+  },
+  {
+   "tipo": "medicamento",
+   "nome": "Dexametasona (acetato) pomada",
+   "unidade": "tubo",
+   "quantidade": 1,
+   "validade": "04/2027",
+   "pedido": 5,
+   "via": "Tópico"
+  },
+  {
+   "tipo": "medicamento",
+   "nome": "Dexametasona",
+   "apresentacao": "injetável",
+   "unidade": "ampola",
+   "quantidade": 32,
+   "validade": "09/2027",
+   "via": "EV"
+  },
+  {
+   "tipo": "medicamento",
+   "nome": "Diclofenaco sódico",
+   "apresentacao": "75 mg",
+   "unidade": "ampola",
+   "quantidade": 14,
+   "validade": "12/2026",
+   "via": "IM"
+  },
+  {
+   "tipo": "medicamento",
+   "nome": "Dipirona",
+   "apresentacao": "500 mg",
+   "unidade": "comprimido",
+   "quantidade": 30,
+   "validade": "07/2027",
+   "pedido": 15
+  },
+  {
+   "tipo": "medicamento",
+   "nome": "Dipirona",
+   "apresentacao": "injetável",
+   "unidade": "ampola",
+   "quantidade": 20,
+   "validade": "04/2027",
+   "via": "EV"
+  },
+  {
+   "tipo": "medicamento",
+   "nome": "Floratil (Repoflor)",
+   "apresentacao": "200 mg",
+   "unidade": "frasco",
+   "quantidade": 19,
+   "validade": "05/2028",
+   "pedido": 15,
+   "via": "VO"
+  },
+  {
+   "tipo": "medicamento",
+   "nome": "Glicose 50%",
+   "unidade": "ampola",
+   "quantidade": 22,
+   "validade": "04/2028",
+   "via": "EV"
+  },
+  {
+   "tipo": "medicamento",
+   "nome": "Hidrocortisona",
+   "apresentacao": "500 mg",
+   "unidade": "frasco",
+   "quantidade": 10,
+   "validade": "05/2027",
+   "via": "EV"
+  },
+  {
+   "tipo": "medicamento",
+   "nome": "Kollagenase (colagenase)",
+   "unidade": "tubo",
+   "quantidade": 4,
+   "validade": "12/2026",
+   "via": "Tópico"
+  },
+  {
+   "tipo": "medicamento",
+   "nome": "Lactulona (lactulose)",
+   "unidade": "frasco",
+   "quantidade": 0,
+   "via": "VO"
+  },
+  {
+   "tipo": "medicamento",
+   "nome": "Losartana",
+   "apresentacao": "50 mg",
+   "unidade": "comprimido",
+   "quantidade": 30,
+   "validade": "11/2026"
+  },
+  {
+   "tipo": "medicamento",
+   "nome": "Neomicina pomada",
+   "unidade": "tubo",
+   "quantidade": 3,
+   "validade": "09/2027",
+   "pedido": 5,
+   "via": "Tópico"
+  },
+  {
+   "tipo": "medicamento",
+   "nome": "Nimesulida",
+   "apresentacao": "100 mg",
+   "unidade": "comprimido",
+   "quantidade": 20,
+   "validade": "02/2027",
+   "pedido": 30
+  },
+  {
+   "tipo": "medicamento",
+   "nome": "Omeprazol",
+   "apresentacao": "40 mg",
+   "unidade": "ampola",
+   "quantidade": 2,
+   "validade": "06/2027",
+   "via": "EV"
+  },
+  {
+   "tipo": "medicamento",
+   "nome": "Omeprazol",
+   "apresentacao": "20 mg",
+   "unidade": "comprimido",
+   "quantidade": 26,
+   "validade": "05/2027"
+  },
+  {
+   "tipo": "medicamento",
+   "nome": "Ondansetrona",
+   "unidade": "ampola",
+   "quantidade": 13,
+   "validade": "07/2027",
+   "via": "EV"
+  },
+  {
+   "tipo": "medicamento",
+   "nome": "Paracetamol",
+   "apresentacao": "500 mg",
+   "unidade": "comprimido",
+   "quantidade": 28,
+   "validade": "12/2026",
+   "pedido": 30
+  },
+  {
+   "tipo": "medicamento",
+   "nome": "Prometazina",
+   "unidade": "ampola",
+   "quantidade": 11,
+   "validade": "04/2027",
+   "via": "IM"
+  },
+  {
+   "tipo": "medicamento",
+   "nome": "Simeticona gotas",
+   "unidade": "frasco",
+   "quantidade": 4,
+   "validade": "02/2027",
+   "via": "VO"
+  },
+  {
+   "tipo": "medicamento",
+   "nome": "Soro fisiológico (SF) 0,9%",
+   "apresentacao": "100 ml",
+   "unidade": "frasco",
+   "quantidade": 10,
+   "validade": "05/2028"
+  },
+  {
+   "tipo": "medicamento",
+   "nome": "Soro fisiológico (SF) 0,9%",
+   "apresentacao": "500 ml",
+   "unidade": "frasco",
+   "quantidade": 6,
+   "validade": "12/2027",
+   "via": "EV"
+  },
+  {
+   "tipo": "medicamento",
+   "nome": "Soro glicosado 5%",
+   "apresentacao": "500 ml",
+   "unidade": "frasco",
+   "quantidade": 4,
+   "validade": "12/2026",
+   "via": "EV"
+  },
+  {
+   "tipo": "medicamento",
+   "nome": "Vitamina C",
+   "unidade": "ampola",
+   "quantidade": 25,
+   "validade": "03/2027",
+   "via": "EV"
+  },
+  {
+   "tipo": "medicamento",
+   "nome": "Buscopan simples",
+   "unidade": "ampola",
+   "quantidade": 17,
+   "validade": "02/2028",
+   "via": "EV"
+  },
+  {
+   "tipo": "medicamento",
+   "nome": "Betametasona",
+   "unidade": "ampola",
+   "quantidade": 0,
+   "pedido": 5,
+   "via": "IM"
+  },
+  {
+   "tipo": "medicamento",
+   "nome": "Amoxicilina",
+   "apresentacao": "500 mg",
+   "unidade": "comprimido",
+   "quantidade": 0
+  },
+  {
+   "tipo": "medicamento",
+   "nome": "Acetilcisteína",
+   "apresentacao": "600 mg",
+   "unidade": "envelope",
+   "quantidade": 19,
+   "validade": "10/2027",
+   "pedido": 20,
+   "via": "VO"
+  },
+  {
+   "tipo": "medicamento",
+   "nome": "Hidróxido de alumínio",
+   "unidade": "frasco",
+   "quantidade": 0,
+   "pedido": 5,
+   "via": "VO"
+  },
+  {
+   "tipo": "medicamento",
+   "nome": "Tenoxicam",
+   "unidade": "frasco",
+   "quantidade": 12,
+   "validade": "02/2028",
+   "via": "IM"
+  },
+  {
+   "tipo": "medicamento",
+   "nome": "Captopril",
+   "unidade": "comprimido",
+   "quantidade": 35,
+   "validade": "02/2027"
+  },
+  {
+   "tipo": "medicamento",
+   "nome": "Cefalexina",
+   "apresentacao": "500 mg",
+   "unidade": "comprimido",
+   "quantidade": 10,
+   "validade": "11/2026",
+   "pedido": 30
+  },
+  {
+   "tipo": "medicamento",
+   "nome": "Prednisona",
+   "apresentacao": "20 mg",
+   "unidade": "comprimido",
+   "quantidade": 13,
+   "validade": "09/2027",
+   "pedido": 15
+  },
+  {
+   "tipo": "material",
+   "nome": "Agulha",
+   "apresentacao": "30x7",
+   "unidade": "unidade",
+   "quantidade": 0
+  },
+  {
+   "tipo": "material",
+   "nome": "Agulha",
+   "apresentacao": "30x8",
+   "unidade": "unidade",
+   "quantidade": 20,
+   "validade": "05/2029"
+  },
+  {
+   "tipo": "material",
+   "nome": "Agulha",
+   "apresentacao": "40x12",
+   "unidade": "unidade",
+   "quantidade": 30,
+   "validade": "06/2030"
+  },
+  {
+   "tipo": "material",
+   "nome": "Álcool 70%",
+   "unidade": "litro",
+   "quantidade": 1,
+   "validade": "06/2028"
+  },
+  {
+   "tipo": "material",
+   "nome": "Algodão",
+   "unidade": "pacote",
+   "quantidade": 1
+  },
+  {
+   "tipo": "material",
+   "nome": "Clorexidina degermante",
+   "apresentacao": "100 ml",
+   "unidade": "frasco",
+   "quantidade": 4,
+   "validade": "08/2028"
+  },
+  {
+   "tipo": "material",
+   "nome": "Equipo macrogotas",
+   "unidade": "unidade",
+   "quantidade": 28,
+   "validade": "07/2030"
+  },
+  {
+   "tipo": "material",
+   "nome": "Esparadrapo",
+   "apresentacao": "grande",
+   "unidade": "unidade",
+   "quantidade": 1
+  },
+  {
+   "tipo": "material",
+   "nome": "Gaze estéril",
+   "unidade": "pacote",
+   "quantidade": 45,
+   "validade": "04/2030"
+  },
+  {
+   "tipo": "material",
+   "nome": "Gaze não estéril",
+   "unidade": "pacote",
+   "quantidade": 1
+  },
+  {
+   "tipo": "material",
+   "nome": "Jelco",
+   "apresentacao": "nº 20",
+   "unidade": "unidade",
+   "quantidade": 12,
+   "validade": "01/2029"
+  },
+  {
+   "tipo": "material",
+   "nome": "Jelco",
+   "apresentacao": "nº 22",
+   "unidade": "unidade",
+   "quantidade": 7,
+   "validade": "11/2029"
+  },
+  {
+   "tipo": "material",
+   "nome": "Jelco",
+   "apresentacao": "nº 24",
+   "unidade": "unidade",
+   "quantidade": 11,
+   "validade": "09/2029"
+  },
+  {
+   "tipo": "material",
+   "nome": "Luva de procedimento",
+   "apresentacao": "M",
+   "unidade": "caixa",
+   "quantidade": 3,
+   "validade": "07/2030"
+  },
+  {
+   "tipo": "material",
+   "nome": "Luva de procedimento",
+   "apresentacao": "P",
+   "unidade": "caixa",
+   "quantidade": 2
+  },
+  {
+   "tipo": "material",
+   "nome": "Luva estéril",
+   "apresentacao": "7,5",
+   "unidade": "unidade",
+   "quantidade": 10,
+   "validade": "06/2030"
+  },
+  {
+   "tipo": "material",
+   "nome": "Máscara descartável",
+   "unidade": "unidade",
+   "quantidade": 40
+  },
+  {
+   "tipo": "material",
+   "nome": "Micropore",
+   "unidade": "rolo",
+   "quantidade": 2,
+   "validade": "07/2027"
+  },
+  {
+   "tipo": "material",
+   "nome": "Scalp",
+   "apresentacao": "nº 23",
+   "unidade": "unidade",
+   "quantidade": 34,
+   "validade": "08/2029"
+  },
+  {
+   "tipo": "material",
+   "nome": "Scalp",
+   "apresentacao": "nº 21",
+   "unidade": "unidade",
+   "quantidade": 48,
+   "validade": "07/2029"
+  },
+  {
+   "tipo": "material",
+   "nome": "Seringa",
+   "apresentacao": "20 ml",
+   "unidade": "unidade",
+   "quantidade": 20,
+   "validade": "03/2031"
+  },
+  {
+   "tipo": "material",
+   "nome": "Seringa",
+   "apresentacao": "10 ml",
+   "unidade": "unidade",
+   "quantidade": 20,
+   "validade": "03/2031"
+  },
+  {
+   "tipo": "material",
+   "nome": "Seringa",
+   "apresentacao": "5 ml",
+   "unidade": "unidade",
+   "quantidade": 24,
+   "validade": "03/2031"
+  },
+  {
+   "tipo": "material",
+   "nome": "Seringa",
+   "apresentacao": "3 ml",
+   "unidade": "unidade",
+   "quantidade": 20,
+   "validade": "08/2030"
+  },
+  {
+   "tipo": "material",
+   "nome": "Torneirinha",
+   "unidade": "unidade",
+   "quantidade": 9,
+   "validade": "04/2029"
+  },
+  {
+   "tipo": "material",
+   "nome": "Luva estéril",
+   "apresentacao": "7,0",
+   "unidade": "unidade",
+   "quantidade": 0
+  },
+  {
+   "tipo": "material",
+   "nome": "Compressa estéril",
+   "unidade": "unidade",
+   "quantidade": 0
+  }
+ ]
+}
