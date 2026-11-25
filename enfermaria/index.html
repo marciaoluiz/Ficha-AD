@@ -188,14 +188,20 @@ body.wide .stats{grid-template-columns:repeat(4,1fr)}
 .chip.on{background:var(--acc);border-color:var(--acc);color:#fff}.chip.on small{color:rgba(255,255,255,.85)}
 .chip .ico{width:15px;height:15px}
 .chips{display:flex;flex-wrap:wrap;gap:7px}
-.cgrid{display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:1fr;gap:8px}
+.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .cgrid .chip:last-child:nth-child(odd){grid-column:1/-1}
 body.wide .cgrid{grid-template-columns:1fr 1fr 1fr}
 body.wide .cgrid .chip:last-child{grid-column:span 2}
-.cgrid .chip{justify-content:center;text-align:center;white-space:normal;min-height:44px;padding:8px 10px;border-radius:14px}
+.cgrid .chip{justify-content:center;text-align:center;white-space:nowrap;min-height:42px;padding:8px 12px;border-radius:999px}
 .cgrid .chip .ico{margin-left:-4px}
-.cgrid .cout{background:var(--input);border:2px solid var(--acc);color:var(--ink);padding:0 6px;gap:4px;cursor:text;box-shadow:0 0 0 3px var(--acc-soft)}
-.cgrid .cout input{flex:1;min-width:0;min-height:40px;border:0!important;background:transparent!important;box-shadow:none!important;color:var(--ink);font-weight:600;font-size:15px;padding:0 0 0 30px;text-align:center}
+.svc .svmais{display:none;margin-top:10px}
+.svc.aberto .svmais{display:block}
+.svtg{display:flex;align-items:center;gap:8px;width:100%;border:0;border-top:1px solid var(--line);background:transparent;color:var(--acc-ink);font-weight:700;font-size:15px;padding:12px 16px;text-align:left;flex-wrap:wrap}
+.svtg small{flex-basis:100%;order:3;font-size:12.5px;font-weight:500;color:var(--mut);margin-top:-2px}
+.svtg .ico{margin-left:auto;width:18px;height:18px;transition:transform .3s cubic-bezier(.3,1.4,.5,1)}
+.svc.aberto .svtg .ico{transform:rotate(180deg)}
+.cgrid .cout{background:var(--input);border:2px solid var(--acc);color:var(--ink);padding:0 5px;gap:4px;cursor:text;box-shadow:0 0 0 3px var(--acc-soft)}
+.cgrid .cout input{flex:1;min-width:0;min-height:36px;border:0!important;background:transparent!important;box-shadow:none!important;color:var(--ink);font-weight:600;font-size:14px;padding:0 0 0 30px;text-align:center}
 .cgrid .cout input::placeholder{color:var(--mut);font-weight:500}
 .cgrid .cout button{flex:none;width:26px;height:26px;border:0;border-radius:50%;background:var(--tag-bg);color:var(--mut);display:grid;place-items:center;padding:0}
 .cgrid .cout button .ico{width:13px;height:13px;margin:0;stroke-width:2.8}
@@ -484,8 +490,8 @@ var ALIAS = { 'ten brig ar': 'Ten Brig Ar', 'ten brig': 'Ten Brig Ar', 'tb': 'Te
   '3s': '3S', '3 sgt': '3S', '3sgt': '3S', 'sgt': '3S', 'cb': 'CB', 'cabo': 'CB', 's1': 'S1', 's2': 'S2', 'sd': 'S2', 'soldado': 'S2', 'tm': 'TM', 't1': 'T1', 't2': 'T2',
   'civil': 'Civil', 'civ': 'Civil', 'sptf': 'Civil:SPTF', 'sppf': 'Civil:SPPF', 'terceirizado': 'Civil:Terceirizado' };
 var CONDUTAS = [
-  ['orient', 'Orientado(a)', 'Orientado'], ['medic', 'Medicado(a) na enfermaria', 'Medicado'], ['curat', 'Curativo / procedimento', 'Curativo / procedimento'], ['obs', 'Em observação na enfermaria', 'Em observação'],
-  ['lib', 'Liberado(a) ao serviço', 'Liberado ao serviço'], ['afast', 'Afastado(a) / repouso', 'Afastado / repouso'], ['retorno', 'Retorno agendado', 'Retorno agendado'],
+  ['orient', 'Orientado(a)', 'Orientado'], ['medic', 'Medicado(a) na enfermaria', 'Medicado'], ['curat', 'Curativo / procedimento', 'Curativo'], ['obs', 'Em observação na enfermaria', 'Em observação'],
+  ['lib', 'Liberado(a) ao serviço', 'Liberado'], ['afast', 'Afastado(a) / repouso', 'Afastado'], ['retorno', 'Retorno agendado', 'Retorno agendado'],
   ['hosp', 'Encaminhado(a) ao hospital', 'Hospital'], ['espec', 'Encaminhado(a) a especialista / UBS', 'Especialista / UBS'], ['evam', 'Evacuação aeromédica (EVAM)', 'EVAM'], ['outro', 'Outra conduta', 'Outra']
 ];
 var COND_LBL = {}; CONDUTAS.forEach(function (c) { COND_LBL[c[0]] = c[1]; });
@@ -1124,9 +1130,12 @@ function abrirAt(id, pre) {
     h += '<div class="ig"><div class="igb"><label class="ir"><span class="il">Data</span><input class="ri" type="date" data-f="data" value="' + esc(f.data) + '"></label><label class="ir"><span class="il">Hora</span><input class="ri" type="time" data-f="hora" value="' + esc(f.hora) + '"></label></div></div>';
     h += '<div class="ig"><div class="igh">Queixa principal / história</div><div class="igb"><div class="ipad"><textarea data-f="queixa" rows="3" placeholder="Ex.: dor de cabeça desde a manhã, sem febre">' + esc(f.queixa) + '</textarea></div></div></div>';
     var sv = f.sv;
-    h += '<div class="ig"><div class="igh">Sinais vitais <span class="sp"></span><span style="font-weight:500">opcional</span></div><div class="igb"><div class="ipad"><div class="grid3">' +
-      svF('pa', 'PA (mmHg)', '120x80', 'text') + svF('fc', 'FC (bpm)', '', 'decimal') + svF('fr', 'FR (irpm)', '', 'decimal') + svF('tax', 'Temp. (°C)', '', 'decimal') + svF('spo2', 'SpO₂ (%)', '', 'decimal') + svF('hgt', 'Glicemia', 'mg/dL', 'decimal') +
-      '</div><div class="grid3" style="margin-top:10px">' + svF('dor', 'Dor (0–10)', '', 'decimal') + svF('peso', 'Peso (kg)', '', 'decimal') + '</div></div></div></div>';
+    var outros = ['fc', 'fr', 'tax', 'spo2', 'dor', 'peso'], nOut = outros.filter(function (k) { return sv[k]; }).length;
+    if (svAberto == null) svAberto = nOut > 0;
+    h += '<div class="ig"><div class="igh">Sinais vitais <span class="sp"></span><span style="font-weight:500">opcional</span></div><div class="igb svc' + (svAberto ? ' aberto' : '') + '"><div class="ipad"><div class="grid2">' +
+      svF('pa', 'PA (mmHg)', '120x80', 'text') + svF('hgt', 'Glicemia (mg/dL)', '', 'decimal') + '</div>' +
+      '<div class="svmais"><div class="grid3">' + svF('fc', 'FC (bpm)', '', 'decimal') + svF('fr', 'FR (irpm)', '', 'decimal') + svF('tax', 'Temp. (°C)', '', 'decimal') + svF('spo2', 'SpO₂ (%)', '', 'decimal') + svF('dor', 'Dor (0–10)', '', 'decimal') + svF('peso', 'Peso (kg)', '', 'decimal') + '</div></div></div>' +
+      '<button type="button" class="svtg" data-k="svtg">' + (svAberto ? 'Menos sinais vitais' : 'Mais sinais vitais' + (nOut ? ' · ' + nOut + ' preenchido' + (nOut > 1 ? 's' : '') : '') + '<small>FC, FR, temperatura, SpO₂, dor, peso</small>') + ic('chevD') + '</button></div></div>';
     h += '<div class="ig"><div class="igh">Diagnóstico (CID-10)</div><div class="igb"><div class="ipad"><div class="chips">' +
       f.cids.map(function (c, i) { return '<button class="cidc" data-k="cidx" data-i="' + i + '" title="Remover"><b>' + esc(c) + '</b><span>' + esc(cidDesc(c)) + '</span><i>' + ic('x') + '</i></button>'; }).join('') +
       '<button class="addb" data-k="cid">' + ic('search') + (f.cids.length ? 'Outro CID' : 'Buscar CID pelo nome ou código') + '</button></div></div></div></div>';
@@ -1149,6 +1158,7 @@ function abrirAt(id, pre) {
     function svF(k, l, ph, im) { return '<label class="fl"><span>' + l + '</span><input data-sv="' + k + '" inputmode="' + im + '" placeholder="' + esc(ph) + '" value="' + esc(sv[k] || '') + '"></label>'; }
   }
   /* com medicamento na lista, “Medicado” fica marcado; sem nenhum, sai (se foi marcado sozinho) */
+  var svAberto = null;
   function autoMedic() {
     var tem = f.meds.some(function (m) { return m.tipo !== 'mat'; }), j = f.cond.indexOf('medic');
     if (tem && j < 0) { f.cond.unshift('medic'); f._auto = true; }
@@ -1167,6 +1177,7 @@ function abrirAt(id, pre) {
     if (k === 'pac') escolhePac(function (id) { f.pac = id; desenha(); });
     else if (k === 'cid') escolheCid(f.cids, function (c) { if (f.cids.indexOf(c) < 0) f.cids.push(c); desenha(); });
     else if (k === 'cidx') { f.cids.splice(i, 1); desenha(); }
+    else if (k === 'svtg') { svAberto = !svAberto; desenha(); if (svAberto) { var fi = $('[data-sv=fc]', bd); if (fi && innerWidth >= 900) fi.focus(); } }
     else if (k === 'med') escolheItem(function (id) { var it = item(id); var ja = f.meds.filter(function (m) { return m.item === id; })[0]; if (ja) ja.qtd = num(ja.qtd) + 1; else f.meds.push({ item: id, qtd: 1, nome: it.nome, apres: it.apres || '', un: it.un || '', tipo: it.tipo, via: viaPadrao(it) }); autoMedic(); desenha(); });
     else if (k === 'q-') { f.meds[i].qtd = Math.max(0, num(f.meds[i].qtd) - 1); if (f.meds[i].qtd === 0) f.meds.splice(i, 1); autoMedic(); desenha(); }
     else if (k === 'q+') { f.meds[i].qtd = num(f.meds[i].qtd) + 1; desenha(); }
